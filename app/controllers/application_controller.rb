@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   # Trailblazer
   include Trailblazer::Operation::Controller
 
-  # redirect to last page (e.g. open tab) oder /admin after sign_in
+  # redirect to last page (e.g. open tab) or /admin after sign_in
   def after_sign_in_path_for(resource)
     session["user_return_to"] || '/admin'
   end
