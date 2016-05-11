@@ -10,20 +10,11 @@ class Email < ActiveRecord::Base
 
   # State Machine
   aasm do
-    event :inform_offers, guard: :informable_offers? do
+    event :inform, guard: :informable_offers_or_orga_contact? do
       # First check if email needs to be blocked
       transitions from: :uninformed, to: :blocked, guard: :should_be_blocked?
       # Else send email if there are approved offers
-      transitions from: :uninformed, to: :informed,
-                  after: :send_offer_information
-    end
-
-    event :inform_orga, guard: :belongs_to_unique_orga_with_orga_contact? do
-      # First check if email needs to be blocked
-      transitions from: :uninformed, to: :blocked, guard: :should_be_blocked?
-      # Else send email if there are approved offers
-      transitions from: :uninformed, to: :informed,
-                  after: :send_orga_information
+      transitions from: :uninformed, to: :informed, after: :send_mailing!
     end
   end
 
@@ -39,14 +30,15 @@ class Email < ActiveRecord::Base
     end
   end
 
-  def send_offer_information
+  def send_mailing!
     regenerate_security_code
-    OfferMailer.inform(self).deliver_now
-  end
-
-  def send_orga_information
-    regenerate_security_code
-    OrgaMailer.inform(self).deliver_now
+    if informable_offers? # has higher priority
+      OfferMailer.inform_offer_context(self).deliver_now
+    elsif belongs_to_unique_orga_with_orga_contact? # lower priority
+      OfferMailer.inform_organization_context(self).deliver_now
+    else # should not happen
+      raise "Mailing requested, but no valid mailing found for Email ##{id}"
+    end
   end
 
   # required for both offer and orga mailer
@@ -57,6 +49,10 @@ class Email < ActiveRecord::Base
   end
 
   private
+
+  def informable_offers_or_orga_contact?
+    informable_offers? || belongs_to_unique_orga_with_orga_contact?
+  end
 
   # email belongs to at least one orga-contact and has a distinct orga
   def belongs_to_unique_orga_with_orga_contact?
