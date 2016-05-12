@@ -11,14 +11,6 @@ class SubscribedEmailsMailingsSpawnerWorkerTest < ActiveSupport::TestCase
     worker.perform
   end
 
-  # it 'wont send mailing to subscribed emails that have approved offers but'\
-  #    ' that were already informed about those offers' do
-  #   email = FactoryGirl.create :email, :subscribed, :with_approved_offer
-  #   email.create_offer_mailings email.offers.all, :inform
-  #   SubscribedEmailMailingWorker.expects(:perform_async).never
-  #   worker.perform
-  # end
-
   it 'wont send mailing to subscribed emails without approved offers' do
     FactoryGirl.create :email, :subscribed, :with_unapproved_offer
     SubscribedEmailMailingWorker.expects(:perform_async).never

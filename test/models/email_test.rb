@@ -101,6 +101,69 @@ describe Email do
       end
     end
 
+    describe '#send_mailings!' do
+      it 'should generate a security code' do
+        email.expects(:regenerate_security_code)
+        email.stubs(:raise)
+        email.send_mailing!
+      end
+
+      it 'should send an offer context mailing when it has approved offers'\
+         ' and is in a mailings_enabled organization' do
+        email = FactoryGirl.create :email, :with_approved_offer
+        email.organizations.first.update_column :mailings_enabled, true
+        OfferMailer.expect_chain(:inform_offer_context, :deliver_now)
+        email.send_mailing!
+      end
+
+      it 'should send an orga context mailing when it is in an orga contact'\
+         ', even when orga is not mailings_enabled has no approved offers' do
+        email = FactoryGirl.create :email, :with_unapproved_offer
+        email.contact_people.first.update_column :position, 'superior'
+        email.organizations.first.update_column :mailings_enabled, false
+        OfferMailer.expect_chain(:inform_organization_context, :deliver_now)
+        email.send_mailing!
+      end
+
+      it 'should raise an error when neither of the above is true' do
+        assert_raises(RuntimeError) { email.send_mailing! }
+      end
+
+      it 'wont send an offer context mailing when it has approved offers'\
+         ' but the orga is not mailings_enabled' do
+        email = FactoryGirl.create :email, :with_approved_offer
+        email.organizations.first.update_column :mailings_enabled, false
+        OfferMailer.expects(:inform_offer_context).never
+        assert_raises { email.send_mailing! }
+      end
+
+      it 'wont send an offer context mailing when it has no approved offers'\
+         ' but the orga is mailings_enabled' do
+        email = FactoryGirl.create :email, :with_unapproved_offer
+        email.organizations.first.update_column :mailings_enabled, true
+        OfferMailer.expects(:inform_offer_context).never
+        assert_raises { email.send_mailing! }
+      end
+
+      it 'wont send an orga context mailing when it is in a position contact'\
+         ' but is in more than one organization' do
+        email = FactoryGirl.create :email, :with_unapproved_offer
+        email.contact_people.first.update_column :position, 'superior'
+        email.contact_people <<
+          FactoryGirl.create(:contact_person, position: 'superior')
+        OfferMailer.expects(:inform_organization_context).never
+        assert_raises { email.send_mailing! }
+      end
+    end
+
+    # it 'wont send mailing to subscribed emails that have approved offers but'\
+    #    ' that were already informed about those offers' do
+    #   email = FactoryGirl.create :email, :subscribed, :with_approved_offer
+    #   email.create_offer_mailings email.offers.all, :inform
+    #   SubscribedEmailMailingWorker.expects(:perform_async).never
+    #   worker.perform
+    # end
+
     # describe '#inform_orga' do
     #   subject { email.inform_orga }
     #
