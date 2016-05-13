@@ -35,15 +35,7 @@ class UninformedEmailsMailingsSpawnerWorker
   end
 
   def informable_orga_emails
-    Email.where(aasm_state: 'uninformed').select do |mail|
-      mail.contact_people.select do |contact|
-        !contact.position.nil? && informable_orga?(contact.organization)
-      end.any?
-    end
-  end
-
-  def informable_orga? orga
-    orga.aasm_state == 'approved' && orga.mailings_enabled &&
-      orga.offers.approved.count > 0 && orga.locations.count < 10
+    Email.where(aasm_state: 'uninformed')
+         .select(&:belongs_to_unique_orga_with_orga_contact?)
   end
 end

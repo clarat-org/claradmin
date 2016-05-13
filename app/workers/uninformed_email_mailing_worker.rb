@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Trigger an emails inform event to send them a mailing.
 class UninformedEmailMailingWorker
   include Sidekiq::Worker

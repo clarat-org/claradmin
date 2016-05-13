@@ -116,13 +116,38 @@ describe Email do
         email.send_mailing!
       end
 
-      it 'should send an orga context mailing when it is in an orga contact'\
-         ', even when orga is not mailings_enabled has no approved offers' do
-        email = FactoryGirl.create :email, :with_unapproved_offer
-        email.contact_people.first.update_column :position, 'superior'
-        email.organizations.first.update_column :mailings_enabled, false
+      it 'should send an orga context mailing when it is an orga contact'\
+         ', when orga is mailings_enabled and has approved offers' do
+        email = FactoryGirl.create :email, :with_approved_offer
+        email.organizations.first.update_column :mailings_enabled, true
+        email.organizations.first.update_column :aasm_state, 'approved'
+        email.organizations.first.offers = email.offers
+        superior_mail = FactoryGirl.create :email
+        superior_mail.contact_people <<
+          FactoryGirl.create(
+            :contact_person,
+            organization: email.organizations.first,
+            position: 'superior',
+            email: superior_mail
+          )
+
         OfferMailer.expect_chain(:inform_organization_context, :deliver_now)
-        email.send_mailing!
+        superior_mail.send_mailing!
+      end
+
+      it 'should send an offer context mailing even when the contact qualifies'\
+         ' for an orga-mailing (higher priority on offer-mailings)' do
+        mail = FactoryGirl.create :email, :with_approved_offer
+        mail.contact_people.first.update_column :position, 'superior'
+        mail.organizations.first.update_column :mailings_enabled, true
+        mail.organizations.first.update_column :aasm_state, 'approved'
+        mail.contact_people.first.organization = mail.organizations.first
+        mail.organizations.first.offers = mail.offers
+
+        mail.belongs_to_unique_orga_with_orga_contact?.must_equal true
+        OfferMailer.expect_chain(:inform_offer_context, :deliver_now)
+        OfferMailer.expects(:inform_organization_context).never
+        mail.send_mailing!
       end
 
       it 'should raise an error when neither of the above is true' do
