@@ -59,6 +59,9 @@ gem 'dry-validation'
 # Internal Search Implementation
 gem 'pg_search'
 
+# Timezones for sidetiq
+gem 'sidetiq-timezone'
+
 ########################
 # For Heroku & Add-Ons #
 ########################
