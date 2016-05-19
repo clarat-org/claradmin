@@ -546,9 +546,6 @@ GEM
       celluloid (>= 0.14.1)
       ice_cube (= 0.11.1)
       sidekiq (>= 3.0.0)
-    sidetiq-timezone (0.1.0)
-      activesupport
-      sidetiq (~> 0.6.0)
     simple_form (3.2.1)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
@@ -718,7 +715,6 @@ DEPENDENCIES
   roar
   rubocop
   shoulda
-  sidetiq-timezone
   simple_form
   simplecov
   slim-rails
