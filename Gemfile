@@ -9,7 +9,7 @@ ruby '2.3.0'
 gem 'rails', '~> 4.2'
 gem 'bundler', '>= 1.8.4'
 
-gem 'clarat_base', github: 'clarat-org/clarat_base'
+gem 'clarat_base', github: 'clarat-org/clarat_base', branch: 'feature/801-sidekiq-and-sitetiq'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # gem 'rails', '~> 4.1.12'
@@ -58,6 +58,12 @@ gem 'dry-validation'
 
 # Internal Search Implementation
 gem 'pg_search'
+
+# for sidekiq web interface
+gem 'sinatra', '>= 1.3.0'
+
+# Schedulable jobs for sidekiq
+gem 'sidekiq-cron', '~> 0.4.0'
 
 ########################
 # For Heroku & Add-Ons #
