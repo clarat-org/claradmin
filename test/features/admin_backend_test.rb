@@ -137,6 +137,24 @@ feature 'Admin Backend' do
       )
     end
 
+    scenario 'Set offer to dozing and wake reinitialize it afterwards' do
+      offer = FactoryGirl.create :offer
+
+      visit rails_admin_path
+      click_link 'Angebote', match: :first
+      click_link 'Bearbeiten', match: :first
+
+      offer.must_be :initialized?
+
+      click_link 'Schlafen legen'
+      page.must_have_content 'Zustandsänderung war erfolgreich'
+      offer.reload.must_be :dozing?
+
+      click_link 'Re-Initialisieren'
+      page.must_have_content 'Zustandsänderung war erfolgreich'
+      offer.reload.must_be :initialized?
+    end
+
     scenario 'Try to create offer with errors' do
       location = FactoryGirl.create(:location, name: 'testname')
       contact_person = FactoryGirl.create :contact_person
