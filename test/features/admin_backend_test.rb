@@ -138,7 +138,10 @@ feature 'Admin Backend' do
     end
 
     scenario 'Set offer to dozing and reinitialize it afterwards' do
-      offer = FactoryGirl.create :offer
+      orga = organizations(:basic)
+      split_base = FactoryGirl.create(:split_base, organization: orga)
+      offer = FactoryGirl.create :offer, organization: orga,
+                                         split_base: split_base
 
       visit rails_admin_path
       click_link 'Angebote', match: :first
