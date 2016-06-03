@@ -137,7 +137,7 @@ feature 'Admin Backend' do
       )
     end
 
-    scenario 'Set offer to dozing and wake reinitialize it afterwards' do
+    scenario 'Set offer to dozing and reinitialize it afterwards' do
       offer = FactoryGirl.create :offer
 
       visit rails_admin_path
