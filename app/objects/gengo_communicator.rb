@@ -28,18 +28,26 @@ class GengoCommunicator
       }
     end
 
-    @connection.postTranslationJobs(jobs: jobs)
-  end
-
-  def fetch_approved_jobs_after_timestamp ts
-    answer = @connection.getTranslationJobs(
-      status: 'approved', timestamp_after: ts, count: 100
-    )
-    answer['response']
+    send_jobs_and_save_order_id jobs, model, field
   end
 
   def fetch_job job_id
     answer = @connection.getTranslationJob(id: job_id)
     answer['response']['job']
+  end
+
+  def fetch_order order_id
+    answer = @connection.getTranslationOrderJobs(order_id: job_id)
+    answer['response']['order']
+  end
+
+  private
+
+  def send_jobs_and_save_order_id jobs, model, field
+    post_answer = @connection.postTranslationJobs(jobs: jobs)
+    order_id = post_answer['response']['order_id'].to_i
+    expected_slug_prefix = "#{model.class.name}:#{model.id}:#{field}"
+
+    GengoOrder.create order_id: order_id, expected_slug: expected_slug_prefix
   end
 end
