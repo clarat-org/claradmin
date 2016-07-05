@@ -2,6 +2,8 @@
 source 'https://rubygems.org'
 ruby '2.3.0'
 
+gem 'nokogiri', '1.6.7.2' # 1.6.8 doesnt install on some pcs. Remove when fixed
+
 ###########
 # General #
 ###########
@@ -118,6 +120,8 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-d3'
   gem 'rails-assets-nestable2'
 end
+
+gem 'react_on_rails'
 
 #####################
 # Dev/Test Specific #

@@ -358,6 +358,30 @@ RailsAdmin.config do |config|
       end
       field :created_by
       field :approved_by
+      field :translation_links do
+        formatted_value do
+          en = bindings[:object].translations.where(locale: :en).first
+          ar = bindings[:object].translations.where(locale: :ar).first
+          ru = bindings[:object].translations.where(locale: :ru).first
+          output_string = ''
+          output_string += if en
+            "<a href='/offer_translations/#{en.id}/edit'>Englisch</a><br/>"
+          else
+            'Englisch (wird noch erstellt)<br/>'
+          end
+          output_string += if en
+            "<a href='/offer_translations/#{ar.id}/edit'>Arabisch</a><br/>"
+          else
+            'Arabisch (wird noch erstellt)<br/>'
+          end
+          output_string += if en
+            "<a href='/offer_translations/#{ru.id}/edit'>Russisch</a><br/>"
+          else
+            'Russisch (wird noch erstellt)'
+          end
+          output_string.html_safe
+        end
+      end
     end
 
     clone_config do
@@ -736,5 +760,6 @@ RailsAdmin.config do |config|
     field :version do
       read_only true
     end
+    field :description
   end
 end
