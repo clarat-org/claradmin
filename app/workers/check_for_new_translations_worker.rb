@@ -4,7 +4,7 @@ class CheckForNewTranslationsWorker
 
   def perform
     # start async worker for every pending (existing) gengo order
-    GengoOrder.pluck(:id) do |gengo_order_id|
+    GengoOrder.pluck(:id).each do |gengo_order_id|
       GetAndApplyNewTranslationWorker.perform_async gengo_order_id
     end
   end
