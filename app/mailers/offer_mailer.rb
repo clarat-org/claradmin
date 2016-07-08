@@ -31,6 +31,7 @@ class OfferMailer < ActionMailer::Base
     @subscribe_href = get_sub_or_unsub_href email, 'subscribe'
     @overview_href_suffix = "/emails/#{email.id}/angebote"
     @vague_title = email.vague_contact_title?
+    @mainly_portal = mainly_portal_offers? usable_offers
 
     send_emails email, usable_offers, :inform, t(".subject.#{@section_suffix}")
   end
@@ -42,7 +43,8 @@ class OfferMailer < ActionMailer::Base
     # okay, because all contact_persons belong to the same organization
     orga = email.contact_people.first.organization
     @contact_person = email.contact_people.first
-    @vague_title = email.vague_contact_title?
+    @vague_title = email.vague_contact_title? && email.offers.empty?
+    @mainly_portal = mainly_portal_offers? orga.offers.approved
     @overview_href_suffix = "/organisationen/#{orga.slug || orga.id.to_s}"
 
     mail subject: t('.subject'),
@@ -132,5 +134,11 @@ class OfferMailer < ActionMailer::Base
       offers_per_section[filter] = section_offers
     end
     offers_per_section
+  end
+
+  # over a certain treshold (currently 60%) the mailing is seen as a
+  # mainly-portal-mailing with some content changes
+  def mainly_portal_offers? offers
+    (offers.where(encounter: 'portal').count.to_f/offers.count.to_f) >= 0.6
   end
 end
