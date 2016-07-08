@@ -39,18 +39,23 @@ class OfferMailer < ActionMailer::Base
 
   # Mails to organization conctacts to inform them about clarat
   # @attr email Email object this is sent to
+  # A lot of variables have to be prepared for the email, so we are OK with
+  # a slightly higher assignment branch condition size and disable rubocop
+  # rubocop:disable Metrics/AbcSize
   def inform_organization_context email
     # okay, because all contact_persons belong to the same organization
     orga = email.contact_people.first.organization
     @contact_person = email.contact_people.first
-    @vague_title = email.vague_contact_title? && email.offers.empty?
-    @mainly_portal = mainly_portal_offers? orga.offers.approved
+    @vague_title = email.vague_contact_title?
+    @mainly_portal =
+      mainly_portal_offers?(orga.offers.approved) && email.offers.empty?
     @overview_href_suffix = "/organisationen/#{orga.slug || orga.id.to_s}"
 
     mail subject: t('.subject'),
          to: email.address,
          from: 'Anne Schulze | clarat <anne.schulze@clarat.org>'
   end
+  # rubocop:enable Metrics/AbcSize
 
   # Inform email addresses about new offers after they have subscribed.
   # A lot of variables have to be prepared for the email, so we are OK with
@@ -139,6 +144,6 @@ class OfferMailer < ActionMailer::Base
   # over a certain treshold (currently 60%) the mailing is seen as a
   # mainly-portal-mailing with some content changes
   def mainly_portal_offers? offers
-    (offers.where(encounter: 'portal').count.to_f/offers.count.to_f) >= 0.6
+    (offers.where(encounter: 'portal').count.to_f / offers.count.to_f) >= 0.6
   end
 end
