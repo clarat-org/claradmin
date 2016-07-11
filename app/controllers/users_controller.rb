@@ -11,10 +11,4 @@ class UsersController < BackendController
     run User::Update
     render :edit
   end
-
-  private
-
-  def process_params!(params)
-    params.merge!(current_user: current_user)
-  end
 end

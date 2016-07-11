@@ -6,7 +6,7 @@ class OrganizationTranslation < ActiveRecord::Base
   include PgSearch
   pg_search_scope :search_everything,
                   against: [
-                    :id, :organization_id, :name, :locale, :source
+                    :id, :organization_id, :locale, :source
                   ],
                   using: { tsearch: { prefix: true } }
 end

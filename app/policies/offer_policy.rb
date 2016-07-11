@@ -1,0 +1,2 @@
+class OfferTranslationPolicy < ApplicationPolicy
+end
