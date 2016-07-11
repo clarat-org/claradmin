@@ -1,6 +1,7 @@
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: ac6f5b50363328ef252801d8684bc6defb5cd6d6
+  revision: 42864c9345e5d213751c20be127ec65457f749c9
+  branch: feature/productivity-stats
   specs:
     clarat_base (0.1.4)
       aasm
@@ -378,6 +379,8 @@ GEM
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
     puma (3.1.0)
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.4)
@@ -698,6 +701,7 @@ DEPENDENCIES
   pry-rescue
   pry-stack_explorer
   puma
+  pundit
   quiet_assets
   rack-cache
   rails (~> 4.2)

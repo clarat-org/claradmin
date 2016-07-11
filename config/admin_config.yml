@@ -19,6 +19,9 @@ included_models:
   # - Subscription
   # - SectionFilter
   - OfferTranslation
+  - ProductivityGoal
+  - UserTeam
+  - User
 settings:
   Organization:
     list:
@@ -63,3 +66,17 @@ settings:
         - visible
       order: "created_at ASC"
     display_name: "name_de"
+  ProductivityGoal:
+    list:
+      fields:
+        - title
+        - ends_at
+  User:
+    list:
+      fields:
+        - name
+        - email
+  UserTeam:
+    list:
+      fields:
+        - name

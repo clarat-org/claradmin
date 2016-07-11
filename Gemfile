@@ -11,7 +11,7 @@ gem 'nokogiri', '1.6.7.2' # 1.6.8 doesnt install on some pcs. Remove when fixed
 gem 'rails', '~> 4.2'
 gem 'bundler', '>= 1.8.4'
 
-gem 'clarat_base', github: 'clarat-org/clarat_base'
+gem 'clarat_base', github: 'clarat-org/clarat_base', branch: 'feature/productivity-stats'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # gem 'rails', '~> 4.1.12'
@@ -44,6 +44,7 @@ gem 'rails_admin_nestable'
 gem 'cancan' # role based auth for rails_admin
 
 gem 'devise'
+gem 'pundit'
 
 gem 'trailblazer'
 # gem 'trailblazer-loader'

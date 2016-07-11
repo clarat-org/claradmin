@@ -31,11 +31,24 @@ module Backend::IndexTable
     end
 
     def edit_link(&block)
-      link_to send(:"edit_#{model_name}_path", model), &block
+      edit_path = send(:"edit_#{model_name}_path", model)
+      if edit_path && policy.edit?
+        link_to edit_path, &block
+      else
+        nil
+      end
     end
 
     def model_name
       model.class.name.tableize.singularize
+    end
+
+    def policy
+      "#{model.class.name}Policy".constantize.new(current_user, model)
+    end
+
+    def current_user
+      @options[:current_user]
     end
   end
 end

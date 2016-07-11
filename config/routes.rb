@@ -11,6 +11,9 @@ Rails.application.routes.draw do
     end
   end
   resources :offer_translations
+  resources :productivity_goals
+  resources :users, only: [:index, :edit, :update]
+  resources :user_teams
 
   resources :next_steps_offers, only: [:index]
 
