@@ -96,7 +96,9 @@ RailsAdmin.config do |config|
     field :charitable
     field :accredited_institution
     field :founded
-    field :umbrella
+    field :umbrella_filters do
+      label 'Umbrellas'
+    end
     field :slug do
       read_only true
     end
