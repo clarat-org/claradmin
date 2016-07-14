@@ -1,7 +1,6 @@
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: b353e96c0333810927d5ad45e04c70071dfd74a4
-  branch: feature/841-multiple-umbrellas-for-organizations
+  revision: bbb27bde5428dc5fbe580616101ac549b73d2715
   specs:
     clarat_base (0.1.4)
       aasm

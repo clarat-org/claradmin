@@ -98,6 +98,9 @@ RailsAdmin.config do |config|
     field :founded
     field :umbrella_filters do
       label 'Umbrellas'
+      help do
+        'Erforderlich.'
+      end
     end
     field :slug do
       read_only true
@@ -308,7 +311,6 @@ RailsAdmin.config do |config|
       inline_edit false
     end
     field :treatment_type
-    field :participant_structure
     field :trait_filters
     field :language_filters do
       inline_add false
@@ -319,6 +321,7 @@ RailsAdmin.config do |config|
         z.B. die Eltern, einen Nachbarn oder einen Lotsen'
       end
     end
+    field :participant_structure
     field :gender_first_part_of_stamp
     field :gender_second_part_of_stamp
     field :age_from
