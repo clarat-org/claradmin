@@ -10,7 +10,7 @@ class UninformedEmailsMailingsSpawnerWorker
   sidekiq_options retry: 0
 
   def perform
-    return # TODO: remove to reenable mailings (also rubocop, tests, cov filter and worker_schedule)
+    # return # TODO: remove to reenable mailings (also rubocop, tests, cov filter and worker_schedule)
     Offer.transaction do
       Email.transaction do
         informable_emails =
@@ -25,15 +25,18 @@ class UninformedEmailsMailingsSpawnerWorker
 
   private
 
+  # TODO: remove later: currently only send refugees-only-mailings
   def informable_offer_emails
     Email.where(aasm_state: 'uninformed').uniq
          .joins(:offers).where('offers.aasm_state = ?', 'approved')
          .joins(:organizations).where(
-           'organizations.mailings_enabled = ?', true)
+           'organizations.mailings_enabled = ?', true).select { |mail| !mail.offers.approved.in_section('family').any? }
   end
 
+  # TODO: remove later: currently only send refugees-only-mailings
   def informable_orga_emails
     Email.where(aasm_state: 'uninformed')
-         .select(&:belongs_to_unique_orga_with_orga_contact?)
+         .select { |mail| mail.belongs_to_unique_orga_with_orga_contact? && !mail.organizations.first.section_filters.where(identifier: 'family').any? }
+    # .select(&:belongs_to_unique_orga_with_orga_contact?)
   end
 end
