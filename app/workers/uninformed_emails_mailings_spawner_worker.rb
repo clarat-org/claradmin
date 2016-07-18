@@ -25,18 +25,28 @@ class UninformedEmailsMailingsSpawnerWorker
 
   private
 
-  # TODO: remove later: currently only send refugees-only-mailings
+  # TODO: remove later: currently only send mailings to offers of refugees-only-orgas
   def informable_offer_emails
     Email.where(aasm_state: 'uninformed').uniq
          .joins(:offers).where('offers.aasm_state = ?', 'approved')
-         .joins(:organizations).where(
-           'organizations.mailings_enabled = ?', true).select { |mail| !mail.offers.approved.in_section('family').any? }
+         .joins(:organizations)
+         .where('organizations.mailings_enabled = ?', true)
+         .select do |mail|
+           !mail.organizations.select do |o|
+             o.section_filters.where(identifier: 'family').any?
+           end.compact.any?
+         end
   end
 
   # TODO: remove later: currently only send refugees-only-mailings
   def informable_orga_emails
     Email.where(aasm_state: 'uninformed')
-         .select { |mail| mail.belongs_to_unique_orga_with_orga_contact? && !mail.organizations.first.section_filters.where(identifier: 'family').any? }
+         .select do |mail|
+           mail.belongs_to_unique_orga_with_orga_contact? &&
+             !mail.organizations.select do |o|
+               o.section_filters.where(identifier: 'family').any?
+             end.compact.any?
+         end
     # .select(&:belongs_to_unique_orga_with_orga_contact?)
   end
 end
