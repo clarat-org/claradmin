@@ -1,7 +1,6 @@
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: 628d2ff53ba6637e6236bcb442e0d5852a348ed2
-  branch: bug/875-contact-offer-uniqueness
+  revision: f3b9dd7e90a0f32557ec5854c824bec048a68645
   specs:
     clarat_base (0.1.4)
       aasm
