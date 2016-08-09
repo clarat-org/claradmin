@@ -1,40 +1,38 @@
 # frozen_string_literal: true
-class UserTeam
-  class Create < Trailblazer::Operation
-    include Model
-    model UserTeam, :create
+class UserTeam::Create < Trailblazer::Operation
+  include Model
+  model UserTeam, :create
 
-    include Trailblazer::Operation::Policy
-    policy UserTeamPolicy, :create?
+  include Trailblazer::Operation::Policy
+  policy UserTeamPolicy, :create?
 
-    contract do
-      property :name
-      property :users
-    end
-
-    def process(params)
-      validate(params[:user_team]) do |form_object|
-        form_object.save
-      end
-    end
+  contract do
+    property :name
+    property :user_ids
   end
 
-  class Update < Trailblazer::Operation
-    include Model
-    model UserTeam, :update
-
-    include Trailblazer::Operation::Policy
-    policy UserTeamPolicy, :update?
-
-    contract do
-      property :name
-      property :users
+  def process(params)
+    validate(params[:user_team]) do |form_object|
+      form_object.save
     end
+  end
+end
 
-    def process(params)
-      validate(params[:user_team]) do |form_object|
-        form_object.save
-      end
+class UserTeam::Update < Trailblazer::Operation
+  include Model
+  model UserTeam, :update
+
+  include Trailblazer::Operation::Policy
+  policy UserTeamPolicy, :update?
+
+  contract do
+    property :name
+    property :user_ids
+  end
+
+  def process(params)
+    validate(params[:user_team]) do |form_object|
+      form_object.save
     end
   end
 end

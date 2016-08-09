@@ -39,3 +39,8 @@ check_for_new_contacts_job:
   cron: "0 8,12,15,18 * * * Europe/Berlin" # every day at 8:00, 12:00, 15:00 and 18:00
   class: "CheckForNewContactsWorker"
   queue: default
+
+sync_absences_job:
+  cron: "0 3 * * Sat Europe/Berlin" # every Saturday at 3:00 a.m.
+  class: "SyncAbsencesWorker"
+  queue: heavy_load

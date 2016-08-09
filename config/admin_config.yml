@@ -23,6 +23,7 @@ included_models:
   - ProductivityGoal
   - UserTeam
   - User
+  - TimeAllocation
 settings:
   Organization:
     list:
@@ -42,6 +43,7 @@ settings:
         - organization_id
         - locale
         - source
+        - description
         - possibly_outdated
       order: "updated_at ASC"
   Offer:
@@ -81,6 +83,13 @@ settings:
       fields:
         - title
         - ends_at
+  TimeAllocation:
+    list:
+      fields:
+        - user_id
+        - year
+        - week_number
+        - wa_number
   User:
     list:
       fields:
@@ -90,3 +99,4 @@ settings:
     list:
       fields:
         - name
+        - users

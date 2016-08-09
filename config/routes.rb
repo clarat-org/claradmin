@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :productivity_goals
   resources :users, only: [:index, :edit, :update]
   resources :user_teams
+  resources :time_allocations, only: [:index, :create, :update]
 
   resources :next_steps_offers, only: [:index]
 

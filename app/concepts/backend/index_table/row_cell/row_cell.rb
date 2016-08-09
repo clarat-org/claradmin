@@ -39,6 +39,15 @@ module Backend::IndexTable
       end
     end
 
+    def show_link(&block)
+      show_path = send(:"#{model_name}_path", model)
+      if show_path && policy.show?
+        link_to show_path, &block
+      else
+        nil
+      end
+    end
+
     def model_name
       model.class.name.tableize.singularize
     end

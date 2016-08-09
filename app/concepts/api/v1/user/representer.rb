@@ -3,7 +3,7 @@ module API::V1
   module User
     module Representer
       class Show < API::V1::Default::Representer::Show
-        property :name
+        property :name, as: :label
       end
 
       class Index < API::V1::Default::Representer::Index

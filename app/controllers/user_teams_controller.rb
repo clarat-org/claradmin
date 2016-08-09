@@ -9,7 +9,7 @@ class UserTeamsController < BackendController
 
   def create
     run UserTeam::Create
-    redirect_to :index
+    redirect_to :user_teams
   end
 
   def edit

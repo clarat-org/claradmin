@@ -8,8 +8,7 @@ end
 
 user = User.create email: 'user@user.com', password: 'password',
                    role: 'researcher'
-admin = User.create email: 'admin@admin.com', password: 'password',
-                    role: 'super'
+User.create email: 'admin@admin.com', password: 'password', role: 'super'
 
 family = SectionFilter.create name: 'Family', identifier: 'family'
 refugees = SectionFilter.create name: 'Refugees', identifier: 'refugees'
@@ -108,3 +107,21 @@ FactoryGirl.create :offer, :approved, :with_dummy_translations,
 FactoryGirl.create :offer, :approved, :with_dummy_translations,
                    approved_by: user, name: 'Bundesweite Hotline',
                    encounter: 'hotline', area: schland
+
+# A few test statistics
+
+# A running goal
+goal = FactoryGirl.create(
+  :productivity_goal, :running,
+  title: 'Approve 10 Offers', target_field_name: 'aasm_state',
+  target_field_value: 'approved', target_count: 10, target_model: 'Offer'
+)
+FactoryGirl.create(
+  :statistic, goal: goal, count: 2, date: goal.starts_at + 1.day
+)
+FactoryGirl.create(
+  :statistic, goal: goal, count: 4, date: goal.starts_at + 2.day
+)
+FactoryGirl.create(
+  :statistic, goal: goal, count: 3, date: goal.starts_at + 3.days
+)
