@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require_relative '../test_helper'
-
+# Be quite, rubocop - this is a test class!
+# rubocop:disable Metrics/ClassLength
 class CheckWebsitesWorkerTest < ActiveSupport::TestCase # to have fixtures
   let(:spawner_worker) { CheckWebsitesWorker.new }
   let(:single_worker) { CheckSingleWebsiteWorker.new }
@@ -18,16 +19,16 @@ class CheckWebsitesWorkerTest < ActiveSupport::TestCase # to have fixtures
     # first time: offer stays approved but unreachable is set to true
     single_worker.perform website.id
     offer.reload.must_be :approved?
-    website.reload.unreachable.must_equal true
-    # second time: offer is expired and unreachable reset to false
+    website.reload.unreachable_count.must_equal 1
+    # second time: offer is expired and unreachable_count is incremented
     single_worker.perform website.id
     offer.reload.must_be :website_unreachable?
-    website.reload.unreachable.must_equal false
+    website.reload.unreachable_count.must_equal 2
   end
 
   it 'should create asana task, expire and index offer with timeout '\
      'website' do
-    website = FactoryGirl.create :website, :own, unreachable: true
+    website = FactoryGirl.create :website, :own, unreachable_count: 1
     offer = FactoryGirl.create :offer, :approved
     offer.section_filters = [SectionFilter.find_by(identifier: 'refugees') ||
       FactoryGirl.create(:section_filter, identifier: 'refugees', name: 'Refugees')]
@@ -37,11 +38,41 @@ class CheckWebsitesWorkerTest < ActiveSupport::TestCase # to have fixtures
     WebMock.stub_request(:get, 'www.example.com').to_timeout
     single_worker.perform website.id
     offer.reload.must_be :website_unreachable?
-    website.reload.unreachable.must_equal false
+    website.reload.unreachable_count.must_equal 2
+  end
+
+  it 'should increment unreachable_count but not create tasks a second time' do
+    website = FactoryGirl.create :website, :own, unreachable_count: 2
+    offer = FactoryGirl.create :offer, :approved
+    offer.section_filters = [SectionFilter.find_by(identifier: 'refugees') ||
+      FactoryGirl.create(:section_filter, identifier: 'refugees', name: 'Refugees')]
+    website.offers << offer
+    Offer.any_instance.expects(:index!).never
+    AsanaCommunicator.any_instance.expects(:create_website_unreachable_task_offer).never
+    AsanaCommunicator.any_instance.expects(:create_website_unreachable_task_orgas).never
+    WebMock.stub_request(:get, 'www.example.com').to_timeout
+    single_worker.perform website.id
+    website.reload.unreachable_count.must_equal 3
+  end
+
+  it 'should work for a any offer if the website was unreachable before' do
+    # setup
+    website = FactoryGirl.create :website, :own, unreachable_count: 1
+    offer = FactoryGirl.create :offer, :approved
+    website.offers << offer
+
+    # expectations
+    Offer.any_instance.expects(:index!)
+    AsanaCommunicator.any_instance.expects(:create_website_unreachable_task_offer)
+    WebMock.stub_request(:get, 'www.example.com').to_timeout
+
+    single_worker.perform website.id
+    offer.reload.must_be :website_unreachable?
+    website.reload.unreachable_count.must_equal 2
   end
 
   it 'should ignore offers with reachable website and reset unreachable flag' do
-    website = FactoryGirl.create :website, :own, unreachable: true
+    website = FactoryGirl.create :website, :own, unreachable_count: 1
     offer = FactoryGirl.create :offer, :approved
     website.offers << offer
     Offer.any_instance.expects(:index!).never
@@ -49,11 +80,29 @@ class CheckWebsitesWorkerTest < ActiveSupport::TestCase # to have fixtures
     WebMock.stub_request(:get, 'www.example.com') # stub request to return success
     single_worker.perform website.id
     offer.reload.must_be :approved?
-    website.reload.unreachable.must_equal false
+    website.reload.unreachable_count.must_equal 0
+  end
+
+  it 'should try to re-activate deactivated offers if website is reachable' do
+    website = FactoryGirl.create :website, :own, unreachable_count: 1
+    offer = FactoryGirl.create :offer, :approved
+    offer.update_columns aasm_state: 'website_unreachable'
+    invalid_offer = FactoryGirl.create :offer, :approved
+    invalid_offer.update_columns aasm_state: 'website_unreachable',
+                                 expires_at: Time.zone.now - 1.day
+    website.offers << offer
+    website.offers << invalid_offer
+    Offer.any_instance.expects(:index!).once
+    AsanaCommunicator.any_instance.expects(:create_website_unreachable_task_offer).never
+    WebMock.stub_request(:get, 'www.example.com') # stub request to return success
+    single_worker.perform website.id
+    offer.reload.must_be :approved?
+    invalid_offer.reload.must_be :website_unreachable?
+    website.reload.unreachable_count.must_equal 0
   end
 
   it 'should create AsanaTask for orga with 404 website and not change state' do
-    website = FactoryGirl.create :website, :own, unreachable: true
+    website = FactoryGirl.create :website, :own, unreachable_count: 1
     orga = FactoryGirl.create :organization, :approved, name: 'bazfuz'
     website.organizations << orga
     AsanaCommunicator.any_instance.expects(:create_website_unreachable_task_offer).never
@@ -79,3 +128,4 @@ class CheckWebsitesWorkerTest < ActiveSupport::TestCase # to have fixtures
     spawner_worker.perform
   end
 end
+# rubocop:enable Metrics/ClassLength

@@ -24,7 +24,8 @@ class AsanaCommunicator
   def create_website_unreachable_task_offer website, offer
     orgas = offer.organizations.pluck(:name).join(',')
     worlds = offer.section_filters.pluck(:identifier).join(',')
-    create_task "[Offer-website unreachable] #{worlds} | #{orgas} | #{offer.name}",
+    create_task "[Offer-website unreachable] #{worlds} | Version: "\
+                "#{offer.logic_version.version} | #{orgas} | #{offer.name}",
                 'Deactivated: http://claradmin.herokuapp.com/admin/offer/'\
                 "#{offer.id}/edit | Unreachable website: #{website.url}"
   end

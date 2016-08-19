@@ -37,8 +37,8 @@ class AsanaCommunicatorTest < ActiveSupport::TestCase # to have fixtures
       object.expects(:post_to_api).with(
         '/tasks',
         projects: %w(44856824806357), workspace: '41140436022602',
-        name: '[Offer-website unreachable] family | foobar,bazfuz | '\
-              'basicOfferName',
+        name: '[Offer-website unreachable] family | Version: 1 | foobar,bazfuz'\
+              ' | basicOfferName',
         notes: 'Deactivated: http://claradmin.herokuapp.com/admin/offer/1/edit'\
                " | Unreachable website: #{website.url}"
       )

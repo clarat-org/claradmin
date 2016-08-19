@@ -9,29 +9,38 @@ class CheckSingleWebsiteWorker
   def perform website_id
     website = Website.find(website_id)
     if check_website_unreachable? website
-      # expire if it was unreachable (a week) before
-      expire_and_create_asana_tasks website if website.unreachable?
-      # always flip unreachable boolean
-      website.update_columns unreachable: !website.unreachable
+      website.unreachable_count += 1
+      # expire if counts as unreachable now (only once)
+      expire_and_create_asana_tasks website if website.unreachable_count == 2
     else
-      # reset yellow card when website was reachable this time
-      website.update_columns unreachable: false
+      # reset count if website was reachable again and try to re-activate offers
+      website.unreachable_count = 0
+      try_to_reactivate_connected_offers website
     end
+    website.save
   end
 
   private
 
+  def try_to_reactivate_connected_offers website
+    website.offers.where(aasm_state: 'website_unreachable').find_each do |o|
+      next unless o.valid?
+      o.update_columns aasm_state: 'approved'
+      o.index!
+    end
+  end
+
   def expire_and_create_asana_tasks website
     asana = AsanaCommunicator.new
     # Create Asana Tasks, set state to expired and manually reindex for algolia
-    website.offers_to_be_checked_by_crawler.each do |expiring_offer|
-      asana.create_website_unreachable_task_offer website, expiring_offer
-      expiring_offer.update_columns(aasm_state: 'website_unreachable')
-      expiring_offer.index!
+    website.offers.approved.find_each do |broken_link_offer|
+      asana.create_website_unreachable_task_offer website, broken_link_offer
+      # Force-Set state change to avoid (rare) problems with invalid offers
+      broken_link_offer.update_columns(aasm_state: 'website_unreachable')
+      broken_link_offer.index!
     end
-    # no approved offers but approved organizations => create different task
-    # for all organizations and don't change anything
-    if website.offers.approved.empty? && !website.organizations.approved.empty?
+    # approved organizations => only create one task for all organizations
+    unless website.organizations.approved.empty?
       asana.create_website_unreachable_task_orgas website
     end
   end

@@ -1,7 +1,6 @@
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: 1af74e8defd2810febe385f38d56d82e88e2b748
-  branch: feature/740-reactivate-crawler
+  revision: aa101bb483f5f8fa25b0b1fdf810806246d9d71f
   specs:
     clarat_base (0.1.4)
       aasm

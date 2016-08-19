@@ -5,9 +5,8 @@ class CheckWebsitesWorker
   sidekiq_options queue: :heavy_load
 
   def perform
-    # Get websites to check (those with approved offers or organizations)
     Website.find_each do |website|
-      next unless website.offers_to_be_checked_by_crawler.any? ||
+      next unless website.unreachable? || website.offers.approved.any? ||
                   website.organizations.approved.any?
       CheckSingleWebsiteWorker.perform_async website.id
     end
