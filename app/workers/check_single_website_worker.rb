@@ -46,16 +46,15 @@ class CheckSingleWebsiteWorker
   end
 
   def check_website_unreachable? website
-    # get website and check for error codes
-    response = HTTParty.get(website.url)
-    if !response || response.code >= 400 # everything above 400 is an error
+    # convert url to ascii, fetch header and check status code
+    header = HTTParty.head(website.ascii_url)
+    if !header || header.code >= 400 # everything above 400 is an error
       return true
     end
     return false
   # catch errors that prevent a valid response
   rescue HTTParty::RedirectionTooDeep, Errno::EHOSTUNREACH, SocketError,
-         Timeout::Error, URI::InvalidURIError, OpenSSL::SSL::SSLError,
-         Net::ERR_CERT_AUTHORITY_INVALID
+         Timeout::Error, URI::InvalidURIError, OpenSSL::SSL::SSLError
     return true
   end
 end
