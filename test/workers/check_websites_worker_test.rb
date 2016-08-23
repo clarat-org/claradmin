@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 require_relative '../test_helper'
-# Be quite, rubocop - this is a test class!
-# rubocop:disable Metrics/ClassLength
 class CheckWebsitesWorkerTest < ActiveSupport::TestCase # to have fixtures
   let(:spawner_worker) { CheckWebsitesWorker.new }
   let(:single_worker) { CheckSingleWebsiteWorker.new }
@@ -83,24 +81,6 @@ class CheckWebsitesWorkerTest < ActiveSupport::TestCase # to have fixtures
     website.reload.unreachable_count.must_equal 0
   end
 
-  it 'should try to re-activate deactivated offers if website is reachable' do
-    website = FactoryGirl.create :website, :own, unreachable_count: 1
-    offer = FactoryGirl.create :offer, :approved
-    offer.update_columns aasm_state: 'website_unreachable'
-    invalid_offer = FactoryGirl.create :offer, :approved
-    invalid_offer.update_columns aasm_state: 'website_unreachable',
-                                 expires_at: Time.zone.now - 1.day
-    website.offers << offer
-    website.offers << invalid_offer
-    Offer.any_instance.expects(:index!).once
-    AsanaCommunicator.any_instance.expects(:create_website_unreachable_task_offer).never
-    WebMock.stub_request(:head, 'www.example.com') # stub request to return success
-    single_worker.perform website.id
-    offer.reload.must_be :approved?
-    invalid_offer.reload.must_be :website_unreachable?
-    website.reload.unreachable_count.must_equal 0
-  end
-
   it 'should create AsanaTask for orga with 404 website and not change state' do
     website = FactoryGirl.create :website, :own, unreachable_count: 1
     orga = FactoryGirl.create :organization, :approved, name: 'bazfuz'
@@ -128,4 +108,3 @@ class CheckWebsitesWorkerTest < ActiveSupport::TestCase # to have fixtures
     spawner_worker.perform
   end
 end
-# rubocop:enable Metrics/ClassLength

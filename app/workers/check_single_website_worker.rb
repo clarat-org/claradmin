@@ -13,22 +13,13 @@ class CheckSingleWebsiteWorker
       # expire if counts as unreachable now (only once)
       expire_and_create_asana_tasks website if website.unreachable_count == 2
     else
-      # reset count if website was reachable again and try to re-activate offers
+      # reset count if website was reachable again
       website.unreachable_count = 0
-      try_to_reactivate_connected_offers website
     end
     website.save
   end
 
   private
-
-  def try_to_reactivate_connected_offers website
-    website.offers.where(aasm_state: 'website_unreachable').find_each do |o|
-      next unless o.valid?
-      o.update_columns aasm_state: 'approved'
-      o.index!
-    end
-  end
 
   def expire_and_create_asana_tasks website
     asana = AsanaCommunicator.new
@@ -54,7 +45,10 @@ class CheckSingleWebsiteWorker
     return false
   # catch errors that prevent a valid response
   rescue HTTParty::RedirectionTooDeep, Errno::EHOSTUNREACH, SocketError,
-         Timeout::Error, URI::InvalidURIError, OpenSSL::SSL::SSLError
+         Timeout::Error, URI::InvalidURIError
     return true
+  # rescue SSL Errors to prevent crashing but handle the website as reachable
+  rescue OpenSSL::SSL::SSLError
+    return false
   end
 end

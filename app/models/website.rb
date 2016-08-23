@@ -3,6 +3,9 @@
 require ClaratBase::Engine.root.join('app', 'models', 'website')
 
 class Website < ActiveRecord::Base
+  # Scopes
+  scope :unreachable, -> { where('unreachable_count > ?', 0) }
+
   # Methods
 
   def ascii_url
