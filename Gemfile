@@ -11,7 +11,7 @@ gem 'nokogiri', '1.6.7.2' # 1.6.8 doesnt install on some pcs. Remove when fixed
 gem 'rails', '~> 4.2'
 gem 'bundler', '>= 1.8.4'
 
-gem 'clarat_base', github: 'clarat-org/clarat_base', branch: 'feature/891-exclude-city-modell'
+gem 'clarat_base', github: 'clarat-org/clarat_base'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # gem 'rails', '~> 4.1.12'
@@ -69,6 +69,9 @@ gem 'sidekiq-cron', '~> 0.4.0'
 
 # External API
 gem 'gengo'
+
+# converting between unicode and ascii urls
+gem 'simpleidn'
 
 ########################
 # For Heroku & Add-Ons #
