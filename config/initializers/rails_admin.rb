@@ -249,12 +249,16 @@ RailsAdmin.config do |config|
       field :name
       field :locations
       field :offers
+      field :organizations
     end
     field :name
     field :locations do
       visible false
     end
     field :offers do
+      visible false
+    end
+    field :organizations do
       visible false
     end
   end

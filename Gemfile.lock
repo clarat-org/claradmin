@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: d3e65288109ad7fafaa5165a17fb72a00b8d94a3
+  revision: 7eb67945206039ec04444737f0172992d7d38ac5
   branch: feature/891-exclude-city-modell
   specs:
     clarat_base (0.1.4)
@@ -528,7 +528,7 @@ GEM
       sexp_processor (~> 4.1)
     rufus-scheduler (3.2.1)
     safe_yaml (1.0.4)
-    sanitize (4.1.0)
+    sanitize (4.2.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4.1)
