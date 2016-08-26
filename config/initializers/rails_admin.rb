@@ -139,6 +139,7 @@ RailsAdmin.config do |config|
         formatted_value do
           en = bindings[:object].translations.where(locale: :en).first
           ar = bindings[:object].translations.where(locale: :ar).first
+          fa = bindings[:object].translations.where(locale: :fa).first
           ru = bindings[:object].translations.where(locale: :ru).first
           output_string = ''
           output_string += if en
@@ -150,6 +151,11 @@ RailsAdmin.config do |config|
             "<a href='/organization_translations/#{ar.id}/edit'>Arabisch</a><br/>"
           else
             'Arabisch (wird noch erstellt)<br/>'
+          end
+          output_string += if en
+            "<a href='/organization_translations/#{fa.id}/edit'>Farsi</a><br/>"
+          else
+            'Farsi (wird noch erstellt)<br/>'
           end
           output_string += if en
             "<a href='/organization_translations/#{ru.id}/edit'>Russisch</a><br/>"
@@ -437,6 +443,7 @@ RailsAdmin.config do |config|
         formatted_value do
           en = bindings[:object].translations.where(locale: :en).first
           ar = bindings[:object].translations.where(locale: :ar).first
+          fa = bindings[:object].translations.where(locale: :fa).first
           ru = bindings[:object].translations.where(locale: :ru).first
           output_string = ''
           output_string += if en
@@ -448,6 +455,11 @@ RailsAdmin.config do |config|
             "<a href='/offer_translations/#{ar.id}/edit'>Arabisch</a><br/>"
           else
             'Arabisch (wird noch erstellt)<br/>'
+          end
+          output_string += if en
+            "<a href='/offer_translations/#{fa.id}/edit'>Farsi</a><br/>"
+          else
+            'Farsi (wird noch erstellt)<br/>'
           end
           output_string += if en
             "<a href='/offer_translations/#{ru.id}/edit'>Russisch</a><br/>"
@@ -596,10 +608,11 @@ RailsAdmin.config do |config|
     field :visible
     field :name_en
     field :name_ar
+    field :name_fa
     field :name_tr
-    field :name_fr
     field :name_pl
     field :name_ru
+    field :name_fr
     field(:id) { read_only true }
 
     object_label_method :name_with_world_suffix_and_optional_asterisk
@@ -621,10 +634,11 @@ RailsAdmin.config do |config|
     field :text_de
     field :text_en
     field :text_ar
-    field :text_fr
+    field :text_fa
     field :text_tr
     field :text_pl
     field :text_ru
+    field :text_fr
     field(:id) { read_only true }
 
     object_label_method :text_de

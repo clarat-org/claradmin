@@ -1,6 +1,7 @@
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: 07475c798b3c2790bb2dc2cd4fc96d468205ad55
+  revision: 99b3431b61098a308fe70eb875552e139b1c76ac
+  branch: feature/890-add-farsi-to-locales
   specs:
     clarat_base (0.1.4)
       aasm
