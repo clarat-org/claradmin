@@ -21,7 +21,7 @@ class ProductivityGoal < ActiveRecord::Base
   TARGET_FIELD_VALUES = {
     'Offer' => {
       'aasm_state' => Offer.aasm.states.map(&:name),
-      'logic_version' => 1..99,
+      'logic_version' => (1..19).to_a,
       'id?' => [true]
     },
     'Organization' => {

@@ -1,8 +1,8 @@
 import { connect } from 'react-redux'
 import moment from 'moment'
-import uniq from 'lodash/array/uniq'
-import compact from 'lodash/array/compact'
-import cloneDeep from 'lodash/lang/cloneDeep'
+import uniq from 'lodash/uniq'
+import compact from 'lodash/compact'
+import cloneDeep from 'lodash/cloneDeep'
 
 import ChartPerUserAndDate from '../components/ChartPerUserAndDate'
 import updateDateRange from '../actions/updateDateRange'

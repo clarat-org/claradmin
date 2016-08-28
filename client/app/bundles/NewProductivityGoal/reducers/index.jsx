@@ -1,4 +1,4 @@
-import merge from 'lodash/object/merge'
+import merge from 'lodash/merge'
 import entityReducer, { initialState as initialEntityState } from './entityReducer'
 import formReducer, { initialState as initialFormState } from './formReducer'
 

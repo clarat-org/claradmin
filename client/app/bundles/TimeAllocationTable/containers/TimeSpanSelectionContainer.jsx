@@ -1,36 +1,42 @@
 import { connect } from 'react-redux'
-import range from 'lodash/utility/range'
+import range from 'lodash/range'
 import moment from 'moment'
-import { changeWeekNumber, changeYear } from '../actions/changeFormData'
+import { browserHistory } from 'react-router'
 import TimeSpanSelection from '../components/TimeSpanSelection'
 
 const mapStateToProps = (state, ownProps) => {
+  const selected_year = ownProps.year
+  const selected_week_number = ownProps.week_number
+
   return {
-    years: range(ownProps.start_year, ownProps.start_year + 6),
-    selected_year: state.year,
+    start_year: state.start_year,
+    years: range(state.start_year, state.start_year + 6),
+    selected_year,
     week_numbers: range(1, 53),
-    selected_week_number: state.week_number,
-    selectedWeek: moment().year(state.year).week(state.week_number).startOf('week'),
+    selected_week_number,
+    selectedWeek:
+      moment().year(selected_year).week(selected_week_number).startOf('week'),
 	}
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onYearChange: (e) => {
-    dispatch(changeYear(e.target.value))
+    browserHistory.push(`/time_allocations/${e.target.value}/${ownProps.week_number}`)
   },
 
   onWeekNumberChange: (e) => {
-    dispatch(changeWeekNumber(e.target.value))
+    browserHistory.push(`/time_allocations/${ownProps.year}/${e.target.value}`)
   },
 
   onTodayClick: (_e) => {
-    dispatch(changeWeekNumber(moment().week()))
-    dispatch(changeYear(moment().year()))
+    const [year, wn] = [moment().year(), moment().week()]
+    browserHistory.push(`/time_allocations/${year}/${wn}`)
   },
 
   onNextMonthClick: (_e) => {
-    dispatch(changeWeekNumber(moment().add(1, 'months').date(1).week()))
-    dispatch(changeYear(moment().year()))
+    const year = moment().year()
+    const wn = moment().add(1, 'months').date(1).week()
+    browserHistory.push(`/time_allocations/${year}/${wn}`)
   }
 })
 

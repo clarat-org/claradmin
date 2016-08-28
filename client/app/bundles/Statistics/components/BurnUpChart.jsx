@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react'
 import ReactFauxDOM from 'react-faux-dom'
 import d3 from 'd3'
-import merge from 'lodash/object/merge'
-import cloneDeep from 'lodash/lang/cloneDeep'
+import merge from 'lodash/merge'
+import cloneDeep from 'lodash/cloneDeep'
 
 export default class BurnUpChart extends React.Component {
   // static propTypes = {
@@ -34,7 +34,7 @@ export default class BurnUpChart extends React.Component {
     }
 
     // Combine data for min/max evaluation
-    const allData = merge([], actualData, idealData, projectionData, scopeData)
+    const allData = merge([], actualData, projectionData, scopeData, idealData)
 
 		// Set the dimensions of the graph
     const margin = {top: 20, right: 20, bottom: 30, left: 50}

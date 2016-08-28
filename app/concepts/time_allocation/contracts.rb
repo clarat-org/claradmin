@@ -4,12 +4,14 @@ class TimeAllocation::Contracts
     property :user_id
     property :week_number
     property :year
-    property :wa_hours
+    property :desired_wa_hours
+    property :actual_wa_hours
 
     validates :user_id, presence: true, numericality: true
     validates :week_number, presence: true, numericality: true
     validates :year, presence: true, numericality: true
-    validates :wa_hours, presence: true, numericality: true
+    validates :desired_wa_hours, presence: true, numericality: true
+    validates :actual_wa_hours, numericality: true, allow_blank: true
   end
 
   class Create < Update

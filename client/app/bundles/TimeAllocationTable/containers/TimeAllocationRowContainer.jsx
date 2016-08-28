@@ -1,30 +1,38 @@
 import { connect } from 'react-redux'
+import moment from 'moment'
+import { getAllocationForWeekAndUser } from '../../../lib/timeAllocations'
 import changeFormData from '../actions/changeFormData'
 import TimeAllocationRow from '../components/TimeAllocationRow'
 
 const mapStateToProps = (state, ownProps) => {
   const user_id = ownProps.user.id
-  const week_number = state.week_number
-  const year = state.year
-  const [existing_wa, historical, allocation] = getAllocationForUser(
-    ownProps.time_allocations, week_number, year, user_id
+  const week_number = ownProps.week_number
+  const year = ownProps.year
+  const [existing_wa, isHistorical, allocation] = getAllocationForWeekAndUser(
+    state.time_allocations, week_number, year, user_id
   )
   const [action, method] = getFormTarget(existing_wa, allocation)
   const [shortOrigin, originTitle] =
-    getOriginText(existing_wa, historical, allocation)
+    getOriginText(existing_wa, isHistorical, allocation)
+
+  const isPast = moment().year(year).week(week_number).isBefore(
+    moment().startOf('week')
+  )
 
   return {
     formId: `form${user_id}`,
-    authenticity_token: state.authenticity_token,
+    authToken: state.authToken,
     action,
     method,
     user_id,
-    wa_hours: allocation.wa_hours,
+    desired_wa_hours: allocation.desired_wa_hours,
+    actual_wa_hours: allocation.actual_wa_hours,
     week_number,
     year,
     existing_wa,
     shortOrigin,
     originTitle,
+    isPast,
 	}
 }
 
@@ -36,10 +44,10 @@ function getFormTarget(isEdit, allocation) {
   }
 }
 
-function getOriginText(existing_wa, historical, allocation) {
+function getOriginText(existing_wa, isHistorical, allocation) {
   if (existing_wa) {
     return ['Diese KW', 'In der aktuell gewählten KW neu bestimmt.']
-  } else if (historical) {
+  } else if (isHistorical) {
     return [
       `KW${allocation.week_number}/${allocation.year}`,
       'Aus der nächsten historischen KW übernommene Zeit.'
@@ -49,38 +57,11 @@ function getOriginText(existing_wa, historical, allocation) {
   }
 }
 
-function getAllocationForUser(time_allocations, week_number, year, user_id) {
-  const allocationsForUser =
-    time_allocations.filter(ta => ta.user_id == user_id)
-
-  const existingAllocationForGivenTime = allocationsForUser.filter( ta =>
-    ta.week_number == week_number && ta.year == year
-  )[0]
-  if (existingAllocationForGivenTime) {
-    return [true, false, existingAllocationForGivenTime]
-  }
-
-  const earlierAllocations = allocationsForUser.filter( ta =>
-    ta.year < year || (ta.year == year && ta.week_number <= week_number)
-  )
-  let closestEarlierAllocation = earlierAllocations.sort( (a, b) => {
-    if (a.year > b.year || (a.year == b.year && a.week_number > b.week_number)) {
-      return -1
-    } else {
-      return 1
-    }
-  })[0]
-
-  if (closestEarlierAllocation) {
-    return [false, true, closestEarlierAllocation]
-  }
-
-  return [false, false, {wa_hours: 0}]
-}
-
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onInputChange: (e) => {
-    dispatch(changeFormData('wa_hours', e.target.value))
+  onInputChange: (field) => {
+    return (e) => {
+      dispatch(changeFormData(field, e.target.value))
+    }
   }
 })
 

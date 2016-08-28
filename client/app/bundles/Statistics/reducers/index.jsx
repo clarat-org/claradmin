@@ -2,7 +2,7 @@
 // See also /client/app/bundles/statistics/store/statisticsStore.jsx
 // A real world app will likely have many reducers and it helps to organize them in one file.
 // `https://github.com/shakacode/react_on_rails/tree/master/docs/additional_reading/generated_client_code.md`
-import merge from 'lodash/object/merge'
+import merge from 'lodash/merge'
 import { combineReducers } from 'redux'
 import fetchReducer from './fetchReducer'
 import { initialState as fetchState } from './fetchReducer'

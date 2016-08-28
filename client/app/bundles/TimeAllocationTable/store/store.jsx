@@ -6,9 +6,10 @@ import addEntities from '../actions/addEntities'
 
 function initialDispatches(dispatch, props) {
   dispatch(addEntities({
-    authenticity_token: props.authenticity_token,
-    // users: props.users,
-    // time_allocations: props.time_allocations,
+    authToken: props.authToken,
+    users: props.users,
+    time_allocations: props.time_allocations,
+    start_year: props.start_year,
   }))
 }
 

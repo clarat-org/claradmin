@@ -11,7 +11,7 @@ class AsanaCommunicatorTest < ActiveSupport::TestCase # to have fixtures
   describe '#create_expire_task' do
     it 'should call #post_to_api with apropriate data' do
       object.expects(:post_to_api).with(
-        '/tasks',
+        '/api/1.0/tasks',
         projects: %w(44856824806357), workspace: '41140436022602',
         name: 'foobar,bazfuz - 9999-01-01 - fam - basicOfferName',
         notes: 'Expired: http://claradmin.herokuapp.com/admin/offer/1/edit'
@@ -34,7 +34,7 @@ class AsanaCommunicatorTest < ActiveSupport::TestCase # to have fixtures
     it 'should call #post_to_api with apropriate data and perform HTTP req' do
       website = FactoryGirl.create :website, :own
       object.expects(:post_to_api).with(
-        '/tasks',
+        '/api/1.0/tasks',
         projects: %w(44856824806357), workspace: '41140436022602',
         name: '[URL unreachable]foobar,bazfuz-9999-01-01-basicOfferName',
         notes: 'Expired: http://claradmin.herokuapp.com/admin/offer/1/edit'\
@@ -55,7 +55,7 @@ class AsanaCommunicatorTest < ActiveSupport::TestCase # to have fixtures
       website = FactoryGirl.create :website, :own
       website.offers = []
       object.expects(:post_to_api).with(
-        '/tasks',
+        '/api/1.0/tasks',
         projects: %w(44856824806357), workspace: '41140436022602',
         name: '[URL unreachable]bazfuz',
         notes: "Unreachable website: #{website.url}"
