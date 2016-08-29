@@ -4,7 +4,10 @@ import IndexTable from '../components/IndexTable'
 
 const mapStateToProps = (state, ownProps) => {
   const fields = settings.index[ownProps.model].fields
-  const rows = state.ajax.indexResults || []
+  const resultData = state.ajax.indexResults
+  const resultIds = resultData.data.map(datum => datum.id)
+  const rows = resultIds.map(id => state[ownProps.model][id])
+
   let tbodyClass
   if (state.ajax.isLoading.indexResults) tbodyClass = 'loading'
 

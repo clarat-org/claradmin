@@ -16,7 +16,7 @@ module API::V1
             query = query.where(filter => value)
           end
         end
-        query
+        query.paginate(page: params[:page])
       end
 
       representer API::V1::OrganizationTranslation::Representer::Index

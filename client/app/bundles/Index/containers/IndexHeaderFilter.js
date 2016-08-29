@@ -33,7 +33,6 @@ const mapStateToProps = (state, ownProps) => {
 
     onFilterValueChange(event) {
       let params = clone(ownProps.params)
-      console.log(params)
       params[ownProps.filter[0]] = event.target.value
       browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
     }

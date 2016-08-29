@@ -3,7 +3,12 @@ import merge from 'lodash/merge'
 
 export const initialState = {
   ajax: {
-    isLoading: {}
+    isLoading: {},
+    indexResults: {
+      data: [],
+      links: {},
+      meta: {}
+    }
   }
 }
 
@@ -23,6 +28,10 @@ export default function loadAjaxDataReducer(state = initialState, action) {
   case 'LOAD_AJAX_DATA_SUCCESS':
     newState.ajax.isLoading[action.key] = false
     newState.ajax[action.key] = action.response
+    for (let datum of action.response.data) {
+      if (!newState[datum.type]) newState[datum.type] = {}
+      newState[datum.type][datum.id] = merge(datum.attributes, {id: datum.id})
+    }
     return newState
 
     default:

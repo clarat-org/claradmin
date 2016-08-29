@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 module API::V1
   module OfferTranslation
+    # class Index < API::V1::Default::Index
     class Index < API::V1::Default::Index
       def model!(params)
         query = ::OfferTranslation.where(locale: [:ar, :ru, :en])
@@ -16,7 +17,7 @@ module API::V1
             query = query.where(filter => value)
           end
         end
-        query
+        query.paginate(page: params[:page])
       end
 
       representer API::V1::OfferTranslation::Representer::Index
