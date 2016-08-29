@@ -20,9 +20,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
 
-  loadData(query = ownProps.location.query) {
+  loadData(query = ownProps.location.query, nextModel = stateProps.model) {
     dispatchProps.dispatch(
-      loadAjaxData(stateProps.model, query, 'indexResults')
+      loadAjaxData(nextModel, query, 'indexResults')
     )
   }
 })

@@ -15,7 +15,7 @@ export default class TableRow extends Component {
           <td>
           {actions.map(action => {
             return(
-              <a href={action.href}>
+              <a key={action.href} href={action.href}>
                 <span className={action.icon} />
               </a>
             )

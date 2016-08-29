@@ -6,7 +6,7 @@ import Pagination from '../containers/Pagination'
 export default class Index extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.location.query != this.props.location.query) {
-      this.props.loadData(nextProps.location.query)
+      this.props.loadData(nextProps.location.query, nextProps.model)
     }
   }
 
