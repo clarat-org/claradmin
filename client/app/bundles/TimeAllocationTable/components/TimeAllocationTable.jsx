@@ -23,9 +23,7 @@ export default class Root extends React.Component {
 
     return (
       <div className='content'>
-        <div className='page-header'>
-          <h1>Ressourcentabelle</h1>
-        </div>
+        <h1>Ressourcentabelle</h1>
         <div className="TimeAllocationTable form-inline">
           <TimeSpanSelectionContainer year={year} week_number={week_number} />
           <table className='table table-condensed'>
