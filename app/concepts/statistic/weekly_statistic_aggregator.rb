@@ -2,10 +2,10 @@
 # weekly ones
 class Statistic::WeeklyStatisticAggregator
   def initialize(user_id, year, week_number, actual_wa_hours)
-    @user_id = user_id
-    @year = year
-    @week_number = week_number
-    @actual_wa_hours = actual_wa_hours
+    @user_id = user_id.to_i
+    @year = year.to_i
+    @week_number = week_number.to_i
+    @actual_wa_hours = actual_wa_hours.to_i
   end
 
   def record!

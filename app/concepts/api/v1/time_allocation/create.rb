@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-class TimeAllocation::CRUD < Trailblazer::Operation
+class TimeAllocation::Create < Trailblazer::Operation
   def contract!(model=nil, _contract_class=nil)
     @_contract ||=
       if model.new_record?

@@ -9,8 +9,9 @@ const mapStateToProps = (state, ownProps) => {
   return {
     startDate: week.startOf('week').format('DD.MM.YYYY'),
     endDate: week.endOf('week').format('DD.MM.YYYY'),
-    action: `/time_allocations/${ta.year}/${ta.week_number}`,
-    authToken: state.authToken
+    action: `/api/v1/time_allocations/${ta.year}/${ta.week_number}`,
+    authToken: state.authToken,
+    formId: ['ActualWaForm', ta.week_number].join('-'),
 	}
 }
 

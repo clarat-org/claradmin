@@ -1,13 +1,14 @@
 import { connect } from 'react-redux'
 import moment from 'moment'
 import clone from 'lodash/clone'
+import valuesIn from 'lodash/valuesIn'
 import { getTimePointsBetween } from '../../../lib/timeUtils'
 import { getAllocationForWeekAndUser } from '../../../lib/timeAllocations'
 import BurnUpChart from '../../Statistics/components/BurnUpChart'
 
 const mapStateToProps = (state, ownProps) => {
   const goal = ownProps.productivity_goal
-  const relevantStatistics = state.statistics.filter(stat => {
+  const relevantStatistics = valuesIn(state.statistics).filter(stat => {
     return (
       stat.model == goal.target_model &&
         stat.field_name == goal.target_field_name &&

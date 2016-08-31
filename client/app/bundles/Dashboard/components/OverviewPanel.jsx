@@ -16,11 +16,13 @@ export default class OverviewPanel extends Component {
         <div className="panel-body">
           Du hast aktuell 0 zugewiesene Aufgaben.
           <hr />
-          <Form ajax={false/*TODO make true*/}
-            action={`/users/${user.id}/current_team`}
+          <Form ajax
+            action={`/api/v1/users/${user.id}`}
+            method='PATCH'
             formObjectClass={UpdateCurrentTeam}
             seedData={seedData}
             className='form-inline'
+            ref={element => this._form = element}
           >
             <InputSet submitOnChange
               attribute='current_team_id' type='select'

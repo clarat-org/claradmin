@@ -9,6 +9,10 @@ class UsersController < BackendController
 
   def update
     run User::Update
-    render :edit
+
+    respond_to do |format|
+      format.html { render :edit }
+      format.json { render(json: {status: 'success'}) }
+    end
   end
 end

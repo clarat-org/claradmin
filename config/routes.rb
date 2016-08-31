@@ -15,11 +15,8 @@ Rails.application.routes.draw do
   resources :productivity_goals
   resources :users, only: [:index, :edit, :update]
   resources :user_teams
-  resources :time_allocations, only: [:create, :update]
   get 'time_allocations(/:year/:week_number)', controller: :time_allocations,
                                                action: :index
-  post 'time_allocations/:year/:week_number',  controller: :time_allocations,
-                                               action: :report_actual
 
   resources :next_steps_offers, only: [:index]
 
@@ -52,9 +49,12 @@ Rails.application.routes.draw do
       resources :locations, only: [:index]
       resources :organizations, only: [:index]
       get '/statistics' => 'statistics#index'
-      get '/users' => 'users#index'
+      resources :users, only: [:index, :update]
       get '/offer_translations' => 'offer_translations#index'
       get '/organization_translations' => 'organization_translations#index'
+      resources :time_allocations, only: [:create, :update]
+      post 'time_allocations/:year/:week_number',  controller: :time_allocations,
+                                                   action: :report_actual
       # get '/statistics/:topic/:user_id(/:start/:end)' => 'statistics#index'
     end
   end

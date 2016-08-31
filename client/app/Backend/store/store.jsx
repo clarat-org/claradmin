@@ -1,23 +1,25 @@
 import { compose, createStore, applyMiddleware, combineReducers } from 'redux'
-import loggerMiddleware from 'lib/middlewares/loggerMiddleware'
+import merge from 'lodash/merge'
 import thunkMiddleware from 'redux-thunk'
 
+import loggerMiddleware from 'lib/middlewares/loggerMiddleware'
+import normalize from './normalize'
 import rootReducer, { initialStates } from '../reducers'
 import addEntities from '../actions/addEntities'
 
 function initialDispatches(dispatch, props) {
-  dispatch(addEntities({
-    user_teams: props.user_teams,
-    users: props.users,
-    current_user: props.current_user,
-
-    productivity_goals: props.productivity_goals,
-    statistics: props.statistics,
-    time_allocations: props.time_allocations,
-
-    start_year: props.start_year,
-    authToken: props.authToken,
-  }))
+  dispatch(addEntities(merge(
+    normalize('user_teams', props.user_teams).entities,
+    normalize('users', props.users).entities,
+    normalize('productivity_goals', props.productivity_goals).entities,
+    normalize('statistics', props.statistics).entities,
+    normalize('time_allocations', props.time_allocations).entities,
+    {
+      current_user: props.current_user,
+      start_year: props.start_year,
+      authToken: props.authToken,
+    }
+  )))
 }
 
 export default function getStore(props) {

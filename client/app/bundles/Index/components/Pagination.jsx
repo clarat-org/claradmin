@@ -11,9 +11,7 @@ export default class Pagination extends Component {
     return (
       <div className='pagination'>
         <ul>
-          <li className='previous'>
-            <Link className='fui-arrow-left' to={previousPageHref} />
-          </li>
+          {this.renderDirectionCell('left', 'previous', previousPageHref)}
           {pages.map(page => {
             return(
               <PaginationCell
@@ -21,11 +19,19 @@ export default class Pagination extends Component {
               />
             )
           })}
-          <li className='next'>
-            <Link className='fui-arrow-right' to={nextPageHref} />
-          </li>
+          {this.renderDirectionCell('right', 'next', nextPageHref)}
         </ul>
       </div>
     )
+  }
+
+  renderDirectionCell(direction, className, href) {
+    if (href) {
+      return(
+        <li className={className}>
+          <Link className={`fui-arrow-${direction}`} to={href} />
+        </li>
+      )
+    }
   }
 }

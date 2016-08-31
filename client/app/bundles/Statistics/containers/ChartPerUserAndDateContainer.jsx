@@ -3,6 +3,7 @@ import moment from 'moment'
 import uniq from 'lodash/uniq'
 import compact from 'lodash/compact'
 import cloneDeep from 'lodash/cloneDeep'
+import valuesIn from 'lodash/valuesIn'
 
 import ChartPerUserAndDate from '../components/ChartPerUserAndDate'
 import updateDateRange from '../actions/updateDateRange'
@@ -12,7 +13,7 @@ const mapStateToProps = function(state, ownProps) {
   const endDate = state.statisticSettings.endDate
   const selectedUsers = state.statisticSettings.selectedUsers
 
-  const filteredData = cloneDeep(state.statistics.filter(function(statistic) {
+  const filteredData = cloneDeep(valuesIn(state.statistics).filter(statistic => {
     const x = moment(statistic.x, 'YYYY-MM-DD')
 
     return (
@@ -26,9 +27,9 @@ const mapStateToProps = function(state, ownProps) {
   const allUserIdsForWhichThereIsData = compact(uniq(state.statistics.map(
     (statistic) => statistic.user_id
   )))
-  const filteredUsers = state.users.filter((user) => {
-    return allUserIdsForWhichThereIsData.includes(user.id)
-  })
+  const filteredUsers = valuesIn(state.users).filter(user =>
+    allUserIdsForWhichThereIsData.includes(user.id)
+  )
 
   return {
     // Chart Rendering

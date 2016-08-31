@@ -1,5 +1,7 @@
 import { connect } from 'react-redux'
 import moment from 'moment'
+import valuesIn from 'lodash/valuesIn'
+
 import { getAllocationForWeekAndUser } from '../../../lib/timeAllocations'
 import changeFormData from '../actions/changeFormData'
 import TimeAllocationRow from '../components/TimeAllocationRow'
@@ -9,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
   const week_number = ownProps.week_number
   const year = ownProps.year
   const [existing_wa, isHistorical, allocation] = getAllocationForWeekAndUser(
-    state.time_allocations, week_number, year, user_id
+    valuesIn(state.time_allocations), week_number, year, user_id
   )
   const [action, method] = getFormTarget(existing_wa, allocation)
   const [shortOrigin, originTitle] =

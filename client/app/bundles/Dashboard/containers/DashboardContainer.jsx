@@ -2,13 +2,15 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import clone from 'lodash/clone'
 import merge from 'lodash/merge'
+import valuesIn from 'lodash/valuesIn'
 import { getTimePointsBetween } from '../../../lib/timeUtils'
 import { getAllocationForWeekAndUser } from '../../../lib/timeAllocations'
 import Dashboard from '../components/Dashboard'
 
 const mapStateToProps = (state, ownProps) => {
-  const outstandingTimeAllocations =
-    getOutstandingTimeAllocations(state.time_allocations, state.current_user)
+  const outstandingTimeAllocations = getOutstandingTimeAllocations(
+    valuesIn(state.time_allocations), state.current_user
+  )
 
   return {
     hasOutstandingTimeAllocations: !!outstandingTimeAllocations.length,

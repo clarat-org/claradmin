@@ -1,4 +1,4 @@
-import { FormObject } from 'rform'
+import { FormObject, JsonApiAdapter } from 'rform'
 
 export default class UpdateCurrentTeam extends FormObject {
   static get properties() {
@@ -7,5 +7,9 @@ export default class UpdateCurrentTeam extends FormObject {
 
   static get model() {
     return 'user'
+  }
+
+  static get ajaxAdapter() {
+    return JsonApiAdapter
   }
 }

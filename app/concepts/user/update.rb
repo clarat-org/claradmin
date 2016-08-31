@@ -10,6 +10,13 @@ class User::Update < Trailblazer::Operation
     property :name
     property :email
     property :password#, virtual: true
+    property :current_team_id
+
+    validates :name, presence: true, allow_blank: true
+    validates :email, presence: true, allow_blank: true
+
+    validates :current_team_id, presence: true, allow_blank: true,
+                                numericality: true
   end
 
   def process(params)

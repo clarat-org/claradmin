@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react'
+import { Form, InputSet, Button } from 'rform'
 import ActualWaForm from './ActualWaForm'
+import ActualWaFormObject from '../forms/ActualWaForm'
 
 export default class ActualWaList extends React.Component {
   static propTypes = {
@@ -12,7 +14,8 @@ export default class ActualWaList extends React.Component {
 
   render() {
     const {
-      time_allocation, startDate, endDate, action, authToken,
+      time_allocation, startDate, endDate, action, authToken, formId,
+      buttonDisabled,
     } = this.props
 
     return (
@@ -30,33 +33,33 @@ export default class ActualWaList extends React.Component {
             SOLL: {time_allocation.desired_wa_hours} Stunden
           </div>
           <div className='col-xs-7 text-center'>
-            <form
+            <Form ajax validate
               action={action}
-              className='form-inline'
               method='POST'
+              className='form-inline'
+              formObjectClass={ActualWaFormObject}
+              id={formId}
             >
-              <input type='hidden' name='utf8' value='&#x2713;' />
-              <input name='authenticity_token' type='hidden' value={authToken} />
-
               <div className='form-group'>
-                <div className='input-group'>
-                  <label
-                    htmlFor={`actual${time_allocation.week_number}`}
-                    className='input-group-addon'
-                  >
-                    IST
-                  </label>
-                  <input
-                    name='time_allocation[actual_wa_hours]' type='number' min='0'
-                    id={`actual${time_allocation.week_number}`}
-                    className='form-control'
-                  />
-                </div>
+                <InputSet
+                  attribute='actual_wa_hours'
+                  type='number'
+                  min='0'
+                  wrapperClassName='input-group'
+                  wrapperErrorClassName='has-error'
+                  labelClassName='input-group-addon'
+                  errorClassName='input-group-addon'
+                  className='form-control'
+                  label='IST'
+                />
               </div>
-              <button type='submit' className='btn btn-default'>
+              <Button
+                disabled={buttonDisabled}
+                type='submit' className='btn btn-default'
+              >
                 Abschicken
-              </button>
-            </form>
+              </Button>
+            </Form>
           </div>
         </div>
       </li>
