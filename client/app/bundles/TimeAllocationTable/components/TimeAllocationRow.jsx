@@ -1,36 +1,36 @@
 import React, { PropTypes } from 'react'
+import { Form, Input } from 'rform'
+import TimeAllocationForm from '../forms/TimeAllocation'
 
 export default class TimeAllocationRow extends React.Component {
   render() {
     const {
-      user, formId, desired_wa_hours, actual_wa_hours, year, week_number,
-      action, method, user_id, shortOrigin, originTitle, authToken,
-      onInputChange, isPast,
+      user, formId, action, method, shortOrigin, originTitle, isPast, seedData,
     } = this.props
 
     const actualInput = isPast ? (
       <td>
-        <input
-          form={formId} type="number" name="time_allocation[actual_wa_hours]"
-          className='form-control' value={actual_wa_hours}
-          onChange={onInputChange('actual_wa_hours')}
+        <Input
+          formId={formId} type='number' className='form-control' labelText=''
+          model='time_allocation' attribute='actual_wa_hours'
+          formObjectClass={TimeAllocationForm}
         />
       </td>
     ) : null
-
 
     return (
       <tr>
         <td>
           {user.name}
-          <form id={formId} action={action} method="POST">
-            <input type='hidden' name='utf8' value='&#x2713;' />
-            <input name='_method' type='hidden' value={method} />
-            <input name='authenticity_token' type='hidden' value={authToken} />
-            <input name='time_allocation[user_id]' type='hidden' value={user_id} />
-            <input name='time_allocation[year]' type='hidden' value={year} />
-            <input name='time_allocation[week_number]' type='hidden' value={week_number} />
-          </form>
+          <Form ajax
+            id={formId} action={action} model='time_allocation' method={method}
+            seedData={seedData}
+            formObjectClass={TimeAllocationForm}
+          >
+            <Input attribute='user_id' type='hidden' />
+            <Input attribute='year' type='hidden' />
+            <Input attribute='week_number' type='hidden' />
+          </Form>
         </td>
         <td>
           <div title={originTitle}>
@@ -38,10 +38,10 @@ export default class TimeAllocationRow extends React.Component {
           </div>
         </td>
         <td>
-          <input
-            form={formId} type="number" name="time_allocation[desired_wa_hours]"
-            className='form-control' value={desired_wa_hours}
-            onChange={onInputChange('desired_wa_hours')}
+          <Input
+            formId={formId} type='number' className='form-control' labelText=''
+            model='time_allocation' attribute='desired_wa_hours'
+            formObjectClass={TimeAllocationForm}
           />
         </td>
         {actualInput}

@@ -21,28 +21,31 @@ const mapStateToProps = (state, ownProps) => {
     moment().startOf('week')
   )
 
+  const seedData = { fields: {
+    user_id, week_number, year,
+    desired_wa_hours: allocation.desired_wa_hours,
+    actual_wa_hours: allocation.actual_wa_hours,
+    id: allocation.id,
+  }}
+
   return {
-    formId: `form${user_id}`,
-    authToken: state.authToken,
+    formId: ['TimeAllocation', user_id, year, week_number].join('-'),
     action,
     method,
     user_id,
-    desired_wa_hours: allocation.desired_wa_hours,
-    actual_wa_hours: allocation.actual_wa_hours,
-    week_number,
-    year,
     existing_wa,
     shortOrigin,
     originTitle,
     isPast,
+    seedData,
 	}
 }
 
 function getFormTarget(isEdit, allocation) {
   if (isEdit) {
-    return [`/time_allocations/${allocation.id}`, 'PATCH']
+    return [`/api/v1/time_allocations/${allocation.id}`, 'PATCH']
   } else {
-    return ['/time_allocations', 'POST']
+    return ['/api/v1/time_allocations', 'POST']
   }
 }
 
@@ -60,11 +63,6 @@ function getOriginText(existing_wa, isHistorical, allocation) {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onInputChange: (field) => {
-    return (e) => {
-      dispatch(changeFormData(field, e.target.value))
-    }
-  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimeAllocationRow)
