@@ -32,6 +32,7 @@ class OfferMailer < ActionMailer::Base
     @singular_section = singular_section? @section_suffix
     @subscribe_href = get_sub_or_unsub_href email, 'subscribe'
     @overview_href_suffix = "/emails/#{email.id}/angebote"
+    @utm_tagging_suffix = generate_utm_suffix usable_offers, 'AO'
     @vague_title = email.vague_contact_title?
     @mainly_portal = mainly_portal_offers? usable_offers
 
@@ -52,6 +53,7 @@ class OfferMailer < ActionMailer::Base
     @mainly_portal =
       mainly_portal_offers?(orga.offers.approved) && email.offers.empty?
     @overview_href_suffix = "/organisationen/#{orga.slug || orga.id.to_s}"
+    @utm_tagging_suffix = generate_utm_suffix orga.offers, 'GF'
 
     mail subject: t('.subject'),
          to: email.address,
@@ -71,6 +73,7 @@ class OfferMailer < ActionMailer::Base
     @offer_href = get_offer_href_for_single_offer offers.first, @section_suffix
     @vague_title = email.vague_contact_title?
     @overview_href_suffix = "/emails/#{email.id}/angebote"
+    @utm_tagging_suffix = generate_utm_suffix offers, 'AO', 'FU'
 
     send_emails email, offers, :newly_approved,
                 t('.subject',
@@ -143,10 +146,24 @@ class OfferMailer < ActionMailer::Base
     offers_per_section
   end
 
-  # over a certain treshold (currently 60%) the mailing is seen as a
+  # over a certain treshold (currently 60%) the mailing is treated as a
   # mainly-portal-mailing with some content changes
   def mainly_portal_offers? offers
     (offers.map { |o| o if o.encounter == 'portal' }.compact.count.to_f /
       offers.count.to_f) >= 0.6
+  end
+
+  def generate_utm_suffix offers, reciever_type, mailing_type = 'OB'
+    sections = offers.map { |o| o.section_filters.pluck(:identifier).flatten }
+                     .flatten.uniq
+    first_char_of_sections = sections.map { |w| w.first.upcase }.sort.join
+    offers_text =
+      if offers.count == 1
+        'E'
+      else
+        offers.count < 5 ? 'EP' : 'FP'
+      end
+    '?utm_source=Sendgrid&utm_medium=E-Mail&utm_campaign='\
+    "#{first_char_of_sections}_#{reciever_type}_#{offers_text}_#{mailing_type}"
   end
 end
