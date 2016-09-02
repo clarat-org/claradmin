@@ -13,13 +13,13 @@ describe Email do
   describe 'methods' do
     it 'should find all newly approved offers for an email' do
       email = FactoryGirl.create :email, :with_approved_and_unapproved_offer
-      email.not_yet_but_soon_known_offers.count.must_equal 1
+      email.newly_approved_offers_from_offer_context.count.must_equal 1
     end
 
     describe '#informable_offers?' do
       it 'should be true if it has approved offers & a mailings=enabled orga' do
         email = FactoryGirl.create :email
-        offer = FactoryGirl.create :offer, :approved, :remote
+        offer = FactoryGirl.create :offer, :approved
         offer.contact_people.first.update_column :email_id, email.id
         email.organizations.first.update_column :mailings, 'enabled'
         email.send(:informable_offers?).must_equal true
@@ -35,7 +35,7 @@ describe Email do
 
       it 'should be false if it has no mailings=enabled orga' do
         email = FactoryGirl.create :email
-        offer = FactoryGirl.create :offer, :approved, :remote
+        offer = FactoryGirl.create :offer, :approved
         offer.contact_people.first.update_column :email_id, email.id
         email.organizations.first.update_column :mailings, 'force_disabled'
         email.send(:informable_offers?).must_equal false
