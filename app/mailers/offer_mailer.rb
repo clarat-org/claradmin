@@ -22,9 +22,8 @@ class OfferMailer < ActionMailer::Base
   def inform_offer_context email, offers = nil
     # Loads of variables in preparation for view models
     @contact_person = email.contact_people.first
-    usable_offers = offers ||
-                    email.offers.approved.by_mailings_enabled_organization
-                         .select(&:remote_or_belongs_to_informable_city?)
+    usable_offers = offers || email.offers.approved.by_mailings_enabled_organization
+                                   .select(&:remote_or_belongs_to_informable_city?)
     offers_per_section = get_offers_per_section usable_offers
     @offers = get_offer_teaser offers_per_section
     @offers_teaser = are_offers_teaser? offers_per_section
@@ -84,8 +83,7 @@ class OfferMailer < ActionMailer::Base
 
   def send_emails email, offers, mailing_type, subject
     email.create_offer_mailings offers, mailing_type
-    mail subject: subject,
-         to: email.address,
+    mail subject: subject, to: email.address,
          from: 'Anne Schulze | clarat <anne.schulze@clarat.org>'
   end
 
@@ -103,14 +101,12 @@ class OfferMailer < ActionMailer::Base
   end
 
   def get_sub_or_unsub_href email, sub_or_unsub
-    "http://www.clarat.org/emails/#{email.id}/#{sub_or_unsub}"\
-    "/#{email.security_code}"
+    "http://www.clarat.org/emails/#{email.id}/#{sub_or_unsub}/#{email.security_code}"
   end
 
   # creates a link for a single offer with bias to refugees section
   def get_offer_href_for_single_offer offer, section_suffix
-    "http://www.clarat.org/#{section_suffix.split('_').last}/angebote/"\
-    "#{offer.slug || offer.id.to_s}"
+    "http://www.clarat.org/#{section_suffix.split('_').last}/angebote/#{offer.slug || offer.id.to_s}"
   end
 
   # this method retrieves max_count offers out of offers_hash, distributing the
@@ -118,15 +114,13 @@ class OfferMailer < ActionMailer::Base
   # other section if one has too few offers.. designed for uneven max_count!
   # Not pretty but it gets the job done..
   def get_offer_teaser offers_hash
-    teasing_offers = []
     sorted_sects = get_section_names_sorted_by_offer_count offers_hash
-    teasing_offers.push(
+    teasing_offers = [
       *offers_hash[sorted_sects[0]][0..(MAX_OFFER_TEASER_COUNT / 2)]
-    )
+    ]
     teasing_offers.push(
       *offers_hash[sorted_sects[1]][0..(MAX_OFFER_TEASER_COUNT - teasing_offers.count - 1)]
-    )
-    teasing_offers.uniq
+    ).uniq
   end
 
   def get_section_names_sorted_by_offer_count offers_hash
@@ -146,13 +140,14 @@ class OfferMailer < ActionMailer::Base
   # over a certain treshold (currently 60%) the mailing is treated as a
   # mainly-portal-mailing with some content changes
   def mainly_portal_offers? offers
-    (offers.map { |o| o if o.encounter == 'portal' }.compact.count.to_f /
-      offers.count.to_f) >= 0.6
+    (offers.map { |o| o if o.encounter == 'portal' }.compact.count.to_f / offers.count.to_f) >= 0.6
   end
 
+  # Method to generate a custom utm-tag-suffix for the links in our mailings.
+  # Includes information about the worlds, the offer-count of the mailing, the
+  # type and the reciever of the mailing.
   def generate_utm_suffix offers, reciever_type, mailing_type = 'OB'
-    sections = offers.map { |o| o.section_filters.pluck(:identifier).flatten }
-                     .flatten.uniq
+    sections = offers.map { |o| o.section_filters.pluck(:identifier).flatten }.flatten.uniq
     first_char_of_sections = sections.map { |w| w.first.upcase }.sort.join
     offers_text =
       if offers.count == 1
