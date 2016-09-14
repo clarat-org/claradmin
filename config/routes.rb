@@ -52,6 +52,7 @@ Rails.application.routes.draw do
       resources :users, only: [:index, :update]
       get '/offer_translations' => 'offer_translations#index'
       get '/organization_translations' => 'organization_translations#index'
+      resources :productivity_goals, except: [:destroy]
       resources :time_allocations, only: [:create, :update]
       post 'time_allocations/:year/:week_number',  controller: :time_allocations,
                                                    action: :report_actual

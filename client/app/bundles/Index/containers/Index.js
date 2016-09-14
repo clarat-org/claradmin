@@ -33,6 +33,10 @@ function headingFor(model) {
     return 'Angebotsübersetzungen'
   case 'organization_translations':
     return 'Orga-Übersetzungen'
+  case 'productivity_goals':
+    return 'Produktivitätsziele'
+  default:
+    throw new Error(`Please provide a heading for ${model}`)
   }
 }
 

@@ -14,6 +14,6 @@ export default class ActualWaFormObject extends FormObject {
   }
 
   validation() {
-    this.validates('actual_wa_hours').filled('numericality')
+    this.required('actual_wa_hours').filled('int?')
   }
 }

@@ -2,24 +2,29 @@ import { connect } from 'react-redux'
 import BurnUpChart from '../../Statistics/components/BurnUpChart'
 
 const mapStateToProps = (state, ownProps) => {
+  const formData = state['ProductivityGoalForm'] || {}
+  const startsAt = formData.starts_at || '2020-02-02'
+  const endsAt = formData.ends_at || '2020-02-02'
+  const targetCount = formData.target_count || 0
+
   const data = {
     actual: [],
 
     ideal: [{
-      x: state.form.starts_at, y: 0,
+      x: startsAt, y: 0,
     }, {
-      x: state.form.ends_at, y: state.form.target_count,
+      x: endsAt, y: targetCount,
     }],
 
     projection: [],
 
     scope: [{
-      x: state.form.starts_at, y: state.form.target_count,
+      x: startsAt, y: targetCount,
     }, {
-      x: state.form.ends_at, y: state.form.target_count,
+      x: endsAt, y: targetCount,
     }],
   }
-  console.log(data)
+  console.log('PreviewBurnUpChart container | data:', data)
 
   return {
     data

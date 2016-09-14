@@ -15,6 +15,27 @@ module API::V1
         hash.to_json
       end
 
+      def model!(params)
+        query = base_query
+        if params[:query] && !params[:query].empty?
+          query = query.search_everything(params[:query])
+        end
+        if params[:sort]
+          query = query.order(params[:sort] => params[:direction] || 'DESC')
+        end
+        if params[:filter]
+          params[:filter].each do |filter, value|
+            next if value.empty?
+            query = query.where(filter => value)
+          end
+        end
+        query.paginate(page: params[:page])
+      end
+
+      def base_query
+        raise 'Implement me!'
+      end
+
       protected
 
       def meta

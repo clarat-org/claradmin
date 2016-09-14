@@ -8,7 +8,10 @@ import BurnUpChart from '../../Statistics/components/BurnUpChart'
 
 const mapStateToProps = (state, ownProps) => {
   const goal = ownProps.productivity_goal
-  const relevantStatistics = valuesIn(state.statistics).filter(stat => {
+  const allStatistics = valuesIn(state.statistics)
+  const allUsers = valuesIn(state.users)
+  const allTimeAllocations = valuesIn(state.time_allocations)
+  const relevantStatistics = allStatistics.filter(stat => {
     return (
       stat.model == goal.target_model &&
         stat.field_name == goal.target_field_name &&
@@ -31,8 +34,7 @@ const mapStateToProps = (state, ownProps) => {
     }],
 
     projection: aggregateProjectionPoints(
-      goal, lastActualPoint, state.time_allocations, state.users,
-      state.statistics
+      goal, lastActualPoint, allTimeAllocations, allUsers, allStatistics
     ),
 
     scope: [{
@@ -89,7 +91,8 @@ function aggregateProjectionPoints(
   while (!goalReachedInProjection) {
     // prepare point from given data
     let endOfWeek = week.day(5).format('YYYY-MM-DD') // next Friday
-    let hoursAvailableForTeamInWeek = availableHoursForUsersInWeek(week, usersCurrentlyInTeam, time_allocations)
+    let hoursAvailableForTeamInWeek =
+      availableHoursForUsersInWeek(week, usersCurrentlyInTeam, time_allocations)
     let expectedCountForWeek =
       expectedHourlyGoalReachCount * hoursAvailableForTeamInWeek
     let expectedEndOfWeekCount = lastCount + expectedCountForWeek

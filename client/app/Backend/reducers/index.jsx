@@ -7,15 +7,18 @@ import loadAjaxDataReducer, { initialState as initialAjaxState }
   from './loadAjaxDataReducer'
 import entityReducer, { initialState as initialEntityState }
   from './entityReducer'
+import statisticsReducer, { initialState as initialStatisticsState }
+  from '../../bundles/Statistics/reducers/statisticSettingsReducer'
 
 export const initialStates = merge(
   initialEntityState, initialFormState, initialUiState, initialRformState,
-  initialAjaxState,
+  initialAjaxState, initialStatisticsState
 )
 
 export default function combinedReducer(state = initialState, action) {
   const reducers = [
-    entityReducer, formReducer, uiReducer, rformReducer, loadAjaxDataReducer
+    entityReducer, formReducer, uiReducer, rformReducer, loadAjaxDataReducer,
+    statisticsReducer
   ]
 
   let newState = state

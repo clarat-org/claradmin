@@ -4,7 +4,7 @@ import routeForAction from '../../../lib/routeForAction'
 import TableRow from '../components/TableRow'
 
 const mapStateToProps = (state, ownProps) => {
-  const actions = settings.index[ownProps.model].actions.map(action => ({
+  const actions = settings.index[ownProps.model].member_actions.map(action => ({
         icon: iconFor(action),
         href: routeForAction(action, ownProps.model, ownProps.row.id)
   }))

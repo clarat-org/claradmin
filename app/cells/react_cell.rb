@@ -18,8 +18,17 @@ class ReactCell < Cell::ViewModel
       statistics: Statistic.all,
       time_allocations: TimeAllocation.all,
 
-      start_year: User.order('created_at ASC').first.created_at.year,
-      authToken: options[:form_authenticity_token]
+      authToken: options[:form_authenticity_token],
+      settings: {
+        time_allocations: {
+          start_year: User.order('created_at ASC').first.created_at.year
+        },
+        productivity_goals: {
+          target_models: ProductivityGoal::TARGET_MODELS,
+          target_field_names: ProductivityGoal::TARGET_FIELD_NAMES,
+          target_field_values: ProductivityGoal::TARGET_FIELD_VALUES
+        }
+      }
     }
   end
 end

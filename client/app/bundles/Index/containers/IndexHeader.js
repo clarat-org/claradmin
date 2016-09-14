@@ -5,6 +5,7 @@ import pickBy from 'lodash/pickBy'
 import toPairs from 'lodash/toPairs'
 import { encode } from 'querystring'
 import { browserHistory } from 'react-router'
+import settings from '../../../lib/settings'
 import IndexHeader from '../components/IndexHeader'
 
 const mapStateToProps = (state, ownProps) => {
@@ -13,10 +14,16 @@ const mapStateToProps = (state, ownProps) => {
   )
   const plusButtonDisabled = ownProps.params.hasOwnProperty('filter[id]')
 
+  const generalActions = settings.index[ownProps.model].general_actions
+  const routes = generalRoutes(ownProps.model).filter(route =>
+    generalActions.includes(route.action)
+  )
+
   return {
     ...ownProps.params,
     filters,
     plusButtonDisabled,
+    routes,
   }
 }
 
@@ -33,5 +40,24 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
   }
 })
+
+const generalRoutes = model => [
+  {
+    id: 1,
+    action: 'index',
+    pathname: `/${model}`,
+    anchor: 'Liste',
+  }, {
+    id: 2,
+    action: 'new',
+    pathname: `/${model}/new`,
+    anchor: 'Erstellen'
+  }, {
+    id: 3,
+    action: 'export',
+    pathname: `/exports/${model}/new`,
+    anchor: 'Export',
+  }
+]
 
 export default connect(mapStateToProps, mapDispatchToProps)(IndexHeader)

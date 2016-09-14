@@ -19,6 +19,7 @@ gem 'rails-observers' # observers got extracted since rails 4
 
 # Translations
 gem 'rails-i18n'
+gem 'i18n-js'
 
 gem 'dynamic_sitemaps', github: 'efqdalton/dynamic_sitemaps',
                         branch: 'adds-custom-storages'

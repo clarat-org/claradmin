@@ -16,7 +16,7 @@ function initialDispatches(dispatch, props) {
     normalize('time_allocations', props.time_allocations).entities,
     {
       current_user: props.current_user,
-      start_year: props.start_year,
+      settings: props.settings,
       authToken: props.authToken,
     }
   )))

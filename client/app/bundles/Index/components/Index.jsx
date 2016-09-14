@@ -21,7 +21,7 @@ export default class Index extends Component {
 
     return (
       <div className='content Index'>
-        <h1>{heading}</h1>
+        <h2>{heading}</h2>
         <hr />
         <IndexHeader model={model} params={location.query} />
         <IndexTable model={model} params={location.query} />

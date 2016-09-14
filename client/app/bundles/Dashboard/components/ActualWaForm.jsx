@@ -33,7 +33,7 @@ export default class ActualWaList extends React.Component {
             SOLL: {time_allocation.desired_wa_hours} Stunden
           </div>
           <div className='col-xs-7 text-center'>
-            <Form ajax validate
+            <Form ajax requireValid
               action={action}
               method='POST'
               className='form-inline'

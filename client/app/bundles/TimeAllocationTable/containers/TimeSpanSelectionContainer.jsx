@@ -7,10 +7,11 @@ import TimeSpanSelection from '../components/TimeSpanSelection'
 const mapStateToProps = (state, ownProps) => {
   const selected_year = ownProps.year
   const selected_week_number = ownProps.week_number
+  const start_year = state.settings.time_allocations.start_year
 
   return {
-    start_year: state.start_year,
-    years: range(state.start_year, state.start_year + 6),
+    start_year,
+    years: range(start_year, start_year + 6),
     selected_year,
     week_numbers: range(1, 53),
     selected_week_number,

@@ -11,7 +11,7 @@ export default function formReducer(state = initialState, action) {
       let forms = {}
       forms[action.formId] = {}
       forms[action.formId][action.name] = action.value
-      return merge({}, state, {forms})
+      return merge({}, state, forms)
     break
 
     default:

@@ -1,23 +1,25 @@
 import React, { PropTypes, Component } from 'react'
 import { Navbar, Nav, NavItem } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 import IndexHeaderFilter from '../containers/IndexHeaderFilter'
 
 export default class IndexHeader extends Component {
   render() {
     const {
       onQueryChange, query, onPlusClick, filters, model, params,
-      plusButtonDisabled
+      plusButtonDisabled, routes
     } = this.props
 
     return (
       <Navbar inverse fluid>
         <Nav>
-          <NavItem href='/offer_translations' active>
-            Liste
-          </NavItem>
-          <NavItem href='/exports/offer_translation/new'>
-            Export
-          </NavItem>
+          {routes.map(route => {
+            return(
+              <LinkContainer key={route.id} to={route}>
+                <NavItem>{route.anchor}</NavItem>
+              </LinkContainer>
+            )
+          })}
         </Nav>
         <Navbar.Form pullRight inline>
           <div className='input-group'>

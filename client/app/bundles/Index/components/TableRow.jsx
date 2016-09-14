@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react'
+import { Link } from 'react-router'
 import TableCell from './TableCell'
 
 export default class TableRow extends Component {
@@ -15,9 +16,9 @@ export default class TableRow extends Component {
           <td>
           {actions.map(action => {
             return(
-              <a key={action.href} href={action.href}>
+              <Link key={action.href} to={action.href}>
                 <span className={action.icon} />
-              </a>
+              </Link>
             )
           })}
         </td>

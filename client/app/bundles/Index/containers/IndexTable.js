@@ -4,6 +4,9 @@ import settings from '../../../lib/settings'
 import IndexTable from '../components/IndexTable'
 
 const mapStateToProps = (state, ownProps) => {
+  if (!settings.index[ownProps.model])
+    throw new Error(`Add settings for ${ownProps.model}`)
+
   const fields = settings.index[ownProps.model].fields
   const resultData = state.ajax.indexResults
   const resultIds = resultData.data.map(datum => datum.id)

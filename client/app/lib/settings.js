@@ -5,7 +5,10 @@ export default {
         'id', 'offer_id', 'locale', 'source', 'name',
         'possibly_outdated'//, 'updated_at', 'offer_section'
       ],
-      actions: [
+      general_actions: [
+        'index', 'export'
+      ],
+      member_actions: [
         'edit'
       ]
     },
@@ -15,9 +18,24 @@ export default {
         'id', 'offer_id', 'locale', 'source', 'description',
         'possibly_outdated'//, 'updated_at', 'offer_section'
       ],
-      actions: [
+      general_actions: [
+        'index', 'export'
+      ],
+      member_actions: [
         'edit'
       ]
-    }
+    },
+
+    productivity_goals: {
+      fields: [
+        'id', 'title', 'ends_at', 'target_model', 'target_field_name'
+      ],
+      general_actions: [
+        'index', 'new', 'export'
+      ],
+      member_actions: [
+        'show', 'edit'
+      ]
+    },
   }
 }

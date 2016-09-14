@@ -4,11 +4,15 @@ import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap'
 
 export default class TopNav extends Component {
   render() {
+    const {
+      onSelect, activeKey, routes
+    } = this.props
+
     return (
       <Navbar staticTop>
-        <Nav bsStyle='tabs' justified onSelect={this.props.onSelect} activeKey={this.props.activeKey}>
+        <Nav bsStyle='tabs' justified onSelect={onSelect} activeKey={activeKey}>
           <NavDropdown title='Administration' eventKey='1' id='actionDropdown'>
-            {this.props.routes.map(route => {
+            {routes.map(route => {
               return (
                 <LinkContainer key={route.id} to={route}>
                   <MenuItem eventKey={`1.${route.id}`}>

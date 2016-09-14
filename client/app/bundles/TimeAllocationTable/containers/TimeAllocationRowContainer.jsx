@@ -3,7 +3,6 @@ import moment from 'moment'
 import valuesIn from 'lodash/valuesIn'
 
 import { getAllocationForWeekAndUser } from '../../../lib/timeAllocations'
-import changeFormData from '../actions/changeFormData'
 import TimeAllocationRow from '../components/TimeAllocationRow'
 
 const mapStateToProps = (state, ownProps) => {
