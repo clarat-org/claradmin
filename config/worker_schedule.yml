@@ -13,22 +13,26 @@ regenerate_html_job:
   class: "RegenerateHtmlWorker"
   queue: default
 
-# TODO: reactivate!!
-# subscribed_mails_spawner_job:
-#   cron: "0 20 * * Mon Europe/Berlin" # every (2nd) monday at 20:00
-#   class: "SubscribedEmailsMailingsSpawnerWorker"
-#   queue: default
-#
-# uninformed_mails_spawner_job:
-#   cron: "30 20 * * 1 Europe/Berlin" # every monday at 20:30
-#   class: "UninformedEmailsMailingsSpawnerWorker"
-#   queue: default
+subscribed_mails_spawner_job:
+  cron: "0 20 * * Mon Europe/Berlin" # every monday at 20:00
+  class: "SubscribedEmailsMailingsSpawnerWorker"
+  queue: default
 
-# TODO: reactivate!!
-# check_websites_job:
-#   cron: "0 20 * * Wed Europe/Berlin"
-#   class: "CheckWebsitesWorker"
-#   queue: heavy_load
+uninformed_mails_spawner_job:
+  cron: "30 20 * * 1 Europe/Berlin" # every monday at 20:30
+  class: "UninformedEmailsMailingsSpawnerWorker"
+  queue: default
+
+check_websites_job:
+  cron: "0 20 * * Wed Europe/Berlin" # every wednesday at 20:00
+  class: "CheckWebsitesWorker"
+  queue: heavy_load
+
+# should be closely after 'check_websites_job'
+check_unreachable_offers_job:
+  cron: "0 4 * * Thu Europe/Berlin" # every thursday at 20:00
+  class: "CheckUnreachableOffersWorker"
+  queue: default
 
 check_for_new_translations_job:
   cron: "0 0 * * * Europe/Berlin" # every day at 00:00
@@ -44,3 +48,8 @@ sync_absences_job:
   cron: "0 3 * * Sat Europe/Berlin" # every Saturday at 3:00 a.m.
   class: "SyncAbsencesWorker"
   queue: heavy_load
+
+seasonal_offers_job:
+  cron: "0 5 * * * Europe/Berlin" # every day at 05:00
+  class: "SeasonalOffersWorker"
+  queue: default

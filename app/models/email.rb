@@ -19,9 +19,18 @@ class Email < ActiveRecord::Base
   end
 
   # Methods
-  def not_yet_but_soon_known_offers
-    offers.approved.by_mailings_enabled_organization.all - known_offers.all
+  def newly_approved_offers_from_offer_context
+    offers.approved.by_mailings_enabled_organization
+          .select(&:remote_or_belongs_to_informable_city?) - known_offers.all
   end
+
+  # INFO: for later use
+  # orga.first is okay because an orga-contact may only belong to one organization
+  # def newly_approved_offers_from_orga_context
+  #   organizations.first.offers.approved
+  #                .select(&:remote_or_belongs_to_informable_city?) -
+  #     known_offers.all
+  # end
 
   def create_offer_mailings offers, mailing_type
     offers.each do |offer|
@@ -55,6 +64,10 @@ class Email < ActiveRecord::Base
       organizations.uniq.count == 1 && informable_orga?(organizations.first)
   end
 
+  def belongs_to_at_least_one_informable_offer?
+    offers.approved.select(&:remote_or_belongs_to_informable_city?).any?
+  end
+
   private
 
   def informable_offers_or_orga_contact?
@@ -62,13 +75,13 @@ class Email < ActiveRecord::Base
   end
 
   def informable_offers?
-    contact_people.joins(:offers)
-                  .where('offers.aasm_state = ?', 'approved').any? &&
-      organizations.where(mailings_enabled: true).any?
+    belongs_to_at_least_one_informable_offer? &&
+      organizations.where(mailings: 'enabled').any?
   end
 
   def informable_orga? orga
-    orga.aasm_state == 'approved' && orga.mailings_enabled &&
-      orga.offers.approved.any? && orga.locations.count < 10
+    orga.aasm_state == 'all_done' && orga.mailings_enabled? &&
+      !orga.offers.approved.select(&:remote_or_belongs_to_informable_city?)
+           .empty? && !orga.big_player?
   end
 end

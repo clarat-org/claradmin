@@ -43,7 +43,6 @@ settings:
         - organization_id
         - locale
         - source
-        - description
         - possibly_outdated
       order: "updated_at ASC"
   Offer:

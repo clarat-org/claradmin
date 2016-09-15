@@ -9,7 +9,7 @@ class SubscribedEmailsMailingsSpawnerWorker
   sidekiq_options retry: 1
 
   def perform
-    return # TODO: remove to reenable mailings (also rubocop, tests, cov filter and worker_schedule)
+    # return # TODO: remove to reenable mailings (also rubocop, tests, cov filter and worker_schedule)
     Offer.transaction do
       Email.transaction do
         potentially_informable_emails.find_each do |email|
@@ -24,7 +24,7 @@ class SubscribedEmailsMailingsSpawnerWorker
   def potentially_informable_emails
     Email.where(aasm_state: 'subscribed').uniq
          .joins(:offers).where('offers.aasm_state = ?', 'approved')
-         .joins(:organizations).where(
-           'organizations.mailings_enabled = ?', true)
+         .joins(:organizations).where('organizations.mailings = ?', 'enabled')
+         .joins(:organizations).where('organizations.aasm_state = ?', 'all_done')
   end
 end

@@ -18,11 +18,16 @@
 
 %p
   kennen Sie
-  = link_to( t(".clarat_name.family_refugees"), t(".link_url.family_refugees") )
-  = t(".paragraph_entry.html",
-    offer_text: @offers_teaser ? t('.offer_text_multiple') : t('.offer_text', count: @offers.count) )
-  = link_to( t(".clarat_name.#{@section_suffix}"), t(".link_url.#{@section_suffix}") )
-  finden.
+  = link_to( t(".clarat_name.family_refugees"), t(".link_url.family_refugees") + @utm_tagging_suffix )
+  = t(".paragraph_entry.html")
+%p
+  - if @mainly_portal
+    = t(".paragraph_portal_forward")
+  - else
+    = t(".paragraph_your_offers.html",
+      offer_text: @offers_teaser ? t('.offer_text_multiple') : t('.offer_text', count: @offers.count) )
+    = link_to( t(".clarat_name.#{@section_suffix}"), t(".link_url.#{@section_suffix}") + @utm_tagging_suffix )
+    finden.
 - if @singular_section
   %p
     - if @offers_teaser
@@ -38,12 +43,12 @@
     %p
     - @offers.each do |offer|
       %li
-        = link_to( offer.name.strip, t(".link_url.#{@section_suffix}") + '/angebote/' + (offer.slug || offer.id.to_s) )
+        = link_to( offer.name.strip, t(".link_url.#{@section_suffix}") + '/angebote/' + (offer.slug || offer.id.to_s) + @utm_tagging_suffix )
 
   %p
     - @section_suffix.split('_').each do |section|
       = t(".paragraph_overview_link_html_prefix")
-      = link_to( t(".paragraph_overview_link_text"), t(".link_url.#{section}") + @overview_href_suffix )
+      = link_to( t(".paragraph_overview_link_text"), t(".link_url.#{section}") + @overview_href_suffix + @utm_tagging_suffix)
       = t(".paragraph_overview_link_html_suffix", section_name: t(".clarat_name.#{section}"))
 - else
   - @section_suffix.split('_').each do |section|
@@ -61,10 +66,10 @@
     - @offers.each do |offer|
       - if offer.in_section? section
         %li
-          = link_to( offer.name.strip, t(".link_url.#{section}") + '/angebote/' + (offer.slug || offer.id.to_s) )
+          = link_to( offer.name.strip, t(".link_url.#{section}") + '/angebote/' + (offer.slug || offer.id.to_s) + @utm_tagging_suffix)
     %p
       = t(".paragraph_overview_link_html_prefix")
-      = link_to( t(".paragraph_overview_link_text"), t(".link_url.#{section}") + @overview_href_suffix )
+      = link_to( t(".paragraph_overview_link_text"), t(".link_url.#{section}") + @overview_href_suffix + @utm_tagging_suffix)
       = t(".paragraph_overview_link_html_suffix", section_name: t(".clarat_name.#{section}"))
 %p
   = t(".paragraph_found_error",
@@ -72,7 +77,7 @@
 %p
   - if !@singular_section
     = t(".paragraph_split_explanation.additional")
-  - elsif @offers_teaser
+  - elsif @offers.count > 1
     = t(".paragraph_split_explanation.base")
 %p
   = t(".paragraph_offers_missing")
@@ -104,7 +109,7 @@
   %br
   Tel.: +49 (0)30 55 57 96 00
   %br
-  = link_to 'www.clarat.org', t(".link_url.family_refugees")
+  = link_to 'www.clarat.org', t(".link_url.family_refugees") + @utm_tagging_suffix
 
 = email_image_tag("logo_#{@section_suffix}.png")
 

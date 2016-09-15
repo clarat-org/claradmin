@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require_relative '../../test_helper'
 class TimeAllocationDynamicFindTest < ActiveSupport::TestCase # to have fixtures
-  subject { TimeAllocation::DynamicFind }
+  subject { API::V1::TimeAllocation::DynamicFind }
 
   describe '#find_or_initialize' do
     let(:finder) { subject.new(users(:researcher).id, 1234, 5) }
@@ -42,7 +42,7 @@ class TimeAllocationDynamicFindTest < ActiveSupport::TestCase # to have fixtures
         year: 1234, week_number: 6, user_id: users(:researcher).id,
         desired_wa_hours: 1
       )
-      assert_raises(TimeAllocation::DynamicFind::NoHistoricalMatchError) do
+      assert_raises(subject::NoHistoricalMatchError) do
         finder.find_or_initialize.must_equal allocation
       end
     end

@@ -5,7 +5,9 @@ describe OfferMailer do
   include EmailSpec::Helpers
   include EmailSpec::Matchers
 
-  let(:offer) { offers(:basic) }
+  let(:offer) do
+    FactoryGirl.create(:offer, :approved)
+  end
   let(:contact_person) do
     FactoryGirl.create(:contact_person,
                        { email: email, offers: [offer] }.merge(options))
@@ -37,20 +39,20 @@ describe OfferMailer do
       subject.must have_body_text email.security_code
     end
 
-    it 'only informs about offers by mailings_enabled organizations' do
+    it 'only informs about offers by mailings=enabled organizations' do
       offer2 = FactoryGirl.create :offer, :approved,
-                                  name: 'By mailings_enabled organization'
+                                  name: 'By mailings=enabled organization'
       offer2.contact_people.first.update_column :email_id, email.id
 
       offer3 = FactoryGirl.create :offer, :approved,
-                                  name: 'By mailings_disabled organization'
+                                  name: 'By mailings=disabled organization'
       offer3.contact_people.first.update_column :email_id, email.id
-      offer3.organizations.first.update_column :mailings_enabled, false
+      offer3.organizations.first.update_column :mailings, 'force_disabled'
 
       assert_difference 'OfferMailing.count', 2 do # lists offer and offer2
-        subject.must have_body_text 'basicOfferName'
-        subject.must have_body_text 'By mailings_enabled organization'
-        subject.wont have_body_text 'By mailings_disabled organization'
+        subject.must have_body_text offer.name
+        subject.must have_body_text 'By mailings=enabled organization'
+        subject.wont have_body_text 'By mailings=disabled organization'
       end
     end
 
@@ -105,7 +107,7 @@ describe OfferMailer do
 
     describe 'CONTENT TEST' do
       it 'must contain stuff' do
-        subject.must have_body_text 'Das ist ein neues kostenloses Portal mit Unterstützungsangeboten.'
+        subject.must have_body_text 'Das ist ein neues kostenloses Onlineverzeichnis mit Unterstützungsangeboten.'
       end
     end
   end
@@ -174,7 +176,7 @@ describe OfferMailer do
 
     describe 'CONTENT TEST' do
       it 'must contain stuff' do
-        subject.must have_body_text 'Das ist ein neues kostenloses Portal mit Unterstützungsangeboten.'
+        subject.must have_body_text 'Das ist ein neues kostenloses Onlineverzeichnis mit Unterstützungsangeboten.'
         subject.must have_body_text 'http://www.clarat.org/organisationen/'
         subject.must have_body_text 'clarat gGmbH'
       end
@@ -193,7 +195,7 @@ describe OfferMailer do
       it 'must deliver and create offer_mailings' do
         email.expects(:create_offer_mailings)
         subject.must deliver_to email.address
-        subject.must have_subject 'clarat family – Ihr neues Angebot'
+        subject.must have_subject "clarat #{offer.section_filters.pluck(:identifier).first} – Ihr neues Angebot"
         subject.must have_body_text 'ein neues Angebot'
         subject.must have_body_text '/unsubscribe/'
         subject.must have_body_text email.security_code
@@ -210,7 +212,7 @@ describe OfferMailer do
       end
 
       it 'must correctly mention them' do
-        section_name_array = offerArray.map { |o| o.section_filters.map(&:identifier).flatten }.flatten.compact.uniq
+        section_name_array = offerArray.map { |o| o.section_filters.map(&:identifier).flatten }.flatten.compact.uniq.sort
         subject.must have_subject "clarat #{section_name_array.join(' und clarat ')} – Ihre neuen Angebote"
         subject.must have_body_text 'neue Angebote'
         subject.must have_body_text 'Ihre Angebote'

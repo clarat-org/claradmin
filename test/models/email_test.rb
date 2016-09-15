@@ -13,15 +13,15 @@ describe Email do
   describe 'methods' do
     it 'should find all newly approved offers for an email' do
       email = FactoryGirl.create :email, :with_approved_and_unapproved_offer
-      email.not_yet_but_soon_known_offers.count.must_equal 1
+      email.newly_approved_offers_from_offer_context.count.must_equal 1
     end
 
     describe '#informable_offers?' do
-      it 'should be true if it has approved offers & a mailings_enabled orga' do
+      it 'should be true if it has approved offers & a mailings=enabled orga' do
         email = FactoryGirl.create :email
         offer = FactoryGirl.create :offer, :approved
         offer.contact_people.first.update_column :email_id, email.id
-        email.organizations.first.update_column :mailings_enabled, true
+        email.organizations.first.update_column :mailings, 'enabled'
         email.send(:informable_offers?).must_equal true
       end
 
@@ -29,15 +29,15 @@ describe Email do
         email = FactoryGirl.create :email
         offer = FactoryGirl.create :offer
         offer.contact_people.first.update_column :email_id, email.id
-        email.organizations.first.update_column :mailings_enabled, true
+        email.organizations.first.update_column :mailings, 'enabled'
         email.send(:informable_offers?).must_equal false
       end
 
-      it 'should be false if it has no mailings_enabled orga' do
+      it 'should be false if it has no mailings=enabled orga' do
         email = FactoryGirl.create :email
         offer = FactoryGirl.create :offer, :approved
         offer.contact_people.first.update_column :email_id, email.id
-        email.organizations.first.update_column :mailings_enabled, false
+        email.organizations.first.update_column :mailings, 'force_disabled'
         email.send(:informable_offers?).must_equal false
       end
     end
@@ -71,8 +71,8 @@ describe Email do
           assert_raises(AASM::InvalidTransition) { subject }
         end
 
-        it 'wont be possible if no organization is mailings_enabled' do
-          email.organizations.update_all mailings_enabled: false
+        it 'wont be possible if no organization is mailings=disabled' do
+          email.organizations.update_all mailings: 'force_disabled'
           OfferMailer.expects(:inform_offer_context).never
           assert_raises(AASM::InvalidTransition) { subject }
         end
@@ -109,18 +109,18 @@ describe Email do
       end
 
       it 'should send an offer context mailing when it has approved offers'\
-         ' and is in a mailings_enabled organization' do
+         ' and is in a mailings=enabled organization' do
         email = FactoryGirl.create :email, :with_approved_offer
-        email.organizations.first.update_column :mailings_enabled, true
+        email.organizations.first.update_column :mailings, 'enabled'
         OfferMailer.expect_chain(:inform_offer_context, :deliver_now)
         email.send_mailing!
       end
 
       it 'should send an orga context mailing when it is an orga contact'\
-         ', when orga is mailings_enabled and has approved offers' do
+         ', when orga is mailings=enabled and has approved offers' do
         email = FactoryGirl.create :email, :with_approved_offer
-        email.organizations.first.update_column :mailings_enabled, true
-        email.organizations.first.update_column :aasm_state, 'approved'
+        email.organizations.first.update_column :mailings, 'enabled'
+        email.organizations.first.update_column :aasm_state, 'all_done'
         email.organizations.first.offers = email.offers
         superior_mail = FactoryGirl.create :email
         superior_mail.contact_people <<
@@ -139,8 +139,8 @@ describe Email do
          ' for an orga-mailing (higher priority on offer-mailings)' do
         mail = FactoryGirl.create :email, :with_approved_offer
         mail.contact_people.first.update_column :position, 'superior'
-        mail.organizations.first.update_column :mailings_enabled, true
-        mail.organizations.first.update_column :aasm_state, 'approved'
+        mail.organizations.first.update_column :mailings, 'enabled'
+        mail.organizations.first.update_column :aasm_state, 'all_done'
         mail.contact_people.first.organization = mail.organizations.first
         mail.organizations.first.offers = mail.offers
 
@@ -155,17 +155,17 @@ describe Email do
       end
 
       it 'wont send an offer context mailing when it has approved offers'\
-         ' but the orga is not mailings_enabled' do
+         ' but the orga is not mailings=enabled' do
         email = FactoryGirl.create :email, :with_approved_offer
-        email.organizations.first.update_column :mailings_enabled, false
+        email.organizations.first.update_column :mailings, 'force_disabled'
         OfferMailer.expects(:inform_offer_context).never
         assert_raises { email.send_mailing! }
       end
 
       it 'wont send an offer context mailing when it has no approved offers'\
-         ' but the orga is mailings_enabled' do
+         ' but the orga is mailings=enabled' do
         email = FactoryGirl.create :email, :with_unapproved_offer
-        email.organizations.first.update_column :mailings_enabled, true
+        email.organizations.first.update_column :mailings, 'enabled'
         OfferMailer.expects(:inform_offer_context).never
         assert_raises { email.send_mailing! }
       end
@@ -217,8 +217,8 @@ describe Email do
     #       assert_raises(AASM::InvalidTransition) { subject }
     #     end
     #
-    #     it 'wont be possible if no organization is mailings_enabled' do
-    #       email.organizations.update_all mailings_enabled: false
+    #     it 'wont be possible if no organization is mailings=enabled' do
+    #       email.organizations.update_all mailings: 'force_disabled'
     #       OfferMailer.expects(:inform_organization_context).never
     #       assert_raises(AASM::InvalidTransition) { subject }
     #     end

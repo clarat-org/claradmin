@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
-ruby '2.3.0'
+ruby '2.3.1'
 
 gem 'nokogiri', '1.6.7.2' # 1.6.8 doesnt install on some pcs. Remove when fixed
 
@@ -75,6 +75,9 @@ gem 'sidekiq-cron', '~> 0.4.0'
 
 # 3rd Party APIs
 gem 'gengo'
+
+# converting between unicode and ascii urls
+gem 'simpleidn'
 
 ########################
 # For Heroku & Add-Ons #

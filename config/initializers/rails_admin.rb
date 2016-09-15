@@ -34,7 +34,7 @@ RailsAdmin.config do |config|
     Category Email UpdateRequest LanguageFilter User Contact
     Keyword Definition Note Area SearchLocation ContactPerson
     Subscription SectionFilter NextStep SolutionCategory
-    LogicVersion SplitBase
+    LogicVersion SplitBase City
   )
 
   config.actions do
@@ -59,7 +59,7 @@ RailsAdmin.config do |config|
     end
 
     clone do
-      except ['SectionFilter']
+      except ['SectionFilter', 'City']
     end
     # nested_set do
     #   only ['Category']
@@ -96,14 +96,23 @@ RailsAdmin.config do |config|
     field :charitable
     field :accredited_institution
     field :founded
-    field :umbrella
+    field :umbrella_filters do
+      label 'Umbrellas'
+      help do
+        'Erforderlich.'
+      end
+    end
     field :slug do
       read_only true
     end
 
     field :websites
     field :contact_people
-    field :mailings_enabled
+    field :mailings do
+      help do
+        'Dieses Feld nutzt ausschließlich Comms!'
+      end
+    end
     field :aasm_state do
       read_only true
       help false
@@ -126,6 +135,24 @@ RailsAdmin.config do |config|
       field :locations
       field :created_by
       field :approved_by
+      field :translation_links do
+        formatted_value do
+          en = bindings[:object].translations.where(locale: :en).first
+          ar = bindings[:object].translations.where(locale: :ar).first
+          output_string = ''
+          output_string += if en
+            "<a href='/organization_translations/#{en.id}/edit'>Englisch</a><br/>"
+          else
+            'Englisch (wird noch erstellt)<br/>'
+          end
+          output_string += if ar
+            "<a href='/organization_translations/#{ar.id}/edit'>Arabisch</a><br/>"
+          else
+            'Arabisch (wird noch erstellt)<br/>'
+          end
+          output_string.html_safe
+        end
+      end
     end
 
     clone_config do
@@ -141,6 +168,9 @@ RailsAdmin.config do |config|
   config.model 'Website' do
     field :host
     field :url
+    field :unreachable_count do
+      read_only true
+    end
 
     show do
       field :offers
@@ -156,6 +186,7 @@ RailsAdmin.config do |config|
       field :zip
       field :federal_state
       field :street
+      field :city
       field :display_name
     end
     weight(-5)
@@ -205,6 +236,31 @@ RailsAdmin.config do |config|
       custom_method :partial_dup
     end
     object_label_method :display_name
+  end
+
+  config.model 'City' do
+    weight 1
+    list do
+      field :id do
+        sort_reverse false
+      end
+      field :name
+    end
+    show do
+      field :name
+      field :offers
+      field :organizations
+    end
+    field :name
+    field :locations do
+      visible false
+    end
+    field :offers do
+      visible false
+    end
+    field :organizations do
+      visible false
+    end
   end
 
   config.model 'FederalState' do
@@ -306,7 +362,6 @@ RailsAdmin.config do |config|
       inline_edit false
     end
     field :treatment_type
-    field :participant_structure
     field :trait_filters
     field :language_filters do
       inline_add false
@@ -317,6 +372,7 @@ RailsAdmin.config do |config|
         z.B. die Eltern, einen Nachbarn oder einen Lotsen'
       end
     end
+    field :participant_structure
     field :gender_first_part_of_stamp
     field :gender_second_part_of_stamp
     field :age_from
@@ -331,6 +387,11 @@ RailsAdmin.config do |config|
     field :websites
     field :keywords do
       inverse_of :offers
+    end
+    field :starts_at do
+      help do
+        'Optional. Nur für saisonale Angebote ausfüllen!'
+      end
     end
     field :expires_at
     field :logic_version
@@ -357,27 +418,28 @@ RailsAdmin.config do |config|
         strftime_format "%d. %B %Y"
       end
       field :created_by
+      field :completed_at do
+        strftime_format "%d. %B %Y"
+      end
+      field :completed_by
+      field :approved_at do
+        strftime_format "%d. %B %Y"
+      end
       field :approved_by
       field :translation_links do
         formatted_value do
           en = bindings[:object].translations.where(locale: :en).first
           ar = bindings[:object].translations.where(locale: :ar).first
-          ru = bindings[:object].translations.where(locale: :ru).first
           output_string = ''
           output_string += if en
             "<a href='/offer_translations/#{en.id}/edit'>Englisch</a><br/>"
           else
             'Englisch (wird noch erstellt)<br/>'
           end
-          output_string += if en
+          output_string += if ar
             "<a href='/offer_translations/#{ar.id}/edit'>Arabisch</a><br/>"
           else
             'Arabisch (wird noch erstellt)<br/>'
-          end
-          output_string += if en
-            "<a href='/offer_translations/#{ru.id}/edit'>Russisch</a><br/>"
-          else
-            'Russisch (wird noch erstellt)'
           end
           output_string.html_safe
         end
@@ -405,6 +467,26 @@ RailsAdmin.config do |config|
       field :operational_name
       field :local_number_1
       field :local_number_2
+    end
+    show do
+      field :gender
+      field :academic_title
+      field :position
+      field :first_name
+      field :last_name
+      field :operational_name
+      field :responsibility
+      field :area_code_1
+      field :local_number_1
+      field :area_code_2
+      field :local_number_2
+      field :fax_area_code
+      field :fax_number
+      field :street
+      field :zip_and_city
+      field :email
+      field :organization
+      field :offers
     end
     field :gender
     field :academic_title
@@ -445,7 +527,9 @@ RailsAdmin.config do |config|
     end
     field :email
     field :organization
-    field :offers
+    field :offers do
+      visible false
+    end
     field :spoc do
       help do
         "Single Point of Contact / Zentrale Anlaufstelle."

@@ -10,6 +10,7 @@ FactoryGirl.define do
         offers = [FactoryGirl.create(:offer, :approved)]
         email.contact_people << FactoryGirl.create(:contact_person,
                                                    offers: offers)
+        email.contact_people.first.organization.update_columns aasm_state: 'all_done'
       end
     end
 
@@ -18,6 +19,7 @@ FactoryGirl.define do
         offers = [FactoryGirl.create(:offer)]
         email.contact_people << FactoryGirl.create(:contact_person,
                                                    offers: offers)
+        email.contact_people.first.organization.update_columns aasm_state: 'all_done'
       end
     end
 
@@ -27,6 +29,7 @@ FactoryGirl.define do
                   FactoryGirl.create(:offer, :approved)]
         email.contact_people << FactoryGirl.create(:contact_person,
                                                    offers: offers)
+        email.contact_people.first.organization.update_columns aasm_state: 'all_done'
       end
     end
 
