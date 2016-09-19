@@ -6,6 +6,10 @@ html class='no-js' lang=I18n.locale
                           media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
+
+    javascript:
+      I18n.missingTranslation = function () { return '' }
+
 body.backend
   - if yield(:react_view) == 'true'
     = cell('react', {}, current_user: current_user,

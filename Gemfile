@@ -168,6 +168,9 @@ group :test do
 
   # testing emails
   gem 'email_spec'
+
+  # js tests
+  gem 'capybara-selenium'
 end
 
 group :development, :test do
