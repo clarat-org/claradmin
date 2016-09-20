@@ -9,12 +9,7 @@ const mapStateToProps = (state, ownProps) => {
   const source = state[model + 's'] && state[model + 's'][translation[`${model}_id`]]
   const loaded = !!translation
 
-  let heading
-  if (model == 'offer') {
-    heading = `Übersetzung von Angebot #${id}`
-  } else {
-    heading = `Übersetzung von Organisation #${id}`
-  }
+  const heading = `${model} translation #${id}`
 
   return {
     id,

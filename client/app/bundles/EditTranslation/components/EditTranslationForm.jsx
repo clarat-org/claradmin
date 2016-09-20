@@ -30,7 +30,13 @@ export default class EditTranslationForm extends Component {
                 return(
                   <tr key={property}>
                     <td>
-                      <InputSet attribute={property} type={type} />
+                      <InputSet
+                        attribute={property} type={type}
+                        label={property}
+                        wrapperClassName='form-group' className='form-control'
+                        wrapperErrorClassName='has-error'
+                        errorClassName='help-block'
+                      />
                     </td>
                     <td>
                       {source && source[property]}
