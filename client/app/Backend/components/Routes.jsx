@@ -18,6 +18,8 @@ import OfferApprovedPage from '../../bundles/Statistics/components/OfferApproved
 import OrgaCreatedPage from '../../bundles/Statistics/components/OrgaCreatedPage'
 import OrgaApprovedPage from '../../bundles/Statistics/components/OrgaApprovedPage'
 import ProductivityGoalPage from '../../bundles/Statistics/components/ProductivityGoalPage'
+import EditTranslation from
+  '../../bundles/EditTranslation/containers/EditTranslation'
 
 export default class Routes extends React.Component {
   render() {
@@ -51,10 +53,12 @@ export default class Routes extends React.Component {
 
           <Route path='offer_translations'>
             <IndexRoute component={Index} />
+            <Route path=':id/edit' component={EditTranslation} model='offer' />
           </Route>
 
           <Route path='organization_translations'>
             <IndexRoute component={Index} />
+            <Route path=':id/edit' component={EditTranslation} model='organization' />
           </Route>
         </Route>
       </Router>

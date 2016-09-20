@@ -20,10 +20,10 @@ included_models:
   # - SectionFilter
   - OrganizationTranslation
   - OfferTranslation
-  - ProductivityGoal
+  # - ProductivityGoal
   - UserTeam
   - User
-  - TimeAllocation
+  # - TimeAllocation
 settings:
   Organization:
     list:

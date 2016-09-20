@@ -16,6 +16,13 @@ module API::V1
         property :created_at
         property :updated_at
 
+        has_one :organization do
+          type :organizations
+
+          property :id
+          property :description
+        end
+
         # property :organization_section, getter: ->(ot) do
         #   ot[:represented].organization.section_filters.pluck(:identifier)
         # end

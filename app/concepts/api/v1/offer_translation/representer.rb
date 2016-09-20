@@ -13,17 +13,19 @@ module API::V1
         property :source
         property :name
         property :description
+        property :opening_specification
         property :possibly_outdated
         property :created_at
         property :updated_at
 
-        # has_one :offer do
-        #   property :id
-        #   has_many :section_filters do
-        #     property :id
-        #     property :identifier
-        #   end
-        # end
+        has_one :offer do
+          type :offers
+
+          property :id
+          property :name
+          property :description
+          property :opening_specification
+        end
         # property :offer_section, getter: ->(ot) do
         #   ot[:represented].offer.section_filters.pluck(:identifier)
         # end

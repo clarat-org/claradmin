@@ -24,7 +24,6 @@ export default function loadAjaxData(model, query, key) {
   return function(dispatch) {
     dispatch(loadAjaxDataRequest(key))
 
-    //const fetch = require('isomorphic-fetch') // regular import breaks in SSR
     return fetch(path, {
       method: 'GET',
       credentials: 'same-origin'

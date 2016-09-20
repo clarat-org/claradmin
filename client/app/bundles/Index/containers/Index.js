@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import loadAjaxData from '../../..//Backend/actions/loadAjaxData'
+import loadAjaxData from '../../../Backend/actions/loadAjaxData'
 import Index from '../components/Index'
 
 const mapStateToProps = (state, ownProps) => {
