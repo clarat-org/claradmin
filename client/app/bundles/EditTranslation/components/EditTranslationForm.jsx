@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react'
 import { Form, InputSet } from 'rform'
+import EditTranslationRow from '../containers/EditTranslationRow'
 
 export default class EditTranslationForm extends Component {
   render() {
@@ -26,22 +27,12 @@ export default class EditTranslationForm extends Component {
                   Original {/*TODO: Link to edit*/}
                 </th>
               </tr>
-              {properties.map(({property, type}) => {
+              {properties.map(property => {
                 return(
-                  <tr key={property}>
-                    <td>
-                      <InputSet
-                        attribute={property} type={type}
-                        label={property}
-                        wrapperClassName='form-group' className='form-control'
-                        wrapperErrorClassName='has-error'
-                        errorClassName='help-block'
-                      />
-                    </td>
-                    <td>
-                      {source && source[property]}
-                    </td>
-                  </tr>
+                  <EditTranslationRow
+                    key={property} property={property} formId={formId}
+                    source={source}
+                  />
                 )
               })}
             </tbody>

@@ -14,10 +14,7 @@ const mapStateToProps = (state, ownProps) => {
     fields: translation
   }
   const formObjectClass = (model == 'offer') ? OfferTranslationFormObject : OrganizationTranslationFormObject
-  const properties = formObjectClass.properties.map(property => ({
-    property, type: (property == 'name') ? 'string' : 'textarea'
-  }))
-
+  const properties = formObjectClass.properties
   return {
     action,
     seedData,
