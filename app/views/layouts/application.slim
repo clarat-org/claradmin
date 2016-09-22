@@ -12,8 +12,8 @@ html class='no-js' lang=I18n.locale
 
 body.backend
   - if yield(:react_view) == 'true'
-    = cell('react', {}, current_user: current_user,
-                        form_authenticity_token: form_authenticity_token)
+    == cell('react', {}, current_user: current_user,
+                         form_authenticity_token: form_authenticity_token)
   - else
     == concept('backend/header_cell')
     .container-fluid
