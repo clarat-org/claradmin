@@ -4,7 +4,7 @@ module API::V1
     # class Index < API::V1::Default::Index
     class Index < API::V1::Default::Index
       def base_query
-        ::OfferTranslation.where(locale: [:ar, :ru, :en])
+        ::OfferTranslation.where(locale: [:ar, :en])
       end
 
       representer API::V1::OfferTranslation::Representer::Index
