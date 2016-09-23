@@ -4,9 +4,13 @@ require ClaratBase::Engine.root.join('app', 'models', 'organization_translation'
 
 class OrganizationTranslation < ActiveRecord::Base
   include PgSearch
+  # Search
   pg_search_scope :search_everything,
                   against: [
                     :id, :organization_id, :name, :locale, :source
                   ],
                   using: { tsearch: { prefix: true } }
+
+  # Associations
+  has_many :section_filters, through: :organization
 end
