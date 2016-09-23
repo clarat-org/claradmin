@@ -63,6 +63,10 @@ export default class Routes extends React.Component {
             <Route path='export' component={Export} />
             <Route path=':id/edit' component={EditTranslation} model='organization' />
           </Route>
+
+          <Route path='user_teams'>
+            <IndexRoute component={Index} />
+          </Route>
         </Route>
       </Router>
     )

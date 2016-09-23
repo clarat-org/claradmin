@@ -37,5 +37,16 @@ export default {
         'show', 'edit'
       ]
     },
+
+    user_teams: {
+      fields: [
+        'name', 'user_names'
+      ],
+      general_actions: [
+        'index'
+      ],
+      member_actions: [
+      ]
+    },
   }
 }
