@@ -40,7 +40,7 @@ export default {
 
     user_teams: {
       fields: [
-        'name', 'user_names'
+        'id', 'name', 'users'
       ],
       general_actions: [
         'index'

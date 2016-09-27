@@ -6,7 +6,7 @@ module API::V1
         ::UserTeam
       end
 
-      representer API::V1::UserTeam::Representer::Index
+      representer API::V1::UserTeam::Representer::Show
     end
   end
 end

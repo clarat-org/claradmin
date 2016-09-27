@@ -6,14 +6,16 @@ module API::V1
         type :user_teams
 
         property :name
-        property :user_names, getter: ->(ot) do
-          ot[:represented].users.pluck(:name).join(', ')
+
+        # collection :users, extend: API::V1::User::Representer::Show
+        collection :users do
+          property :name, as: :label
         end
       end
 
-      class Index < Show
-        # items extend: Show
-      end
+      # class Show < API::V1::Default::Representer::Show
+      #   # items extend: Show
+      # end
     end
   end
 end
