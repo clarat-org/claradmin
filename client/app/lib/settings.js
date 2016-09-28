@@ -58,6 +58,6 @@ export default {
       ],
       member_actions: [
       ]
-    }
+    },
   }
 }
