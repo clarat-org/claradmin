@@ -10,8 +10,21 @@ Rails.application.routes.draw do
       get :mindmap
     end
   end
-  resources :offer_translations, only: [:index, :edit, :update]
-  resources :organization_translations, only: [:index, :edit, :update]
+  resources :offer_translations, only: [:index, :edit, :update] do
+    collection do
+      get 'export', controller: :pages, action: :react
+    end
+  end
+  resources :organization_translations, only: [:index, :edit, :update] do
+    collection do
+      get 'export', controller: :pages, action: :react
+    end
+  end
+  resources :productivity_goals
+  resources :users, only: [:index, :edit, :update]
+  resources :user_teams
+  get 'time_allocations(/:year/:week_number)', controller: :time_allocations,
+                                               action: :index
 
   resources :next_steps_offers, only: [:index]
 
@@ -34,18 +47,26 @@ Rails.application.routes.draw do
   # ...
 
   # API
-  namespace :api do
+  namespace :api, defaults: {format: :json}  do
     namespace :v1 do
       resources :categories do
         collection do
           put 'sort'
         end
       end
+      resources :offers, only: [:show]
       resources :locations, only: [:index]
-      resources :organizations, only: [:index]
+      resources :organizations, only: [:show, :index]
       get '/statistics' => 'statistics#index'
-      get '/users' => 'users#index'
+      resources :users, only: [:index, :update]
+      resources :offer_translations, only: [:index, :show, :update]
+      resources :organization_translations, only: [:index, :show, :update]
+      resources :productivity_goals, except: [:destroy]
+      resources :time_allocations, only: [:create, :update]
+      post 'time_allocations/:year/:week_number',  controller: :time_allocations,
+                                                   action: :report_actual
       # get '/statistics/:topic/:user_id(/:start/:end)' => 'statistics#index'
+      get 'field_set/:model', controller: :field_set, action: :show
     end
   end
 

@@ -37,18 +37,20 @@ class CheckSingleWebsiteWorker
   end
 
   def check_website_unreachable? website
-    # convert url to ascii, fetch header and check status code
-    header = HTTParty.head(website.ascii_url)
+    url = website.ascii_url
+    # first check header then try complete get when header returns an error.
+    # If both checks fail, the website is treated as unreachable
+    header = HTTParty.head(url)
     if !header || header.code >= 400 # everything above 400 is an error
-      return true
+      response = HTTParty.get(url)
+      if !response || response.code >= 400 # everything above 400 is an error
+        return true
+      end
     end
     return false
   # catch errors that prevent a valid response
   rescue HTTParty::RedirectionTooDeep, Errno::EHOSTUNREACH, SocketError,
-         Timeout::Error, URI::InvalidURIError
+         Timeout::Error, URI::InvalidURIError, OpenSSL::SSL::SSLError
     return true
-  # rescue SSL Errors to prevent crashing but handle the website as reachable
-  rescue OpenSSL::SSL::SSLError
-    return false
   end
 end
