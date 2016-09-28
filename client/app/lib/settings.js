@@ -48,5 +48,16 @@ export default {
       member_actions: [
       ]
     },
+
+    offers: {
+      fields: [
+        'id', 'name', 'aasm_state', 'created_by', 'expires_at', 'logic_version_id'
+      ],
+      general_actions: [
+        'index', 'export'
+      ],
+      member_actions: [
+      ]
+    }
   }
 }
