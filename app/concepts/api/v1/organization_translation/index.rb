@@ -3,7 +3,7 @@ module API::V1
   module OrganizationTranslation
     class Index < API::V1::Default::Index
       def base_query
-        ::OrganizationTranslation.where(locale: [:ar, :en]).uniq
+        ::OrganizationTranslation.where(locale: [:en, :ar, :fa])
           .joins(:section_filters).where('filters.identifier = ?', 'refugees')
       end
 

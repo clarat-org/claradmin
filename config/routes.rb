@@ -2,7 +2,11 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   # General Routes
-  resources :offers
+  resources :offers do
+    collection do
+      get 'export', controller: :pages, action: :react
+    end
+  end
   resources :organizations
   resources :categories do
     collection do
@@ -54,7 +58,7 @@ Rails.application.routes.draw do
           put 'sort'
         end
       end
-      resources :offers, only: [:show]
+      resources :offers, only: [:index, :show]
       resources :locations, only: [:index]
       resources :organizations, only: [:show, :index]
       get '/statistics' => 'statistics#index'
