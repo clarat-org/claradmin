@@ -16,7 +16,7 @@ export default {
     organization_translations: {
       fields: [
         'id', 'organization_id', 'locale', 'source', 'description',
-        'possibly_outdated', 'organization.approved_at'
+        'possibly_outdated', {organization: ['approved_at']}
       ],
       general_actions: [
         'index', 'export'
@@ -40,13 +40,13 @@ export default {
 
     offers: {
       fields: [
-        'id', 'name', 'aasm_state', 'created_by', 'expires_at', 'logic_version_id'
+        'id', 'name', 'aasm_state', 'created_by', 'expires_at',
+        'logic_version_id'
       ],
       general_actions: [
         'index', 'export'
       ],
-      member_actions: [
-      ]
+      member_actions: []
     },
   }
 }
