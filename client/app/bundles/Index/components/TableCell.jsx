@@ -4,12 +4,12 @@ import isArray from 'lodash/isArray'
 export default class TableCell extends Component {
   render() {
     const {
-      content
+      content, contentType
     } = this.props
 
     return (
       <td>
-        {this.renderContent(content)}
+        {this.renderContent(content, contentType)}
       </td>
     )
   }
@@ -34,6 +34,8 @@ export default class TableCell extends Component {
         }
       case 'string':
         return content.substr(0, 100)
+      case 'time':
+        return new Date(content).toLocaleString('de-de')
       default:
         return content
     }
