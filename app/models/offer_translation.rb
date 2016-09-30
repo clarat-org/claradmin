@@ -11,7 +11,4 @@ class OfferTranslation < ActiveRecord::Base
                     :id, :offer_id, :name, :locale, :source
                   ],
                   using: { tsearch: { prefix: true } }
-
-  # Associations
-  has_many :section_filters, through: :offer
 end

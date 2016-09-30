@@ -11,7 +11,4 @@ class OrganizationTranslation < ActiveRecord::Base
                     :id, :organization_id, :description, :locale, :source
                   ],
                   using: { tsearch: { prefix: true } }
-
-  # Associations
-  has_many :section_filters, through: :organization
 end
