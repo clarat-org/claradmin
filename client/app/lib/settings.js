@@ -45,8 +45,7 @@ export default {
       general_actions: [
         'index', 'show'
       ],
-      member_actions: [
-      ]
+      member_actions: []
     },
 
     offers: {

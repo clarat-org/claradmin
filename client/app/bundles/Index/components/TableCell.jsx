@@ -14,8 +14,8 @@ export default class TableCell extends Component {
     )
   }
 
-  renderContent(content) {
-    switch(typeof content) {
+  renderContent(content, contentType) {
+    switch(contentType) {
       case 'object':
         if(isArray(content)){
           return(
