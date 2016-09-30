@@ -49,7 +49,7 @@ const routes = [
     anchor: 'Ressourcenplanung',
     access: superuser,
   }, {
-    id: 6,
+    id: 7,
     pathname: '/user_teams',
     anchor: 'UserTeams',
     access: superuser,

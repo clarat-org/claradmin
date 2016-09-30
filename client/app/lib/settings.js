@@ -43,7 +43,7 @@ export default {
         'id', 'name', 'users'
       ],
       general_actions: [
-        'index'
+        'index', 'show'
       ],
       member_actions: [
       ]

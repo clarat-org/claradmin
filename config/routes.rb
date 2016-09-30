@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   end
   resources :productivity_goals
   resources :users, only: [:index, :edit, :update]
-  resources :user_teams
+  resources :user_teams, only: [:index, :show], controller: :pages, action: :react
   get 'time_allocations(/:year/:week_number)', controller: :time_allocations,
                                                action: :index
 
@@ -67,7 +67,7 @@ Rails.application.routes.draw do
       resources :organization_translations, only: [:index, :show, :update]
       resources :productivity_goals, except: [:destroy]
       resources :time_allocations, only: [:create, :update]
-      resources :user_teams, only: [:index]
+      resources :user_teams, only: [:index, :show]
       post 'time_allocations/:year/:week_number',  controller: :time_allocations,
                                                    action: :report_actual
       # get '/statistics/:topic/:user_id(/:start/:end)' => 'statistics#index'
