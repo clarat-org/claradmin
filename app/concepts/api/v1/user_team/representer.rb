@@ -9,6 +9,7 @@ module API::V1
 
         # collection :users, extend: API::V1::User::Representer::Show
         collection :users do
+          property :id
           property :name, as: :label
         end
       end

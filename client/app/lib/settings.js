@@ -43,9 +43,11 @@ export default {
         'id', 'name', 'users'
       ],
       general_actions: [
-        'index', 'show'
+        'index'
       ],
-      member_actions: []
+      member_actions: [
+        'show'
+      ]
     },
 
     offers: {
@@ -56,7 +58,21 @@ export default {
       general_actions: [
         'index', 'export'
       ],
-      member_actions: []
+      member_actions: [
+        'show'
+      ]
+    },
+
+    users: {
+      fields: [
+        'id', 'name', 'email', 'user_teams'
+      ],
+      general_actions: [
+        'index'
+      ],
+      member_actions: [
+        'show'
+      ]
     },
   }
 }

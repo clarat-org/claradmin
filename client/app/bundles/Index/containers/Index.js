@@ -39,6 +39,8 @@ function headingFor(model) {
     return 'Produktivitätsziele'
   case 'user_teams':
     return 'Nutzer-Teams'
+  case 'users':
+    return 'Nutzer'
   default:
     throw new Error(`Please provide a heading for ${model}`)
   }

@@ -3,8 +3,12 @@ import ShowItems from '../containers/ShowItems'
 
 export default class Export extends Component {
   componentWillReceiveProps(nextProps) {
-    if (nextProps.location.query != this.props.location.query) {
-      // this.props.loadData(nextProps.location.query, nextProps.model)
+    // console.log('componentWillReceiveProps!')
+    // console.log(this.props)
+    // console.log(nextProps)
+    if (nextProps.model != this.props.model || nextProps.id != this.props.id) {
+      // console.log('CALL!')
+      this.props.loadData(nextProps)
     }
   }
 
@@ -14,14 +18,13 @@ export default class Export extends Component {
 
   render() {
     const {
-      location, model, model_instance
+      location, id, model, heading
     } = this.props
-
     return (
       <div className='content Show'>
-        <h2>{`Show: ${model}`}</h2>
+        <h3>{heading}</h3>
         <hr />
-        <ShowItems model={model} model_instance={model_instance} params={location.query} />
+        <ShowItems model={model} id={id} params={location.query} />
       </div>
     )
   }
