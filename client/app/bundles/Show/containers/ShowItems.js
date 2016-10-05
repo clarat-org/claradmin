@@ -4,12 +4,12 @@ import ShowItems from '../components/ShowItems'
 
 const mapStateToProps = (state, ownProps) => {
   // read model instance
-  const model_instance = state.ajax[ownProps.model] &&
-    state.ajax[ownProps.model].data.id === ownProps.id &&
-    state.ajax[ownProps.model].data.attributes
+  const model_instance = state.entities[ownProps.model] &&
+    state.entities[ownProps.model][ownProps.id]
   const loaded = !!model_instance
   // read own fields and associations of current model from the state
-  const field_set = state.ajax.field_set
+  const field_set =  state.entities.field_sets &&
+    state.entities.field_sets[ownProps.model]
   const column_names = filterFields(
     field_set && field_set.column_names || [],
     model_instance || {}
@@ -18,13 +18,7 @@ const mapStateToProps = (state, ownProps) => {
     toPairs(field_set && field_set.associations || {}),
     model_instance || {}
   )
-  // console.log(state)
-  // console.log(model_instance)
-  // console.log(field_set && field_set.column_names)
-  // console.log(column_names)
-  // console.log(field_set && field_set.associations)
-  // console.log(associations)
-
+  
   return {
     model_instance,
     associations,

@@ -3,12 +3,9 @@ import ShowItems from '../containers/ShowItems'
 
 export default class Show extends Component {
   componentWillReceiveProps(nextProps) {
-    // console.log('componentWillReceiveProps!')
-    // console.log(this.props)
-    // console.log(nextProps)
     if (nextProps.model != this.props.model || nextProps.id != this.props.id) {
-      // console.log('CALL!')
-      this.props.loadData(nextProps)
+      // console.log('componentWillReceiveProps!')
+      this.props.loadData(nextProps.model, nextProps.id)
     }
   }
 

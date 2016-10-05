@@ -8,7 +8,7 @@ export default class ShowItems extends React.Component {
     const {
       model_instance, associations, column_names, loaded
     } = this.props
-
+    
     if(loaded){
       return (
         <div className="content ShowList">
