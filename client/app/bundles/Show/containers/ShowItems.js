@@ -1,7 +1,5 @@
 import { connect } from 'react-redux'
 import toPairs from 'lodash/toPairs'
-import valuesIn from 'lodash/valuesIn'
-import settings from '../../../lib/settings'
 import ShowItems from '../components/ShowItems'
 
 const mapStateToProps = (state, ownProps) => {

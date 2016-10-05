@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import ShowItems from '../containers/ShowItems'
 
-export default class Export extends Component {
+export default class Show extends Component {
   componentWillReceiveProps(nextProps) {
     // console.log('componentWillReceiveProps!')
     // console.log(this.props)

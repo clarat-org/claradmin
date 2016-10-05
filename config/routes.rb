@@ -2,11 +2,7 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   # General Routes
-  resources :offers do
-    collection do
-      get 'export', controller: :pages, action: :react
-    end
-  end
+  resources :offers, only: [:index, :show, :export], controller: :pages, action: :react
   resources :organizations
   resources :categories do
     collection do
