@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: 07284c1be27da023260304739a200eaefdb692c2
+  revision: 2088890f070a3dbd83b553f72142cfbc2b3ab99d
   branch: feature/878-assignments
   specs:
     clarat_base (0.1.4)
@@ -181,7 +181,7 @@ GEM
       representable (>= 2.4.0, <= 3.1.0)
       uber
     docile (1.1.5)
-    domain_name (0.5.20160826)
+    domain_name (0.5.20161021)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.1.0)
     dotenv-rails (2.1.0)
