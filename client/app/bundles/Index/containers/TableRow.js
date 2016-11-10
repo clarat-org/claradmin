@@ -22,7 +22,6 @@ const mapStateToProps = (state, ownProps) => {
     icon: iconFor(action),
     href: routeForAction(action, model, id, assignable_model, assignable_id)
   }))
-  console.log(actions)
 
   return {
     actions,

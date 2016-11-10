@@ -7,13 +7,14 @@ export default class UserTeamFormObject extends FormObject {
 
   static get properties() {
     return [
-      'name'
+      'name', 'user_ids'
     ]
   }
 
   static get formConfig() {
     return {
-      name: { type: 'string' }
+      name: { type: 'string' },
+      user_ids: { type: 'multiselect' },
     }
   }
 

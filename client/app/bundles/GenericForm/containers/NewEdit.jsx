@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import loadAjaxData from '../../../Backend/actions/loadAjaxData'
+import setUi from '../../../Backend/actions/setUi'
 import NewEdit from '../components/NewEdit'
 
 const mapStateToProps = (state, ownProps) => {
@@ -7,13 +8,15 @@ const mapStateToProps = (state, ownProps) => {
   const [_, model, idOrNew, edit] = pathname.split('/')
   const editId = edit ? idOrNew : null
   const heading = headingFor(model, editId)
-  const loadedOriginalData = !!edit && !!state.entities[model][editId]
+  const uiDataLoadedFlag = `GenericForm-edit-loaded-${model}-${editId}`
+  const loadedOriginalData = state.ui[uiDataLoadedFlag] || false
 
   return {
     heading,
     model,
     editId,
     loadedOriginalData,
+    uiDataLoadedFlag,
   }
 }
 
@@ -31,7 +34,13 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       const { model, editId } = stateProps
       if (!editId) return
 
-      dispatchProps.dispatch(loadAjaxData(`${model}/${editId}`, '', model))
+      dispatchProps.dispatch(
+        loadAjaxData(
+          `${model}/${editId}`, '', model, undefined, undefined, () => {
+            dispatchProps.dispatch(setUi(stateProps.uiDataLoadedFlag, true))
+          }
+        )
+      )
     },
   }
 }

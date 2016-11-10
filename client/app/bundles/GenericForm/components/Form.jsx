@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Form, InputSet } from 'rform'
+import MultiSelect from '../containers/MultiSelect'
 
 export default class NewForm extends React.Component {
   render() {
@@ -15,19 +16,31 @@ export default class NewForm extends React.Component {
         action={action} id={formId} seedData={seedData}
         handleResponse={handleResponse} afterResponse={afterResponse}
       >
-        {inputs.map( (input, index) => {
-          return(
-            <InputSet key={index}
-              wrapperClassName='form-group' className='form-control'
-              label={input.attribute} attribute={input.attribute}
-              type={input.type}
-            />
-          )
-        })}
+        {inputs.map(this.renderInput.bind(this))}
         <button className='btn btn-default' type='submit'>
           Abschicken
         </button>
       </Form>
     )
+  }
+
+  renderInput(input, index) {
+    if (input.type == 'multiselect') {
+      return(
+        <MultiSelect key={index}
+          wrapperClassName='form-group' className='form-control'
+          label={input.attribute} attribute={input.attribute}
+          formId={this.props.formId} type={input.type}
+        />
+      )
+    } else {
+      return(
+        <InputSet key={index}
+          wrapperClassName='form-group' className='form-control'
+          label={input.attribute} attribute={input.attribute}
+          type={input.type}
+        />
+      )
+    }
   }
 }
