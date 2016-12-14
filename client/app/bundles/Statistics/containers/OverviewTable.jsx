@@ -12,8 +12,9 @@ const mapStateToProps = (state, ownProps) => {
   const data = (state.entities.count && state.entities.count[ownProps.model]) || {}
   const sections =
     values(state.entities.filters).filter(obj => obj.type == 'SectionFilter')
+
   const allDataLoaded = (
-    values(data).length == states.length &&
+    values(data).length == states.length + 1 && // +1 for the total
       !toPairs(data).filter(pair => values(pair[1]).length != sections.length).length
   )
 
@@ -38,21 +39,18 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     return function(json) {
       let obj = {}
       obj[model] = {}
-      obj[model][aasm_state] = {}
-      obj[model][aasm_state][section.identifier || section] =
+      obj[model][aasm_state || 'total'] = {}
+      obj[model][aasm_state || 'total'][section.identifier || section] =
         json.meta.total_entries
       return { count: obj }
     }
   }
 
   const entryCountGrabberParams = function(aasm_state, section) {
-    let params = {
-      'filter[aasm_state]': aasm_state,
-      per_page: 1
-    }
-    if (typeof section == 'object') {
+    let params = { per_page: 1 }
+    if (aasm_state) params['filter[aasm_state]'] = aasm_state
+    if (typeof section == 'object')
       params['filter[section_filters.id]'] = section.id
-    }
     return params
   }
 
@@ -71,12 +69,16 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...ownProps,
 
     loadData(states) {
-      for (let aasm_state of states) {
+
+      for (let aasm_state of states.concat(null)) { // null for the total row
         for (let section of stateProps.sections) {
           dispatchDataLoad(aasm_state, section)
         }
         dispatchDataLoad(aasm_state, 'total')
       }
+
+      // query totals
+      dispatchDataLoad(null, )
     },
 
     loadStates() {

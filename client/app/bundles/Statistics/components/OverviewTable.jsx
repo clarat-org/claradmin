@@ -27,30 +27,28 @@ export default class OverviewTable extends React.Component {
             <th># insgesamt</th>
           </tr>
           {states.map(this._renderStateRow.bind(this))}
+          {this._renderStateRow('total')}
         </tbody>
       </table>
     )
   }
 
   _renderStateRow(state) {
-    const numbers = this.props.data[state]
+    const numbers = this.props.data[state] || {}
 
     if (numbers) {
       return(
         <tr key={state}>
           <td>{state}</td>
-          <td>{numbers.family}</td>
-          <td>{numbers.refugees}</td>
-          <td>{numbers.total}</td>
-        </tr>
-      )
-    } else {
-      return(
-        <tr key={state}>
-          <td>{state}</td>
-          <td>Lade...</td>
-          <td>Lade...</td>
-          <td>Lade...</td>
+          <td>
+            {typeof numbers.family == 'number' ? numbers.family : 'Lade…'}
+          </td>
+          <td>
+            {typeof numbers.refugees == 'number' ? numbers.refugees : 'Lade…'}
+          </td>
+          <td>
+            {typeof numbers.total == 'number' ? numbers.total : 'Lade…'}
+          </td>
         </tr>
       )
     }
