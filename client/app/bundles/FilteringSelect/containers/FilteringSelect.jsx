@@ -42,7 +42,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...ownProps,
 
     onChange(selected) {
-      const newValue =
+      let newValue
+      if (selected) newValue =
         isArray(selected) ? selected.map(e => e.value) : selected.value
 
       dispatch(

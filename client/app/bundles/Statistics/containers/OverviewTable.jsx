@@ -7,13 +7,15 @@ import loadAjaxData from '../../../Backend/actions/loadAjaxData'
 import addEntities from '../../../Backend/actions/addEntities'
 import OverviewTable from '../components/OverviewTable'
 
+const ALL = 'all'
+
 const mapStateToProps = (state, ownProps) => {
   const stateKey = `statisticsOverview_${ownProps.model}`
   const states = (state.ajax[stateKey] && state.ajax[stateKey].states) || []
   const selectedCity = state.rform[stateKey] && state.rform[stateKey].city
   const data =
     (state.entities.count && state.entities.count[ownProps.model] &&
-      state.entities.count[ownProps.model][selectedCity || 'allCities']) || {}
+      state.entities.count[ownProps.model][selectedCity || ALL]) || {}
   const sections =
     values(state.entities.filters).filter(obj => obj.type == 'SectionFilter')
   const loadedCities =
@@ -41,7 +43,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     return function(json) {
       const sectionKey = section.identifier || section
       const stateKey = aasm_state || 'total'
-      const cityKey = cityId || 'allCities'
+      const cityKey = cityId || ALL
 
       let obj = {}
       obj[model] = {}
@@ -97,7 +99,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     },
 
     onCityChange(selected) {
-      if (!stateProps.loadedCities.includes(selected.value))
+      const city = (selected && selected.value) || ALL
+      if (!stateProps.loadedCities.includes(city))
         loadData(stateProps.states, selected.value)
     }
   })
