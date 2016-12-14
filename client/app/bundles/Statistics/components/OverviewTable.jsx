@@ -15,7 +15,7 @@ export default class OverviewTable extends React.Component {
   }
 
   render() {
-    const { data } = this.props
+    const { data, states } = this.props
 
     return (
       <table className='table'>
@@ -26,18 +26,33 @@ export default class OverviewTable extends React.Component {
             <th># in refugees</th>
             <th># insgesamt</th>
           </tr>
-          {toPairs(data).map(([state, numbers]) => {
-            return(
-              <tr key={state}>
-                <td>{state}</td>
-                <td>{numbers.family}</td>
-                <td>{numbers.refugees}</td>
-                <td>{numbers.total}</td>
-              </tr>
-            )
-          })}
+          {states.map(this._renderStateRow.bind(this))}
         </tbody>
       </table>
     )
+  }
+
+  _renderStateRow(state) {
+    const numbers = this.props.data[state]
+
+    if (numbers) {
+      return(
+        <tr key={state}>
+          <td>{state}</td>
+          <td>{numbers.family}</td>
+          <td>{numbers.refugees}</td>
+          <td>{numbers.total}</td>
+        </tr>
+      )
+    } else {
+      return(
+        <tr key={state}>
+          <td>{state}</td>
+          <td>Lade...</td>
+          <td>Lade...</td>
+          <td>Lade...</td>
+        </tr>
+      )
+    }
   }
 }
