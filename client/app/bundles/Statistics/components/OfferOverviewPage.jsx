@@ -6,7 +6,7 @@ export default class OfferOverviewPage extends React.Component {
     return (
       <div className='jumbotron overview'>
         <h2>Angebotsübersicht</h2>
-        <OverviewTable model='offer' />
+        <OverviewTable model='offer' cityAssociationName='city' />
         <p>
           <small>
             Hier findest du die Anzahl von Angeboten, die in einem state und

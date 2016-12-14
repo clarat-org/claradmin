@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import isArray from 'lodash/isArray'
 import { updateAction } from 'rform'
+import { pluralize } from '../../../lib/inflection'
 import loadForFilteringSelect from '../actions/loadForFilteringSelect'
 import FilteringSelect from '../components/FilteringSelect'
 
@@ -9,7 +10,7 @@ const mapStateToProps = (state, ownProps) => {
   let associatedModel = ownProps.associatedModel ||
     ownProps.attribute.replace(/_id([^_id]*)$/, '$1')
   // pluralize
-  if (associatedModel[associatedModel.length - 1] != 's') associatedModel += 's'
+  associatedModel = pluralize(associatedModel)
 
   let value = state.rform[ownProps.formId] &&
     state.rform[ownProps.formId][ownProps.attribute]
@@ -47,6 +48,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       dispatch(
         updateAction(ownProps.formId, ownProps.attribute, null, newValue)
       )
+
+      if (ownProps.onChange) ownProps.onChange(selected)
     },
 
     onMount() {

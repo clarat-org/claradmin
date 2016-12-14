@@ -1,5 +1,6 @@
 import React from 'react'
-import toPairs from 'lodash/toPairs'
+import { Form } from 'rform'
+import FilteringSelect from '../../FilteringSelect/wrappers/FilteringSelect'
 
 export default class OverviewTable extends React.Component {
   componentDidMount() {
@@ -15,21 +16,29 @@ export default class OverviewTable extends React.Component {
   }
 
   render() {
-    const { data, states } = this.props
+    const { data, states, stateKey, onCityChange } = this.props
 
     return (
-      <table className='table'>
-        <tbody>
-          <tr>
-            <th>state</th>
-            <th># in family</th>
-            <th># in refugees</th>
-            <th># insgesamt</th>
-          </tr>
-          {states.map(this._renderStateRow.bind(this))}
-          {this._renderStateRow('total')}
-        </tbody>
-      </table>
+      <div>
+        <Form id={stateKey}>
+          <FilteringSelect
+            attribute='city' associatedModel='city' placeholder='Stadt…'
+            onChange={onCityChange}
+          />
+        </Form>
+        <table className='table'>
+          <tbody>
+            <tr>
+              <th>state</th>
+              <th># in family</th>
+              <th># in refugees</th>
+              <th># insgesamt</th>
+            </tr>
+            {states.map(this._renderStateRow.bind(this))}
+            {this._renderStateRow('total')}
+          </tbody>
+        </table>
+      </div>
     )
   }
 

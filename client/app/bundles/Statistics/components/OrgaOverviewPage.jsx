@@ -6,7 +6,7 @@ export default class OrgaOverviewPage extends React.Component {
     return (
       <div className='jumbotron overview'>
         <h2>Organizationsübersicht</h2>
-        <OverviewTable model='organization' />
+        <OverviewTable model='organization' cityAssociationName='cities' />
         <p>
           <small>
             Hier findest du die Anzahl von Orgas, die in einem state und

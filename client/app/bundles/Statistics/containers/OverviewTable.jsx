@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import toPairs from 'lodash/toPairs'
 import values from 'lodash/values'
+import keys from 'lodash/keys'
 import settings from '../../../lib/settings'
 import loadAjaxData from '../../../Backend/actions/loadAjaxData'
 import addEntities from '../../../Backend/actions/addEntities'
@@ -9,21 +10,22 @@ import OverviewTable from '../components/OverviewTable'
 const mapStateToProps = (state, ownProps) => {
   const stateKey = `statisticsOverview_${ownProps.model}`
   const states = (state.ajax[stateKey] && state.ajax[stateKey].states) || []
-  const data = (state.entities.count && state.entities.count[ownProps.model]) || {}
+  const selectedCity = state.rform[stateKey] && state.rform[stateKey].city
+  const data =
+    (state.entities.count && state.entities.count[ownProps.model] &&
+      state.entities.count[ownProps.model][selectedCity || 'allCities']) || {}
   const sections =
     values(state.entities.filters).filter(obj => obj.type == 'SectionFilter')
-
-  const allDataLoaded = (
-    values(data).length == states.length + 1 && // +1 for the total
-      !toPairs(data).filter(pair => values(pair[1]).length != sections.length).length
-  )
+  const loadedCities =
+    (state.entities.count && keys(state.entities.count[ownProps.model])) || []
 
   return {
     data,
-    allDataLoaded,
     states,
     stateKey,
     sections,
+    selectedCity,
+    loadedCities,
   }
 }
 
@@ -32,35 +34,51 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 })
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { model } = ownProps
+  const { model, cityAssociationName } = ownProps
   const { dispatch } = dispatchProps
 
-  const entryCountGrabberTransformer = function(aasm_state, section) {
+  const entryCountGrabberTransformer = function(aasm_state, section, cityId) {
     return function(json) {
+      const sectionKey = section.identifier || section
+      const stateKey = aasm_state || 'total'
+      const cityKey = cityId || 'allCities'
+
       let obj = {}
       obj[model] = {}
-      obj[model][aasm_state || 'total'] = {}
-      obj[model][aasm_state || 'total'][section.identifier || section] =
-        json.meta.total_entries
+      obj[model][cityKey] = {}
+      obj[model][cityKey][stateKey] = {}
+      obj[model][cityKey][stateKey][sectionKey] = json.meta.total_entries
       return { count: obj }
     }
   }
 
-  const entryCountGrabberParams = function(aasm_state, section) {
+  const entryCountGrabberParams = function(aasm_state, section, cityId) {
     let params = { per_page: 1 }
+    if (cityId) params[`filter[${cityAssociationName}.id]`] = cityId
     if (aasm_state) params['filter[aasm_state]'] = aasm_state
     if (typeof section == 'object')
       params['filter[section_filters.id]'] = section.id
     return params
   }
 
-  const dispatchDataLoad = function(aasm_state, section) {
+  const dispatchDataLoad = function(aasm_state, section, cityId) {
     dispatch(
       loadAjaxData(
-        model + 's', entryCountGrabberParams(aasm_state, section), 'lastData',
-        entryCountGrabberTransformer(aasm_state, section)
+        model + 's',
+        entryCountGrabberParams(aasm_state, section, cityId),
+        'lastData',
+        entryCountGrabberTransformer(aasm_state, section, cityId)
       )
     )
+  }
+
+  const loadData = function(states, cityId) {
+    for (let aasm_state of states.concat(null)) { // null for the "total" row
+      for (let section of stateProps.sections) {
+        dispatchDataLoad(aasm_state, section, cityId)
+      }
+      dispatchDataLoad(aasm_state, 'total', cityId)
+    }
   }
 
   return({
@@ -68,18 +86,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...dispatchProps,
     ...ownProps,
 
-    loadData(states) {
-
-      for (let aasm_state of states.concat(null)) { // null for the total row
-        for (let section of stateProps.sections) {
-          dispatchDataLoad(aasm_state, section)
-        }
-        dispatchDataLoad(aasm_state, 'total')
-      }
-
-      // query totals
-      dispatchDataLoad(null, )
-    },
+    loadData,
 
     loadStates() {
       dispatch(
@@ -88,6 +95,11 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
         )
       )
     },
+
+    onCityChange(selected) {
+      if (!stateProps.loadedCities.includes(selected.value))
+        loadData(stateProps.states, selected.value)
+    }
   })
 }
 
