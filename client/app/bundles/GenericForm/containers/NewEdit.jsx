@@ -4,8 +4,13 @@ import setUi from '../../../Backend/actions/setUi'
 import NewEdit from '../components/NewEdit'
 
 const mapStateToProps = (state, ownProps) => {
-  const pathname = ownProps.location.pathname
-  const [_, model, idOrNew, edit] = pathname.split('/')
+  let model, idOrNew, edit
+  if (ownProps.location) {
+    const pathname = ownProps.location.pathname
+    let [_, model, idOrNew, edit] = pathname.split('/')
+  } else {
+    let { model, idOrNew, edit } = ownProps
+  }
   const editId = edit ? idOrNew : null
   const heading = headingFor(model, editId)
   const uiDataLoadedFlag = `GenericForm-edit-loaded-${model}-${editId}`
@@ -51,8 +56,11 @@ function headingFor(model, id) {
   case 'user_teams':
     heading = 'Team'
     break
+  case 'divisions':
+    heading = 'Abteilung'
+    break
   default:
-    throw new Error(`Please provide a heading for ${model}`)
+    throw new Error(`Please provide a GenericForm heading for ${model}`)
   }
   return heading + ( id ? ` #${id} bearbeiten` : ' anlegen' )
 }
