@@ -4,13 +4,7 @@ import setUi from '../../../Backend/actions/setUi'
 import NewEdit from '../components/NewEdit'
 
 const mapStateToProps = (state, ownProps) => {
-  let model, idOrNew, edit
-  if (ownProps.location) {
-    const pathname = ownProps.location.pathname
-    let [_, model, idOrNew, edit] = pathname.split('/')
-  } else {
-    let { model, idOrNew, edit } = ownProps
-  }
+  const [ model, idOrNew, edit ] = getBaseData(ownProps)
   const editId = edit ? idOrNew : null
   const heading = headingFor(model, editId)
   const uiDataLoadedFlag = `GenericForm-edit-loaded-${model}-${editId}`
@@ -65,6 +59,15 @@ function headingFor(model, id) {
   return heading + ( id ? ` #${id} bearbeiten` : ' anlegen' )
 }
 
+function getBaseData(ownProps) {
+  if (ownProps.location && ownProps.location.pathname) {
+    const pathname = ownProps.location.pathname
+    const [_, model, idOrNew, edit] = pathname.split('/')
+    return [model, idOrNew, edit]
+  } else {
+    return [ownProps.model, ownProps.idOrNew, ownProps.edit]
+  }
+}
 
 export default connect(
   mapStateToProps,

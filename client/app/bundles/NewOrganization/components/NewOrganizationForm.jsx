@@ -60,7 +60,8 @@ export default class NewOrganizationForm extends React.Component {
             wrapperClassName='form-group' className='form-control'
             label='Reichweite' attribute='isntthatencounter'
           />
-          <InlineCreate model='divisions' idOrNew='new' edit={null}
+          <InlineCreate
+            model='divisions' idOrNew='new' edit={null}
             wrapperClassName='form-group' className='form-control'
             label='Abteilungen' attribute='divisions'
           />

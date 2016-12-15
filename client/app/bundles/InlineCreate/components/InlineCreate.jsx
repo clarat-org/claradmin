@@ -15,17 +15,16 @@ export default class FilteringSelect extends React.Component {
 
   render() {
     const {
-      wrapperClassName, attribute, errorClassName, errors, label, loadOptions,
-      onChange, value, multi,
-      options, isLoading, onInputChange,
+      wrapperClassName, attribute, errorClassName, errors, label, model,
+      idOrNew, edit
     } = this.props
 
     return (
       <div className={wrapperClassName}>
         <Label attribute={attribute} content={label} />
 
-        <NewEdit attribute={attribute}
-
+        <NewEdit
+          attribute={attribute} model={model} idOrNew={idOrNew} edit={edit}
         />
 
         <Errors className={errorClassName} attribute={attribute} errors={errors} />
