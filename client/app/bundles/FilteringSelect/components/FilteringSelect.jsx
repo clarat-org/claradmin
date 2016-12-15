@@ -16,7 +16,7 @@ export default class FilteringSelect extends React.Component {
   render() {
     const {
       wrapperClassName, attribute, errorClassName, errors, label, loadOptions,
-      onChange, value, multi,
+      onChange, value, multi, placeholder,
       options, isLoading, onInputChange,
     } = this.props
 
@@ -27,6 +27,7 @@ export default class FilteringSelect extends React.Component {
         <VirtualizedSelect multi={multi}
           options={options} isLoading={isLoading} onChange={onChange}
           onInputChange={onInputChange} value={value}
+          placeholder={placeholder}
         />
 
         <Errors className={errorClassName} attribute={attribute} errors={errors} />
