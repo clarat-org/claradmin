@@ -97,6 +97,7 @@ Rails.application.routes.draw do
       resources :time_allocations, only: [:create, :update]
       resources :user_teams
       resources :section_filters, only: [:index]
+      resources :cities, only: [:index]
       resources :assignments, only: [:index, :show, :create, :update]
       # post 'assignments/:id/assign_and_edit_assignable', controller: :assignments,
       #                                                    action: :assign_and_edit_assignable
