@@ -8,19 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: 13603b6e9b1001f4495e11905ba7f6a05c912b15
-  specs:
-
-GIT
-  remote: git://github.com/efqdalton/dynamic_sitemaps.git
-  revision: f229cb40391ab3283efd2091ab58bbec68c720cf
-  branch: adds-custom-storages
-  specs:
-    dynamic_sitemaps (2.0.0)
-      aws-sdk
-
-PATH
-  remote: ../clarat_base/
+  revision: d39e557ab73ee60a711ce21289a6aa4a24457fdb
   specs:
     clarat_base (0.1.4)
       aasm
@@ -40,6 +28,14 @@ PATH
       sanitize
       sidekiq (~> 4.1.2)
       web-console (~> 2.0)
+
+GIT
+  remote: git://github.com/efqdalton/dynamic_sitemaps.git
+  revision: f229cb40391ab3283efd2091ab58bbec68c720cf
+  branch: adds-custom-storages
+  specs:
+    dynamic_sitemaps (2.0.0)
+      aws-sdk
 
 GEM
   remote: https://rubygems.org/
