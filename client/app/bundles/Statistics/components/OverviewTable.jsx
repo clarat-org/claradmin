@@ -30,9 +30,9 @@ export default class OverviewTable extends React.Component {
           <tbody>
             <tr>
               <th>state</th>
-              <th># in family</th>
-              <th># in refugees</th>
-              <th># insgesamt</th>
+              <th>family</th>
+              <th>refugees</th>
+              <th>insgesamt</th>
             </tr>
             {states.map(this._renderStateRow.bind(this))}
             {this._renderStateRow('total')}

@@ -11,7 +11,8 @@ export default class OrgaOverviewPage extends React.Component {
           <small>
             Hier findest du die Anzahl von Orgas, die in einem state und
             einer clarat Welt existieren. Und dann noch die Anzahl von allen
-            Orgas pro state, unabhängig von Welten.
+            Orgas pro state, unabhängig von Welten. Optional können diese Werte
+            nach einer Stadt gefiltert werden.
           </small>
         </p>
         <p>

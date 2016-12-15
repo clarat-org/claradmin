@@ -11,7 +11,8 @@ export default class OfferOverviewPage extends React.Component {
           <small>
             Hier findest du die Anzahl von Angeboten, die in einem state und
             einer clarat Welt existieren. Und dann noch die Anzahl von
-            Angeboten pro state insgesamt, unabhängig von Welten.
+            Angeboten pro state insgesamt, unabhängig von Welten. Optional
+            können diese Werte nach einer Stadt gefiltert werden.
           </small>
         </p>
         <p>
