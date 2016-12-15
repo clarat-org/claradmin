@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-class DivisionsController < BackendController
+class TimeAllocationsController < BackendController
   def index
   end
 end
