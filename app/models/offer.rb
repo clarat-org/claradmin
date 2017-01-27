@@ -49,7 +49,6 @@ class Offer < ActiveRecord::Base
                              inverse_of: :known_offers
 
   # Scopes
-  scope :approved, -> { where(aasm_state: 'approved') }
   scope :seasonal, -> { where.not(starts_at: nil) }
   scope :by_mailings_enabled_organization, lambda {
     joins(:organizations).where('organizations.mailings = ?', 'enabled')
@@ -92,6 +91,6 @@ class Offer < ActiveRecord::Base
   end
 
   def editable?
-    %(initialized approved checkup_process approval_process).include?(aasm_state)
+    %(initialized approved expired checkup_process approval_process).include?(aasm_state)
   end
 end
