@@ -5,6 +5,9 @@ require ClaratBase::Engine.root.join('app', 'models', 'offer')
 class Offer < ActiveRecord::Base
   has_paper_trail
 
+  EDITABLE_IN_STATES =
+    %(initialized approved expired checkup_process approval_process).freeze
+
   # Concerns
   include SearchAlgolia, Translations
 
@@ -91,6 +94,6 @@ class Offer < ActiveRecord::Base
   end
 
   def editable?
-    %(initialized approved expired checkup_process approval_process).include?(aasm_state)
+    EDITABLE_IN_STATES.include?(aasm_state)
   end
 end
