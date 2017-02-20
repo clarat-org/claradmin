@@ -52,3 +52,41 @@ class CheckSingleWebsiteWorker
     return true
   end
 end
+
+
+# def website_test? url
+#   conn = Faraday.new headers: { accept_encoding: 'none' } do |conn|
+#     conn.use FaradayMiddleware::FollowRedirects, limit: 30
+#     # conn.ssl.verify = false
+#     conn.adapter :net_http
+#   end
+#   # first check header then try complete get when header returns an error.
+#   # If both checks fail, the website is treated as unreachable
+#   header = conn.head(url)
+#   if !header || header.status >= 400 # everything above 400 is an error
+#     response = conn.get(url)
+#     if !response || response.status >= 400 # everything above 400 is an error
+#       return true
+#     end
+#   end
+#   return false
+# # catch errors that prevent a valid response
+# rescue Faraday::ConnectionFailed, Faraday::TimeoutError, Errno::EHOSTUNREACH, SocketError,
+#        URI::InvalidURIError, Faraday::SSLError, FaradayMiddleware::RedirectLimitReached
+#   return true
+# end
+#
+# random_sites.map do |site|
+#   puts 'unreachable!: ' + site  if website_test?(site)
+# end
+#
+# sites.map do |site|
+#   puts 'checking: ' +  site + ' ...'
+#   next if reachable.include?(site) || unreachable.include?(site)
+#   website_unreachable = website_test?(site)
+#   if website_unreachable
+#     unreachable << site
+#   else
+#     reachable << site
+#   end
+# end

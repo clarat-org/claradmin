@@ -78,6 +78,8 @@ gem 'sidekiq-cron', '~> 0.4.0'
 gem 'gengo'
 
 # converting between unicode and ascii urls
+gem 'faraday'
+gem 'faraday_middleware'
 gem 'simpleidn'
 
 ########################
