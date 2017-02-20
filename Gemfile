@@ -78,9 +78,10 @@ gem 'sidekiq-cron', '~> 0.4.0'
 gem 'gengo'
 
 # converting between unicode and ascii urls
+gem 'simpleidn'
+# Faraday for http requests and middleware for redirects
 gem 'faraday'
 gem 'faraday_middleware'
-gem 'simpleidn'
 
 ########################
 # For Heroku & Add-Ons #
