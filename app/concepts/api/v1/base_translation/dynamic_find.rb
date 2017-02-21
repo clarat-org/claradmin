@@ -10,7 +10,7 @@ module API::V1
 
       def find_or_create
         translation_class = "#{@object_type}Translation".constantize
-        object_id_field = "#{@object_type.downcase}_id"
+        object_id_field = "#{@object_type.underscore}_id"
 
         # return existing translation if one is found
         translation =
