@@ -8,8 +8,11 @@ class Offer < ActiveRecord::Base
   EDITABLE_IN_STATES =
     %(initialized approved expired checkup_process approval_process)
 
+  # Modules
+  include SearchAlgolia, StateMachine
+
   # Concerns
-  include SearchAlgolia, Translations
+  include Translations
 
   # Search
   include PgSearch
