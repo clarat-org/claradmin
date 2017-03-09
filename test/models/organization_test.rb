@@ -300,20 +300,15 @@ describe Organization do
         orga.send(:different_actor?).must_equal true
       end
 
-      it 'should return false when created_by is the same as current_actor' do
-        orga.created_by = orga.current_actor
-        orga.send(:different_actor?).must_equal false
-      end
-
       it 'should return falsy when created_by is nil' do
         orga.created_by = nil
-        assert_nil orga.send(:different_actor?)
+        orga.send(:different_actor?).must_equal false
       end
 
       it 'should return false when current_actor is nil' do
         orga.created_by = 1
-        orga.stubs(:current_actor).returns(nil)
-        assert_nil orga.send(:different_actor?)
+        Creator::Twin.any_instance.stubs(:current_actor).returns(nil)
+        orga.send(:different_actor?).must_equal false
       end
     end
 

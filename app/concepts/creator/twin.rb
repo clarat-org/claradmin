@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 module Creator
-  extend ActiveSupport::Concern
+  class Twin < Disposable::Twin
+    property :created_by
 
-  included do
     def creator
       User.find(created_by).name
     rescue
@@ -11,6 +11,10 @@ module Creator
 
     def current_actor
       ::PaperTrail.whodunnit
+    end
+
+    def different_actor?
+      !created_by.nil? && !current_actor.nil? && created_by != current_actor
     end
   end
 end

@@ -13,17 +13,6 @@ describe Offer do
       it { subject.must have_many(:informed_emails).through :offer_mailings }
     end
 
-    describe '#creator' do
-      it 'should return anonymous by default' do
-        offer.creator.must_equal 'anonymous'
-      end
-
-      it 'should return users name if there is a version' do
-        offer = FactoryGirl.create :offer, :with_creator
-        offer.creator.must_equal User.find(offer.created_by).name
-      end
-    end
-
     describe 'scopes' do
       describe 'visible_in_frontend' do
         it 'includes offers that are approved or expired' do
@@ -154,19 +143,14 @@ describe Offer do
           offer.send(:different_actor?).must_equal true
         end
 
-        it 'should return false when created_by is the same as current_actor' do
-          offer.created_by = offer.current_actor
+        it 'should return false when created_by is nil' do
           offer.send(:different_actor?).must_equal false
-        end
-
-        it 'should return falsy when created_by is nil' do
-          assert_nil offer.send(:different_actor?)
         end
 
         it 'should return false when current_actor is nil' do
           offer.created_by = 1
-          offer.stubs(:current_actor).returns(nil)
-          assert_nil offer.send(:different_actor?)
+          Creator::Twin.any_instance.stubs(:current_actor).returns(nil)
+          offer.send(:different_actor?).must_equal false
         end
       end
 

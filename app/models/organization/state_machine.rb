@@ -122,11 +122,11 @@ class Organization
 
       def set_approved_information
         self.approved_at = Time.zone.now
-        self.approved_by = current_actor
+        self.approved_by = Creator::Twin.new(self).current_actor # current_actor
       end
 
       def different_actor?
-        created_by && current_actor && created_by != current_actor
+        Creator::Twin.new(self).different_actor?
       end
     end
   end

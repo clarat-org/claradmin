@@ -120,20 +120,20 @@ class Offer
 
       def set_approved_information
         self.approved_at = Time.zone.now
-        self.approved_by = current_actor
+        self.approved_by = Creator::Twin.new(self).current_actor
         # update to current LogicVersion
         self.logic_version_id = LogicVersion.last.id
       end
 
       def set_completed_information
         self.completed_at = Time.zone.now
-        self.completed_by = current_actor
+        self.completed_by = Creator::Twin.new(self).current_actor
         # update to current LogicVersion
         self.logic_version_id = LogicVersion.last.id
       end
 
       def different_actor?
-        created_by && current_actor && created_by != current_actor
+        Creator::Twin.new(self).different_actor?
       end
 
       def seasonal_offer_not_yet_to_be_approved?
