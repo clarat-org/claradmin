@@ -13,6 +13,17 @@ describe Offer do
       it { subject.must have_many(:informed_emails).through :offer_mailings }
     end
 
+    describe '#creator' do
+      it 'should return anonymous by default' do
+        offer.creator.must_equal 'anonymous'
+      end
+
+      it 'should return users name if there is a version' do
+        offer = FactoryGirl.create :offer, :with_creator
+        offer.creator.must_equal User.find(offer.created_by).name
+      end
+    end
+
     describe 'scopes' do
       describe 'visible_in_frontend' do
         it 'includes offers that are approved or expired' do
@@ -190,17 +201,6 @@ describe Offer do
           basicOffer.must_be :valid?
           basicOffer.send(:approve)
           basicOffer.must_be :approved?
-        end
-      end
-
-      describe '#was_approved?' do
-        it 'should return true for an offer with approve information' do
-          approved_offer = FactoryGirl.create :offer, :approved
-          approved_offer.send(:was_approved?).must_equal true
-        end
-
-        it 'should return false for an offer w/o approve information' do
-          basicOffer.send(:was_approved?).must_equal false
         end
       end
 

@@ -23,7 +23,7 @@ class Organization
               after_enter: :deactivate_offers!
         state :external_feedback, # There was an issue (external)
               after_enter: :deactivate_offers!
-        state :under_construction_post, # Website under construction post approve
+        state :under_construction, # Website under construction post approve
               after_enter: :deactivate_offers_to_under_construction!
 
         ## Transitions
@@ -47,7 +47,7 @@ class Organization
           transitions from: :approval_process, to: :approved # , guard: :different_actor?
           transitions from: :internal_feedback, to: :approved
           transitions from: :external_feedback, to: :approved
-          transitions from: :under_construction_post, to: :approved
+          transitions from: :under_construction, to: :approved
         end
 
         event :approve_with_deactivated_offers,
@@ -57,7 +57,7 @@ class Organization
           transitions from: :approval_process, to: :approved # , guard: :different_actor?
           transitions from: :internal_feedback, to: :approved
           transitions from: :external_feedback, to: :approved
-          transitions from: :under_construction_post, to: :approved
+          transitions from: :under_construction, to: :approved
         end
 
         event :deactivate_internal do
@@ -77,14 +77,10 @@ class Organization
           transitions from: :initialized, to: :under_construction_pre
           transitions from: :completed, to: :under_construction_pre
           # post approve
-          transitions from: :approved, to: :under_construction_post
-          transitions from: :all_done, to: :under_construction_post
-          transitions from: :internal_feedback, to: :under_construction_post
-          transitions from: :external_feedback, to: :under_construction_post
-        end
-
-        event :return_to_editing do
-          transitions from: :completed, to: :initialized
+          transitions from: :approved, to: :under_construction
+          transitions from: :all_done, to: :under_construction
+          transitions from: :internal_feedback, to: :under_construction
+          transitions from: :external_feedback, to: :under_construction
         end
 
         event :mark_as_done, success: :apply_mailings_logic! do
@@ -103,10 +99,10 @@ class Organization
 
       # When an organization switches from an approval to approved,
       # also try to approve all it's associated organization_deactivated,
-      # expired and under_construction_post offers
+      # expired and under_construction offers
       def reactivate_offers!
         offers.where(aasm_state: %w(organization_deactivated expired
-                                    under_construction_post)).find_each do |o|
+                                    under_construction)).find_each do |o|
           # set checkup state on local offer instance (don't save this)
           o.aasm_state = 'checkup_process'
           # approve is possible (saves the instance). If approve is not possible
@@ -122,6 +118,15 @@ class Organization
           next if offer.website_under_construction!
           raise "#deactivate_offer_to_under_construction failed for #{offer.id}"
         end
+      end
+
+      def set_approved_information
+        self.approved_at = Time.zone.now
+        self.approved_by = current_actor
+      end
+
+      def different_actor?
+        created_by && current_actor && created_by != current_actor
       end
     end
   end

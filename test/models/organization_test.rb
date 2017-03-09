@@ -272,7 +272,7 @@ describe Organization do
         Offer.any_instance.stubs(:generate_translations!).returns true
         orga.offers.first.must_be :approved?
         orga.website_under_construction!
-        orga.offers.first.must_be :under_construction_post?
+        orga.offers.first.must_be :under_construction?
         orga.approve_with_deactivated_offers!
         orga.offers.first.reload.must_be :approved?
       end
@@ -283,7 +283,7 @@ describe Organization do
         orga.offers.first.must_be :organization_deactivated?
         orga.website_under_construction!
         orga.offers.first.must_be :organization_deactivated?
-        orga.must_be :under_construction_post?
+        orga.must_be :under_construction?
       end
 
       it 'should raise an error when deactivation fails for an offer' do

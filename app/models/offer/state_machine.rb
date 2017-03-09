@@ -18,9 +18,9 @@ class Offer
         state :approved
         state :checkup_process # indicates the beginning of the checkup_process (after deactivation)
 
-        # Special states object might enter before it is approved
-        state :dozing # For uncompleted offers that we want to track
-        state :under_construction_pre # Website under construction pre approve
+        # # Special states object might enter before it is approved
+        state :disapproved # when a completed offer can not be approved it is disapproved
+        state :edit # editing-state after disapproved or (unintended) completed
 
         # Special states object might enter after it was approved
         state :paused # I.e. Seasonal offer is in off-season (set automatically)
@@ -28,25 +28,16 @@ class Offer
         state :internal_feedback # There was an issue (internal)
         state :external_feedback # There was an issue (external)
         state :organization_deactivated # An associated orga was deactivated
-        state :under_construction_post # Website under construction post approve
+        state :under_construction # Website under construction
         state :seasonal_pending # seasonal offer is reviewed but out of TimeFrame
         state :website_unreachable # crawler could not reach website twice in a row
 
         ## Transitions
 
-        event :reinitialize do
-          transitions from: :dozing, to: :initialized
-          transitions from: :under_construction_pre, to: :initialized
-        end
-
-        event :doze do
-          transitions from: :initialized, to: :dozing
-          transitions from: :checkup_process, to: :dozing
-        end
-
         event :complete, before: :set_completed_information do
           transitions from: :initialized, to: :completed
           transitions from: :checkup_process, to: :completed
+          transitions from: :edit, to: :completed
         end
 
         event :start_approval_process do
@@ -66,6 +57,15 @@ class Offer
           transitions from: :organization_deactivated, to: :approved
         end
 
+        event :disapprove do
+          transitions from: :approval_process, to: :disapproved
+        end
+
+        event :return_to_editing do
+          transitions from: :disapproved, to: :edit
+          transitions from: :completed, to: :edit
+        end
+
         event :expire do
           transitions from: :approved, to: :expired
         end
@@ -74,14 +74,14 @@ class Offer
           transitions from: :approved, to: :internal_feedback
           transitions from: :expired, to: :internal_feedback
           transitions from: :external_feedback, to: :internal_feedback
-          transitions from: :under_construction_post, to: :internal_feedback
+          transitions from: :under_construction, to: :internal_feedback
         end
 
         event :deactivate_external do
           transitions from: :approved, to: :external_feedback
           transitions from: :expired, to: :external_feedback
           transitions from: :internal_feedback, to: :external_feedback
-          transitions from: :under_construction_post, to: :external_feedback
+          transitions from: :under_construction, to: :external_feedback
         end
 
         event :deactivate_through_organization do
@@ -92,16 +92,12 @@ class Offer
         end
 
         event :website_under_construction do
-          # pre approve
-          transitions from: :initialized, to: :under_construction_pre
-          transitions from: :completed, to: :under_construction_pre
-          # post approve
-          transitions from: :approved, to: :under_construction_post
-          transitions from: :expired, to: :under_construction_post
-          transitions from: :internal_feedback, to: :under_construction_post
-          transitions from: :external_feedback, to: :under_construction_post
-          transitions from: :organization_deactivated, to: :under_construction_post
-          transitions from: :checkup_process, to: :under_construction_post
+          transitions from: :approved, to: :under_construction
+          transitions from: :expired, to: :under_construction
+          transitions from: :internal_feedback, to: :under_construction
+          transitions from: :external_feedback, to: :under_construction
+          transitions from: :organization_deactivated, to: :under_construction
+          transitions from: :checkup_process, to: :under_construction
         end
 
         event :start_checkup_process do
@@ -110,15 +106,9 @@ class Offer
           transitions from: :expired, to: :checkup_process
           transitions from: :internal_feedback, to: :checkup_process
           transitions from: :external_feedback, to: :checkup_process
-          transitions from: :under_construction_post, to: :checkup_process
+          transitions from: :under_construction, to: :checkup_process
           transitions from: :website_unreachable, to: :checkup_process
           transitions from: :organization_deactivated, to: :checkup_process
-        end
-
-        event :return_to_editing do
-          transitions from: :completed, to: :checkup_process,
-                      guard: :was_approved?
-          transitions from: :completed, to: :initialized
         end
       end
 
@@ -148,12 +138,6 @@ class Offer
 
       def seasonal_offer_not_yet_to_be_approved?
         !starts_at.nil? && starts_at > Time.zone.now # && different_actor?
-      end
-
-      # indicates that the offer was already approved once. Required in order to
-      # filter re-write offers
-      def was_approved?
-        !self.approved_by.nil? && !self.approved_at.nil?
       end
     end
   end

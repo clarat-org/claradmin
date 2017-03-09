@@ -14,7 +14,7 @@ class Organization < ActiveRecord::Base
   include StateMachine
 
   # Concerns
-  include Translations
+  include Translations, Creator
 
   # Search
   include PgSearch
