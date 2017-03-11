@@ -119,7 +119,7 @@ FactoryGirl.create :offer, :approved, :with_dummy_translations,
 now = Date.current
 date = now - 4.weeks
 goal = FactoryGirl.create(
-  :productivity_goal, :running,
+  :statistic_chart, :running,
   title: 'Approve 1000 Offers', target_field_name: 'aasm_state',
   target_field_value: 'approved', target_count: 1000, target_model: 'Offer'
 )

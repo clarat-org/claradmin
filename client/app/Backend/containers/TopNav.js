@@ -50,7 +50,7 @@ const routes = [
     access: all,
   }, {
     id: 7,
-    pathname: '/productivity_goals',
+    pathname: '/statistic_charts',
     anchor: 'Produktivitätsziele',
     access: superuser,
   }, {
