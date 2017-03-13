@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
-ruby '2.3.1'
+ruby '2.3.3'
 
 gem 'nokogiri', '1.6.7.2' # 1.6.8 doesnt install on some pcs. Remove when fixed
 
@@ -11,7 +11,11 @@ gem 'nokogiri', '1.6.7.2' # 1.6.8 doesnt install on some pcs. Remove when fixed
 gem 'rails', '~> 4.2'
 gem 'bundler', '>= 1.8.4'
 
+<<<<<<< HEAD
 gem 'clarat_base', github: 'clarat-org/clarat_base', branch: 'feature/719_translate_contactPerson_responsability'
+=======
+gem 'clarat_base', github: 'clarat-org/clarat_base' # , path: '../clarat_base'
+>>>>>>> develop
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # gem 'rails', '~> 4.1.12'
@@ -51,11 +55,15 @@ gem 'pundit'
 gem 'trailblazer'
 # gem 'trailblazer-loader'
 gem 'trailblazer-rails'
+gem 'trailblazer-endpoint', github: 'trailblazer/trailblazer-endpoint'
+gem 'trailblazer-cells'
 gem 'cells'
 gem 'cells-slim'
-gem 'reform', '~> 2.1.0'
-gem 'reform-rails'
+gem 'cells-rails'
+gem 'reform' # , '~> 2.1.0'
+# gem 'reform-rails'
 gem 'roar', github: 'apotonick/roar', branch: 'master'
+gem 'roar-jsonapi', github: 'trailblazer/roar-jsonapi'
 gem 'multi_json'
 gem 'will_paginate'
 
@@ -79,6 +87,9 @@ gem 'gengo'
 
 # converting between unicode and ascii urls
 gem 'simpleidn'
+# Faraday for http requests and middleware for redirects
+gem 'faraday'
+gem 'faraday_middleware'
 
 ########################
 # For Heroku & Add-Ons #
