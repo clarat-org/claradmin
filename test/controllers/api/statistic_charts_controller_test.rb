@@ -6,6 +6,11 @@ describe API::V1::StatisticChartsController do
   include API::ControllerTestUtils
   let(:user) { users(:researcher) }
 
+  it do
+    sign_in(user)
+    api_get_works_for :index
+  end
+
   describe '#create' do
     let(:correct_params) do
       FactoryGirl.build(:statistic_chart).attributes

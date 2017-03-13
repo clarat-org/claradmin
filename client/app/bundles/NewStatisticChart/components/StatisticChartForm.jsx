@@ -46,7 +46,7 @@ export default class StatisticChartForm extends React.Component {
         />
         <InputSet ariaLabelOnly
           wrapperClassName='form-group' className='form-control'
-          type='select' attribute='target_model' options={targetModels}
+          type='select' attribute='klass_name' options={targetModels}
           afterChange={afterInputChange}
         />
         <br />

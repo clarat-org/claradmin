@@ -19,6 +19,7 @@ class StatisticChart < ActiveRecord::Base
       # property :target_field_name
       # property :target_field_value
       property :user_team_id
+      property :user_id
 
       validates :title, presence: true
       validates :starts_at, presence: true
@@ -27,7 +28,8 @@ class StatisticChart < ActiveRecord::Base
       # validates :target_count, presence: true
       # validates :target_field_name, presence: true
       # validates :target_field_value, presence: true
-      validates :user_team_id, presence: true
+      # validates :user_team_id, presence: true
+      validates :user_id, presence: true
 
       validate :starts_at_must_be_before_ends_at
       def starts_at_must_be_before_ends_at

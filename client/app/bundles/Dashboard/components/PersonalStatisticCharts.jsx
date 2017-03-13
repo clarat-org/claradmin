@@ -19,8 +19,10 @@ export default class PersonalStatisticCharts extends Component {
         <div className="panel-body">
           {statisticCharts.map(chart => {
             return(
-              <div key={chart.id} className="chart" style={{border: '1px solid black'}}>
+              <div key={chart.id} className="chart">
+                <h4>{chart.title}</h4>
                 <BurnUpChartContainer statisticChart={chart} />
+                <hr />
               </div>
             )
           })}

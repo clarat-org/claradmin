@@ -8,7 +8,7 @@ class ReactCell < Cell::ViewModel
 
   include ReactOnRailsHelper
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength
   def props
     {
       user_teams: UserTeam.all,
@@ -33,5 +33,5 @@ class ReactCell < Cell::ViewModel
       }
     }
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:enable Metrics/MethodLength
 end

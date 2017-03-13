@@ -27,7 +27,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   loadData() {
     dispatchProps.dispatch(
       loadAjaxData(
-        'statistic_charts', {'filters[user_id]': stateProps.currentUserId},
+        'statistic_charts',
+        { 'filters[user_id]': stateProps.currentUserId },
         'personalStatisticCharts'
       )
     )
@@ -36,7 +37,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
         'statistics',
         {
           'filters[user_id]': stateProps.currentUserId,
-          'filters[time_frame]': 'daily'
+          'filters[time_frame]': 'daily',
+          'per_page': 9999
         },
         'personalStatistics'
       )
