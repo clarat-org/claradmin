@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ContactPersonObserver < ActiveRecord::Observer
   def after_create cont
     cont.generate_translations!
@@ -8,5 +9,4 @@ class ContactPersonObserver < ActiveRecord::Observer
     return true if fields.empty?
     cont.generate_translations! fields
   end
-
 end

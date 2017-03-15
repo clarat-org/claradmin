@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170220153038) do
+ActiveRecord::Schema.define(version: 20170222135228) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -148,7 +148,7 @@ ActiveRecord::Schema.define(version: 20170220153038) do
     t.string   "source",            default: "", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "responsibility",    default: "", null: false
+    t.text     "responsibility"
   end
 
   add_index "contact_person_translations", ["contact_person_id"], name: "index_contact_person_translations_on_contact_person_id", using: :btree
@@ -162,6 +162,7 @@ ActiveRecord::Schema.define(version: 20170220153038) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "internal_mail",              default: false
+    t.string   "city"
   end
 
   create_table "definitions", force: :cascade do |t|

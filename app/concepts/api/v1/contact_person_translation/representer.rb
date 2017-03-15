@@ -12,20 +12,15 @@ module API::V1
         property :locale
         property :source
         property :responsibility
-        property :possibly_outdated
         property :created_at
         property :updated_at
-#TODO: needs to be refactored?
-        # has_one :organization do
-        #   type :organizations
-        #
-        #   property :id
-        #   property :description
-        end
 
-        # property :organization_section, getter: ->(ot) do
-        #   ot[:represented].organization.section_filters.pluck(:identifier)
-        # end
+        has_one :contact_person do
+          type :contact_people
+
+          property :id
+          property :responsibility
+        end
       end
 
       class Index < Show
