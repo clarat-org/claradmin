@@ -14,7 +14,7 @@ export default class PersonalStatisticCharts extends Component {
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
-          <h3 className="panel-title">Meine Ziele</h3>
+          <h3 className="panel-title">Meine W&A Statistiken</h3>
         </div>
         <div className="panel-body">
           {statisticCharts.map(chart => {

@@ -58,6 +58,7 @@ export default class Routes extends React.Component {
             <Route path=':id' component={Show} />
           </Route>
 
+          /*
           <Route path='statistic_charts'>
             <IndexRoute component={Index}/>
             <Route path='new' component={NewStatisticChart} />
@@ -71,6 +72,7 @@ export default class Routes extends React.Component {
               component={TimeAllocationTableContainer}
             />
           </Route>
+          */
 
           <Route path='statistics' component={StatisticsLayout}>
             <IndexRoute component={Overview}/>

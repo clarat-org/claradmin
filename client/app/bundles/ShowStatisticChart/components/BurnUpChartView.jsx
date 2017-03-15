@@ -12,8 +12,8 @@ export default class BurnUpChartView extends React.Component {
           <thead>
             <tr>
               <th>Datum</th>
-              <th>Zielerreichungen</th>
-              <th>Zielerreichungen insgesamt</th>
+              <th>Ist pro Tag</th>
+              <th>Ist gesamt</th>
             </tr>
           </thead>
           <tbody>
