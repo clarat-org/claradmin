@@ -109,7 +109,6 @@ class AutomaticUpsertTest < ActiveSupport::TestCase
 
   it 'should create system-assignment for contact_person' do
     cont = FactoryGirl.create :contact_person, responsibility: 'Geduld und Disziplin.'
-    puts cont.inspect
     operation.({}, 'locale' => :en, 'fields' => :all,
                    'object_to_translate' => cont)
     assignments = cont.translations.where(locale: 'en').first.assignments

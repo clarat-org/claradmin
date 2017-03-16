@@ -23,4 +23,10 @@ class ContactPersonTranslationCreateTest < ActiveSupport::TestCase
       operation_must_work ::ContactPersonTranslation::Create, basic_params
     end
   end
+
+  describe '::ContactPersonTranslation::Index' do
+    it 'base_query must be ::ContactPersonTranslation per default' do
+      ::API::V1::ContactPersonTranslation::Index.new.base_query.must_equal ::ContactPersonTranslation
+    end
+  end
 end
