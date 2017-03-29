@@ -7,38 +7,6 @@ GIT
       representable (~> 3.0.0)
 
 GIT
-  remote: git://github.com/clarat-org/clarat_base.git
-<<<<<<< HEAD
-<<<<<<< HEAD
-  revision: 7bded45c579c0edd7199780be7ef17f92ddea2a1
-  branch: feature/719_translate_contactPerson_responsability
-=======
-  revision: 6ac8c01a4f8779eb04cbbafad91d659088170e44
->>>>>>> develop
-=======
-  revision: 449660a81da4445f91a0b0a1068412b93b8b9dea
->>>>>>> develop
-  specs:
-    clarat_base (0.1.4)
-      aasm
-      algoliasearch-rails
-      bundler (>= 1.8.4)
-      closure_tree
-      easy_translate
-      enumerize
-      friendly_id (>= 5.0)
-      geocoder
-      localeapp
-      paper_trail
-      rails (~> 4.2)
-      rails-i18n
-      rails-observers
-      redcarpet
-      sanitize
-      sidekiq (~> 4.1.2)
-      web-console (~> 2.0)
-
-GIT
   remote: git://github.com/efqdalton/dynamic_sitemaps.git
   revision: f229cb40391ab3283efd2091ab58bbec68c720cf
   branch: adds-custom-storages
@@ -59,6 +27,28 @@ GIT
   specs:
     trailblazer-endpoint (0.0.1)
       dry-matcher
+
+PATH
+  remote: ../clarat_base
+  specs:
+    clarat_base (0.1.4)
+      aasm
+      algoliasearch-rails
+      bundler (>= 1.8.4)
+      closure_tree
+      easy_translate
+      enumerize
+      friendly_id (>= 5.0)
+      geocoder
+      localeapp
+      paper_trail
+      rails (~> 4.2)
+      rails-i18n
+      rails-observers
+      redcarpet
+      sanitize
+      sidekiq (~> 4.1.2)
+      web-console (~> 2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -687,11 +677,7 @@ GEM
       crack (>= 0.3.2)
       hashdiff
     websocket (1.2.3)
-<<<<<<< HEAD
-    will_paginate (3.1.0)
-=======
     will_paginate (3.1.5)
->>>>>>> develop
     with_advisory_lock (3.1.0)
       activerecord (>= 3.2)
       thread_safe
@@ -816,8 +802,4 @@ RUBY VERSION
    ruby 2.3.3p222
 
 BUNDLED WITH
-<<<<<<< HEAD
-   1.14.4
-=======
    1.14.5
->>>>>>> develop

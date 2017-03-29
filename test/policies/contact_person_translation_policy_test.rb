@@ -5,7 +5,7 @@ require_relative '../support/utils/policy_test_utils'
 class ContactPersonTranslationPolicyTest < ActiveSupport::TestCase
   include PolicyTestUtils
 
-  subject { ContactPersonTranslationPolicy.new(nil, nil) }
+  subject { ContactPersonTranslationPolicy.new(User.system_user, ContactPersonTranslation.new) }
 
   it { allows :update? }
 end

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 class ContactPersonTranslation::Update < Trailblazer::Operation
-  include Translation::CommonSideEffects::HumanChangeFields
-
   step Model(::ContactPersonTranslation, :find_by)
 
   step Contract::Build()
