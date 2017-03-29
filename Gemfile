@@ -12,9 +12,13 @@ gem 'rails', '~> 4.2'
 gem 'bundler', '>= 1.8.4'
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 gem 'clarat_base', github: 'clarat-org/clarat_base', branch: 'feature/719_translate_contactPerson_responsability'
 =======
 gem 'clarat_base', github: 'clarat-org/clarat_base' # , path: '../clarat_base'
+>>>>>>> develop
+=======
+gem 'clarat_base', github: 'clarat-org/clarat_base'
 >>>>>>> develop
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -81,6 +85,7 @@ gem 'sinatra', '>= 1.3.0'
 
 # Schedulable jobs for sidekiq
 gem 'sidekiq-cron', '~> 0.4.0'
+gem 'rufus-scheduler', '3.2.2'
 
 # 3rd Party APIs
 gem 'gengo'
