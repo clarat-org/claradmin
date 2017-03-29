@@ -16,7 +16,8 @@ export default class TeamStatisticCharts extends Component {
       <CollapsiblePanel
         title='Team W&A Statistiken' identifier='team-statistic-charts'
         visible={false}
-        content={
+      >
+        {
           statisticCharts.map(chart => {
             return(
               <div key={chart.id} className="chart">
@@ -27,7 +28,7 @@ export default class TeamStatisticCharts extends Component {
             )
           })
         }
-      />
+      </CollapsiblePanel>
     )
   }
 }

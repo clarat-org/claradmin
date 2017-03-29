@@ -16,7 +16,8 @@ export default class PersonalStatisticCharts extends Component {
       <CollapsiblePanel
         title='Meine W&A Statistiken' identifier='personal-statistic-charts'
         visible={false}
-        content={
+      >
+        {
           statisticCharts.map(chart => {
             return(
               <div key={chart.id} className="chart">
@@ -27,7 +28,7 @@ export default class PersonalStatisticCharts extends Component {
             )
           })
         }
-      />
+      </CollapsiblePanel>
     )
   }
 }
