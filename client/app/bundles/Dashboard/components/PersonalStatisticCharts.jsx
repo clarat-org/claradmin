@@ -3,7 +3,9 @@ import PersonalStatisticChartContainer from '../../StatisticChartContainer/conta
 
 export default class PersonalStatisticCharts extends Component {
   componentDidMount() {
-    this.props.loadData()
+    if (!this.props.dataLoaded) {
+      this.props.loadData()
+    }
   }
 
   render() {

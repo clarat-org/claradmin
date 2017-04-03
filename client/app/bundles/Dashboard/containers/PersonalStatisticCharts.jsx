@@ -5,13 +5,16 @@ import PersonalStatisticCharts from '../components/PersonalStatisticCharts'
 
 const mapStateToProps = (state, ownProps) => {
   const currentUserId = state.entities.current_user.id
-  let statisticCharts = valuesIn(state.entities.statistic_charts).filter(
+  const statisticCharts = valuesIn(state.entities.statistic_charts).filter(
     chart => chart.user_id == currentUserId
   )
+  const dataLoaded = state.ajax.personalStatisticCharts &&
+    state.ajax.isLoading.personalStatisticCharts === false
 
   return {
     currentUserId,
     statisticCharts,
+    dataLoaded
   }
 }
 

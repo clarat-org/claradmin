@@ -9,10 +9,13 @@ const mapStateToProps = (state, ownProps) => {
     state.entities.user_teams[state.entities.current_user.current_team_id]
   const statisticCharts =
     buildAggregatedStatisticCharts(state.entities, currentTeam, chartNames)
+  const dataLoaded = state.ajax.teamStatisticCharts &&
+    state.ajax.isLoading.teamStatisticCharts === false
 
   return {
     currentTeam,
     statisticCharts,
+    dataLoaded
   }
 }
 
@@ -54,7 +57,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 
   loadData() {
-    if(stateProps.currentTeam) {
+    if (stateProps.currentTeam) {
       dispatchProps.dispatch(
         loadAjaxData(
           'statistic_charts',

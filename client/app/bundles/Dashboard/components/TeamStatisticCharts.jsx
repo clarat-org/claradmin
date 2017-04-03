@@ -3,7 +3,9 @@ import TeamStatisticChartContainer from '../../StatisticChartContainer/container
 
 export default class TeamStatisticCharts extends Component {
   componentDidMount() {
-    this.props.loadData()
+    if (!this.props.dataLoaded) {
+      this.props.loadData()
+    }
   }
 
   render() {
