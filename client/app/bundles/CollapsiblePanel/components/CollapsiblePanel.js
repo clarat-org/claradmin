@@ -4,25 +4,31 @@ import { Panel } from 'react-bootstrap'
 export default class CollapsiblePanel extends Component {
   render() {
     return (
-      <Panel collapsible expanded={this.props.open} onClick={this.props.onClick}
-        header={this.renderCollapsibleHeader()}
-      >
-        {this.props.open ? this.props.children : null}
-      </Panel>
-    )
-  }
-
-  renderCollapsibleHeader() {
-    return (
-      <div>
-        {this.props.title}
-        {this.renderCollapsibleSymbol()}
+      <div className='ca-panel'>
+        <Panel collapsible expanded={this.props.open}
+          header={this.renderCollapsibleHeader(
+            this.props.title, this.props.open, this.props.onClick
+          )}
+        >
+          {this.props.open && this.props.children ? this.props.children : null}
+        </Panel>
       </div>
     )
   }
 
-  renderCollapsibleSymbol() {
-    if (this.props.open) {
+  renderCollapsibleHeader(title, open, onClick) {
+    return (
+      <div onClick={onClick} style={{cursor: 'pointer'}}
+        className='CustomCollapsiblePanelHeader'
+      >
+        {title}
+        {this.renderCollapsibleSymbol(open)}
+      </div>
+    )
+  }
+
+  renderCollapsibleSymbol(open) {
+    if (open) {
       return <i className='fui-triangle-up' style={{float: 'right'}} />
     } else {
       return <i className='fui-triangle-down' style={{float: 'right'}} />

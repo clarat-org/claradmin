@@ -6,3 +6,12 @@
   background-color: #fff;
   z-index: 1;
 }
+
+.CustomCollapsiblePanelHeader a {
+  display: block;
+  height: inherit;
+  margin: -10px -15px;
+  padding: 10px 15px;
+  font-weight: 600;
+  font-size: 15px;
+}

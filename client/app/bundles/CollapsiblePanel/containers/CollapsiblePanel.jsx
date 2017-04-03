@@ -3,9 +3,9 @@ import setUiAction from '../../../Backend/actions/setUi'
 import CollapsiblePanel from '../components/CollapsiblePanel'
 
 const mapStateToProps = (state, ownProps) => {
-  const uiKey = 'collapsable-panel-' + ownProps.identifier
+  const uiKey = state.ui.collapsiblePanel
   const open =
-    state.ui[uiKey] === undefined ? ownProps.visible : state.ui[uiKey]
+    uiKey && uiKey[ownProps.identifier] !== undefined ? uiKey[ownProps.identifier] : ownProps.visible
 
   return {
     open,
@@ -24,7 +24,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 
   onClick(e) {
-    dispatchProps.dispatch(setUiAction(stateProps.uiKey, !stateProps.open))
+    let uiSettings = stateProps.uiKey || {}
+    uiSettings[ownProps.identifier] = !stateProps.open
+    dispatchProps.dispatch(setUiAction('collapsiblePanel', uiSettings))
   }
 })
 
