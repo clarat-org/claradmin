@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import BurnUpChart from '../containers/BurnUpChart'
 
-export default class PersonalStatisticChartContainer extends React.Component {
+export default class BurnUpChartAndTable extends React.Component {
   render() {
     const { data } = this.props
 

@@ -8,7 +8,9 @@ const mapStateToProps = (state, ownProps) => {
   const statisticCharts = valuesIn(state.entities.statistic_charts).filter(
     chart => chart.user_id == currentUserId
   )
-  const dataLoaded = state.ajax.personalStatisticCharts &&
+  const dataLoaded =
+    state.ajax.personalStatistics && state.ajax.personalStatisticCharts &&
+    state.ajax.isLoading.personalStatistics === false &&
     state.ajax.isLoading.personalStatisticCharts === false
 
   return {

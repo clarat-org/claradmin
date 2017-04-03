@@ -11,13 +11,13 @@ export default class PersonalStatisticCharts extends Component {
   render() {
     return (
       <div>
-        {this.existingChartsOrLoading(this.props.statisticCharts)}
+        {this.existingChartsOrLoading(this.props.statisticCharts, this.props.dataLoaded)}
       </div>
     )
   }
 
-  existingChartsOrLoading(charts) {
-    if (!charts.length) {
+  existingChartsOrLoading(charts, loaded) {
+    if (!loaded) {
       return (
         <div>Loading... </div>
       )

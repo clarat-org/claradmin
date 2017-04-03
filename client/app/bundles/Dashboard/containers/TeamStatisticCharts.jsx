@@ -9,7 +9,9 @@ const mapStateToProps = (state, ownProps) => {
     state.entities.user_teams[state.entities.current_user.current_team_id]
   const statisticCharts =
     buildAggregatedStatisticCharts(state.entities, currentTeam, chartNames)
-  const dataLoaded = state.ajax.teamStatisticCharts &&
+  const dataLoaded =
+    state.ajax.teamStatistics && state.ajax.teamStatisticCharts &&
+    state.ajax.isLoading.teamStatistics === false &&
     state.ajax.isLoading.teamStatisticCharts === false
 
   return {
