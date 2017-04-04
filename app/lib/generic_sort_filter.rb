@@ -122,7 +122,7 @@ module GenericSortFilter
       end
 
     # convert datetime strings to specific format for query
-    if model_name.columns_hash[filter] &&
+    if model_name.columns_hash[filter] && !nullable_value?(value) &&
        model_name.columns_hash[filter].type == :datetime && !value.empty?
       value = DateTime.parse(value + ' CET').utc.to_s
     end

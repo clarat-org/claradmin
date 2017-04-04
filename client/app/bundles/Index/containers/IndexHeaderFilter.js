@@ -13,7 +13,9 @@ const mapStateToProps = (state, ownProps) => {
   const model = ownProps.model
   const filterName =
     ownProps.filter[0].substring(8, ownProps.filter[0].length - 1)
-  const filterValue = ownProps.filter[1]
+  const filterType = setFilterType(filterName)
+  const filterValue = ownProps.filter[1] == 'nil' ? '' : ownProps.filter[1]
+  const nilChecked = ownProps.filter[1] == 'nil'
   const fields = analyzeFields(settings.index[model].fields, model)
   const operatorName = ownProps.params[`operators[${filterName}]`] || '='
   const operators = settings.OPERATORS.map(operator => {
@@ -26,6 +28,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     filterName,
     filterValue,
+    nilChecked,
+    filterType,
     fields,
     operators,
     operatorName
@@ -73,6 +77,21 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     }
   },
 
+  onCheckboxChange(event) {
+    let params = clone(ownProps.params)
+    if (event.target.checked) {
+      params[ownProps.filter[0]] = 'nil'
+    } else {
+      params[ownProps.filter[0]] = ''
+    }
+    if (ownProps.uiKey){
+      dispatch(setUiAction(ownProps.uiKey, params))
+    }
+    else{
+      browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
+    }
+  },
+
   onFilterValueChange(event) {
     let params = clone(ownProps.params)
     params[ownProps.filter[0]] = event.target.value
@@ -84,6 +103,19 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     }
   }
 })
+
+function setFilterType (filterName) {
+  let splitArray = filterName.split('_')
+  switch(splitArray[splitArray.length - 1]) {
+    case 'at':
+      return 'date'
+    case 'id':
+    case 'count':
+      return 'number'
+    default:
+      return 'text'
+  }
+}
 
 function textForOperator(operator) {
   switch(operator) {
