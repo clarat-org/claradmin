@@ -3,7 +3,7 @@ import moment from 'moment'
 import valuesIn from 'lodash/valuesIn'
 import { getTimePointsBetween } from '../../../lib/timeUtils'
 import { getAllocationForWeekAndUser } from '../../../lib/timeAllocations'
-import BurnUpChartView from '../components/BurnUpChartView'
+import BurnUpChartAndTable from '../components/BurnUpChartAndTable'
 
 const mapStateToProps = (state, ownProps) => {
   const chart = ownProps.statisticChart
@@ -15,17 +15,18 @@ const mapStateToProps = (state, ownProps) => {
     collectRelevantData(state.entities, 'statistics', chart, relevantTransitions)
 
   const sortedGoals = relevantGoals.sort(
-    (a, b) => +(a.starts_at > b.starts_at) || +(a.starts_at === b.starts_at)-1
+    (a, b) => +(a.starts_at > b.starts_at) || +(a.starts_at === b.starts_at) - 1
   )
   const lastGoal = sortedGoals[sortedGoals.length - 1]
 
   const actualData = aggregateActualPoints(relevantStatistics, chart)
   const scopeData = aggregateScopePoints(sortedGoals, chart)
+  const currentPoints = actualData ? actualData[actualData.length - 1].y : 0
+  const currentGoalProgress = Math.round(currentPoints / lastGoal.amount * 100)
 
   const data = {
     actual: actualData,
     scope: scopeData,
-
     ideal: [{
       x: chart.starts_at, y: 0,
     }, {
@@ -39,7 +40,10 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     data,
-    lastGoalAmount: lastGoal.amount
+    chartId: chart.id,
+    lastGoalAmount: lastGoal.amount,
+    currentPoints,
+    currentGoalProgress
   }
 }
 
@@ -195,4 +199,4 @@ function filterStatisticGoals(chart) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BurnUpChartView)
+export default connect(mapStateToProps, mapDispatchToProps)(BurnUpChartAndTable)
