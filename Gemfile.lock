@@ -8,8 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: 2c7984921c67d406c2c6fc02939bb8234b2dc9c2
-  branch: feature/719_translate_contactPerson_responsability
+  revision: 009bab1f66763126ca21107a6e1f7b2d507632a8
   specs:
     clarat_base (0.1.4)
       aasm
