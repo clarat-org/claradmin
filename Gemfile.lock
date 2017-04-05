@@ -7,6 +7,29 @@ GIT
       representable (~> 3.0.0)
 
 GIT
+  remote: git://github.com/clarat-org/clarat_base.git
+  revision: 539acfeb3bb96b7335be83171e4219562b1a4cd1
+  specs:
+    clarat_base (0.1.4)
+      aasm
+      algoliasearch-rails
+      bundler (>= 1.8.4)
+      closure_tree
+      easy_translate
+      enumerize
+      friendly_id (>= 5.0)
+      geocoder
+      localeapp
+      paper_trail
+      rails (~> 4.2)
+      rails-i18n
+      rails-observers
+      redcarpet
+      sanitize
+      sidekiq (~> 4.1.2)
+      web-console (~> 2.0)
+
+GIT
   remote: git://github.com/efqdalton/dynamic_sitemaps.git
   revision: f229cb40391ab3283efd2091ab58bbec68c720cf
   branch: adds-custom-storages
@@ -27,28 +50,6 @@ GIT
   specs:
     trailblazer-endpoint (0.0.1)
       dry-matcher
-
-PATH
-  remote: ../clarat_base
-  specs:
-    clarat_base (0.1.4)
-      aasm
-      algoliasearch-rails
-      bundler (>= 1.8.4)
-      closure_tree
-      easy_translate
-      enumerize
-      friendly_id (>= 5.0)
-      geocoder
-      localeapp
-      paper_trail
-      rails (~> 4.2)
-      rails-i18n
-      rails-observers
-      redcarpet
-      sanitize
-      sidekiq (~> 4.1.2)
-      web-console (~> 2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -232,7 +233,7 @@ GEM
       htmlentities (~> 4.3.3)
       launchy (~> 2.1)
       mail (~> 2.6.3)
-    enumerize (2.0.1)
+    enumerize (2.1.0)
       activesupport (>= 3.2)
     erubis (2.7.0)
     eventmachine (1.2.1)
@@ -378,7 +379,7 @@ GEM
     nokogumbo (1.4.10)
       nokogiri
     orm_adapter (0.5.0)
-    paper_trail (6.0.2)
+    paper_trail (7.0.0)
       activerecord (>= 4.0, < 5.2)
       request_store (~> 1.1)
     parser (2.3.3.1)
