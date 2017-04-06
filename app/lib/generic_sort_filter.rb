@@ -130,7 +130,6 @@ module GenericSortFilter
     nullable_value?(value) ? 'NULL' : "'#{value}'"
   end
 
-  # rubocop:disable Metrics/AbcSize
   def self.transform_date_value(value, filter, model_name)
     # convert datetime strings to specific format for query
     if model_name.columns_hash[filter] && !nullable_value?(value) &&
@@ -140,7 +139,6 @@ module GenericSortFilter
       value
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
   def self.optional_query_addition(operator, value, filter_key)
     # append OR NULL for non-null, NOT-queries (include optionals)
