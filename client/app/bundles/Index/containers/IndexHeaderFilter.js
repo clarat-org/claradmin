@@ -38,7 +38,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onTrashClick(event) {
-    const params = omit(clone(ownProps.params), ownProps.filter[0])
+    let filterId = ownProps.filter[0].split('[')
+    const params = omit(clone(ownProps.params),
+                  [ownProps.filter[0], 'operators[' + filterId[1]])
     if(ownProps.uiKey){
       dispatch(setUiAction(ownProps.uiKey, params))
     }
@@ -50,7 +52,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onFilterNameChange(event) {
     let params = omit(clone(ownProps.params), ownProps.filter[0])
     let newParam = {}
-    newParam[`filters[${event.target.value}]`] = ownProps.filter[1]
+    newParam[`filters[${event.target.value}]`] = ''
     params = merge(params, newParam)
     if(ownProps.uiKey){
       dispatch(setUiAction(ownProps.uiKey, params))
