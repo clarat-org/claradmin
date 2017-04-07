@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170326080706) do
+ActiveRecord::Schema.define(version: 20170405115051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -553,19 +553,18 @@ ActiveRecord::Schema.define(version: 20170326080706) do
 
   create_table "statistics", force: :cascade do |t|
     t.string  "topic"
-    t.integer "user_id"
     t.date    "date",                                null: false
     t.float   "count",             default: 0.0,     null: false
-    t.integer "user_team_id"
     t.string  "model"
     t.string  "field_name"
     t.string  "field_start_value"
     t.string  "field_end_value"
     t.string  "time_frame",        default: "daily"
+    t.string  "trackable_type"
+    t.integer "trackable_id"
   end
 
-  add_index "statistics", ["user_id"], name: "index_statistics_on_user_id", using: :btree
-  add_index "statistics", ["user_team_id"], name: "index_statistics_on_user_team_id", using: :btree
+  add_index "statistics", ["trackable_id", "trackable_type"], name: "index_statistics_on_trackable_id_and_trackable_type", using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
     t.string   "email"

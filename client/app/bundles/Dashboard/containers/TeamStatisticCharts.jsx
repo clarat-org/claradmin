@@ -41,7 +41,7 @@ function buildAggregatedStatisticCharts(entities, currentTeam, chartNames) {
       title: `${chartName} ${start_date.substr(0,4)} (${currentTeam.name})`,
       starts_at: start_date,
       ends_at: end_date,
-      user_ids: currentTeam.user_ids,
+      team_id: currentTeam.id,
       statistic_goal_ids: lastGoalIdsOfUserCharts,
       statistic_transition_ids: chartsOfTeamMembers[0].statistic_transition_ids // NOTE: we assume that these are the same for all user_charts
     })
@@ -75,7 +75,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
         loadAjaxData(
           'statistics',
           {
-            'filters[user_id]': stateProps.currentTeam.user_ids,
+            'filters[trackable_id]': stateProps.currentTeam.id,
+            'filters[trackable_type]': 'UserTeam',
             'filters[time_frame]': 'daily',
             'per_page': 9999
           },
