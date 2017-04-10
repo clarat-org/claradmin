@@ -8,8 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: 0bee46670896598df30bb9ea03810ac16f840966
-  branch: feature/1065-team-goals
+  revision: de278e39902c88f2cbcdb87bb1b84c17cecee471
   specs:
     clarat_base (0.1.4)
       aasm
