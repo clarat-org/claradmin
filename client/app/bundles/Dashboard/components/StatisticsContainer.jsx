@@ -27,7 +27,7 @@ export default class StatisticsContainer extends Component {
       )
     } else {
       return (
-        <Tabs activeKey={selected} onSelect={handleSelect} id="controlled-tab-example">
+        <Tabs activeKey={selected} onSelect={handleSelect} id="controlled-tab">
           <Tab eventKey={0} title="Individualstatistiken">
             <PersonalStatisticCharts />
           </Tab>

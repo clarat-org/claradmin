@@ -54,7 +54,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 
   loadData(newProps = stateProps) {
-    console.log('==> DATA LOAD!!!')
+    // console.log('==> DATA LOAD!!!')
     let lowest_start_date = newProps.statisticCharts.map(chart => {
       return chart.starts_at
     }).sort((a, b) => +(a > b) || +(a === b) - 1)[0]
@@ -75,8 +75,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   },
 
   onSelect(e) {
-    console.log('onSelect')
-    console.log(e.target.value)
     dispatchProps.dispatch(
       setUiAction('personalStatisticSelectedId', e.target.value)
     )

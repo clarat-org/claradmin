@@ -60,9 +60,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   },
 
   handleSelect(e){
-    console.log('handleSelect')
     if (stateProps.selectedTab != e) {
-      console.log(e)
       dispatchProps.dispatch(
         setUiAction('statisticSelectedTab', e)
       )
