@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import OverviewPanel from '../containers/OverviewPanel'
-import PersonalStatisticCharts from '../containers/PersonalStatisticCharts'
-import TeamStatisticCharts from '../containers/TeamStatisticCharts'
+import StatisticsContainer from '../containers/StatisticsContainer'
 import CollapsiblePanel from '../../CollapsiblePanel/containers/CollapsiblePanel'
 import ActualWaList from './ActualWaList'
 
@@ -26,22 +25,16 @@ export default class Dashboard extends React.Component {
         <hr />
         {actualWa}
         <CollapsiblePanel
-          title={`Willkommen, ${user.name}`} identifier='dashboard'
+          title='W&A Statistiken' identifier='overall-statistic-charts'
           visible={true}
         >
+          <StatisticsContainer />
+        </CollapsiblePanel>
+        <CollapsiblePanel
+          title={`Willkommen, ${user.name}`} identifier='dashboard'
+          visible={false}
+        >
           <OverviewPanel />
-        </CollapsiblePanel>
-        <CollapsiblePanel
-          title='Meine W&A Statistiken' identifier='personal-statistic-charts'
-          visible={false}
-        >
-          <PersonalStatisticCharts />
-        </CollapsiblePanel>
-        <CollapsiblePanel
-          title='Team W&A Statistiken' identifier='team-statistic-charts'
-          visible={false}
-        >
-          <TeamStatisticCharts />
         </CollapsiblePanel>
       </div>
     )

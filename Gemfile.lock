@@ -7,6 +7,30 @@ GIT
       representable (~> 3.0.0)
 
 GIT
+  remote: git://github.com/clarat-org/clarat_base.git
+  revision: 0bee46670896598df30bb9ea03810ac16f840966
+  branch: feature/1065-team-goals
+  specs:
+    clarat_base (0.1.4)
+      aasm
+      algoliasearch-rails
+      bundler (>= 1.8.4)
+      closure_tree
+      easy_translate
+      enumerize (= 2.0.1)
+      friendly_id (>= 5.0)
+      geocoder
+      localeapp
+      paper_trail
+      rails (~> 4.2)
+      rails-i18n
+      rails-observers
+      redcarpet
+      sanitize
+      sidekiq (~> 4.1.2)
+      web-console (~> 2.0)
+
+GIT
   remote: git://github.com/efqdalton/dynamic_sitemaps.git
   revision: f229cb40391ab3283efd2091ab58bbec68c720cf
   branch: adds-custom-storages
@@ -27,28 +51,6 @@ GIT
   specs:
     trailblazer-endpoint (0.0.1)
       dry-matcher
-
-PATH
-  remote: ../clarat_base
-  specs:
-    clarat_base (0.1.4)
-      aasm
-      algoliasearch-rails
-      bundler (>= 1.8.4)
-      closure_tree
-      easy_translate
-      enumerize (= 2.0.1)
-      friendly_id (>= 5.0)
-      geocoder
-      localeapp
-      paper_trail
-      rails (~> 4.2)
-      rails-i18n
-      rails-observers
-      redcarpet
-      sanitize
-      sidekiq (~> 4.1.2)
-      web-console (~> 2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -189,7 +191,7 @@ GEM
       representable (>= 2.4.0, <= 3.1.0)
       uber
     docile (1.1.5)
-    domain_name (0.5.20170223)
+    domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.1.1)
     dotenv-rails (2.1.1)
@@ -255,7 +257,7 @@ GEM
       railties (>= 3.2, < 5.1)
     foreman (0.82.0)
       thor (~> 0.19.1)
-    friendly_id (5.2.0)
+    friendly_id (5.2.1)
       activerecord (>= 4.0.0)
     gengo (0.1.0)
       json

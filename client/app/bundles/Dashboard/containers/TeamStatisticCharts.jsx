@@ -1,23 +1,44 @@
 import { connect } from 'react-redux'
 import valuesIn from 'lodash/valuesIn'
+import flatten from 'lodash/flatten'
+import setUiAction from '../../../Backend/actions/setUi'
 import loadAjaxData from '../../../Backend/actions/loadAjaxData'
-import TeamStatisticCharts from '../components/TeamStatisticCharts'
+import PersonalOrTeamStatisticCharts from '../components/PersonalOrTeamStatisticCharts'
 
 const mapStateToProps = (state, ownProps) => {
-  let chartNames = ['completion', 'approval']
-  const currentTeam =
-    state.entities.user_teams[state.entities.current_user.current_team_id]
-  const statisticCharts =
-    buildAggregatedStatisticCharts(state.entities, currentTeam, chartNames)
-  const dataLoaded =
-    state.ajax.teamStatistics && state.ajax.teamStatisticCharts &&
-    state.ajax.isLoading.teamStatistics === false &&
-    state.ajax.isLoading.teamStatisticCharts === false
+  let user = state.entities.current_user
+  const chartNames = ['completion', 'approval']
+  const trackableId =
+    state.ui.teamStatisticSelectedId || user.user_teams[0].id
+  const dataKey = 'teamStatistics#' + trackableId
+  const statisticCharts = buildAggregatedStatisticCharts(
+    state.entities, state.entities.user_teams[trackableId], chartNames
+  )
+  let selectable_data = !user.user_teams ? [] : (
+    user.user_teams.map(team => {
+      return [team.id, team.name]
+    })
+  )
+  selectable_data = selectable_data.concat(
+    !user.led_teams ? [] : (
+      flatten(user.led_teams.map(led_team => {
+        return !led_team.children ? [] : led_team.children.map(child_team =>{
+          return [child_team.id, `${child_team.name} (SubTeam von: ${led_team.name})`]
+        })
+      })
+    ))
+  )
+
+  const dataLoaded = state.ajax.isLoading[dataKey] === false &&
+                     state.ajax[dataKey]
 
   return {
-    currentTeam,
+    trackableId,
     statisticCharts,
-    dataLoaded
+    selectable_data,
+    dataKey,
+    dataLoaded,
+    chartType: 'UserTeam'
   }
 }
 
@@ -58,35 +79,36 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
 
-  loadData() {
-    if (stateProps.currentTeam) {
-      dispatchProps.dispatch(
-        loadAjaxData(
-          'statistic_charts',
-          {
-            'filters[user_id]': stateProps.currentTeam.user_ids,
-            // NOTE: this loads the correct amount of data for now (every user has two charts)
-            'per_page': stateProps.currentTeam.user_ids.length * 2
-          },
-          'teamStatisticCharts'
-        )
+  loadData(newProps = stateProps) {
+    console.log('==> DATA LOAD!!!')
+    let lowest_start_date = newProps.statisticCharts.map(chart => {
+      return chart.starts_at
+    }).sort((a, b) => +(a > b) || +(a === b) - 1)[0]
+    dispatchProps.dispatch(
+      loadAjaxData(
+        'statistics',
+        {
+          'filters[trackable_id]': newProps.trackableId,
+          'filters[trackable_type]': 'UserTeam',
+          'filters[time_frame]': 'daily',
+          'filters[date]': lowest_start_date,
+          'operators[date]': '>=', // TODO? allow for ranges in filters and also filter <= ends_at ?!
+          'per_page': 9999
+        },
+        newProps.dataKey
       )
-      dispatchProps.dispatch(
-        loadAjaxData(
-          'statistics',
-          {
-            'filters[trackable_id]': stateProps.currentTeam.id,
-            'filters[trackable_type]': 'UserTeam',
-            'filters[time_frame]': 'daily',
-            'per_page': 9999
-          },
-          'teamStatistics'
-        )
-      )
-    }
+    )
+  },
+
+  onSelect(e) {
+    console.log('onSelect')
+    console.log(e.target.value)
+    dispatchProps.dispatch(
+      setUiAction('teamStatisticSelectedId', e.target.value)
+    )
   }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(
-  TeamStatisticCharts
+  PersonalOrTeamStatisticCharts
 )
