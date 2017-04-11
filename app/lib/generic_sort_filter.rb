@@ -125,12 +125,12 @@ module GenericSortFilter
       else
         query.model
       end
-    value = transform_date_value(value, filter, model_name)
+    value = parse_value_by_type(value, filter, model_name)
     # NULL-filters are not allowed to stand within ''
     nullable_value?(value) ? 'NULL' : "'#{value}'"
   end
 
-  def self.transform_date_value(value, filter, model_name)
+  def self.parse_value_by_type(value, filter, model_name)
     # convert datetime strings to specific format for query
     if model_name.columns_hash[filter] && !nullable_value?(value) &&
        model_name.columns_hash[filter].type == :datetime && !value.empty?
