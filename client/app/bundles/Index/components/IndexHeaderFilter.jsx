@@ -13,6 +13,7 @@ export default class IndexHeaderFilter extends Component {
     return (
       <div>
         <div className='form-group'>
+          <div className="select-wrapper">
           <select
             className='form-control' value={filterName}
             onChange={onFilterNameChange}
@@ -21,6 +22,8 @@ export default class IndexHeaderFilter extends Component {
               <IndexHeaderFilterOption key={field.name} field={field} />
             )}
           </select>
+          </div>
+          <div className="select-wrapper">
           <select
             className='form-control' value={operatorName}
             onChange={onFilterOperatorChange}
@@ -31,6 +34,7 @@ export default class IndexHeaderFilter extends Component {
               />
             )}
           </select>
+          </div>
           <div className='input-group'>
             <input
               className='form-control' onChange={onFilterValueChange}
@@ -38,7 +42,7 @@ export default class IndexHeaderFilter extends Component {
             />
             <span className='input-group-btn'>
               <button className='btn' onClick={onTrashClick}>
-                <span className='fui-trash' />
+                <i className="fa fa-trash" />
               </button>
             </span>
           </div>
