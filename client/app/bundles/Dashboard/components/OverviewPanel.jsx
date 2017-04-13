@@ -2,8 +2,7 @@ import React, { PropTypes, Component } from 'react'
 import { Form, InputSet } from 'rform'
 import UpdateCurrentTeam from '../forms/UpdateCurrentTeam'
 import AssignmentsContainer from '../containers/AssignmentsContainer'
-import InlineIndex from '../../InlineIndex/containers/InlineIndex'
-import CollapsiblePanel from '../../CollapsiblePanel/containers/CollapsiblePanel'
+import ControlledTabView from '../../ControlledTabView/containers/ControlledTabView'
 
 export default class OverviewPanel extends Component {
   render() {
@@ -29,28 +28,20 @@ export default class OverviewPanel extends Component {
             className='form-group' inputClassName='form-control input-sm'
           />
         </Form>
-        <ul className="nav nav-tabs">
-          <li><a data-toggle="tab" href="#menu1">Meine Aufgaben</a></li>
-          <li className="active"><a data-toggle="tab" href="#menu2">Team Aufgaben</a></li>
-          <li><a data-toggle="tab" href="#menu3">Von mir abgeschickte Aufgaben</a></li>
-          <li><a data-toggle="tab" href="#menu4">Abgeschlossene Aufgaben</a></li>
-        </ul>
-        <div className="tab-content">
-          <div id="menu1" className="tab-pane fade">
-            <AssignmentsContainer scope={'receiver'} item_id={user.id} />
-          </div>
-          <div id="menu2" className="tab-pane fade in active">
-            <AssignmentsContainer
-              scope={'receiver_team'} item_id={user.current_team_id}
-            />
-          </div>
-          <div id="menu3" className="tab-pane fade">
-            <AssignmentsContainer scope={'creator_open'} item_id={user.id} />
-          </div>
-          <div id="menu4" className="tab-pane fade">
-            <AssignmentsContainer scope={'receiver_closed'} item_id={user.id} />
-          </div>
-        </div>
+
+        <ControlledTabView
+          identifier="assignments" startIndex={1} // <== TODO: make it work!
+          tabNames={['Meine Aufgaben', 'Team Aufgaben',
+                     'Von mir abgeschickte Aufgaben', 'Abgeschlossene Aufgaben'
+          ]}
+        >
+          <AssignmentsContainer scope={'receiver'} item_id={user.id} />
+          <AssignmentsContainer
+            scope={'receiver_team'} item_id={user.current_team_id}
+          />
+          <AssignmentsContainer scope={'creator_open'} item_id={user.id} />
+          <AssignmentsContainer scope={'receiver_closed'} item_id={user.id} />
+        </ControlledTabView>
       </div>
     )
   }

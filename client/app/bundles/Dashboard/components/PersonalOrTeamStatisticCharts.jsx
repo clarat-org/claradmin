@@ -21,7 +21,7 @@ export default class PersonalOrTeamStatisticCharts extends Component {
         Zeige Statistiken von:
         <FormControl componentClass="select" onChange={this.props.onSelect}>
           {this.props.selectable_data.map( data => {
-            return(<option value={data[0]}>{data[1]}</option>)
+            return(<option value={data[0]} key={data[0]}>{data[1]}</option>)
           })}
         </FormControl>
         {this.existingChartsOrLoading(
