@@ -614,9 +614,10 @@ ActiveRecord::Schema.define(version: 20170419100056) do
     t.string   "role",               limit: 255, default: "standard"
     t.integer  "failed_attempts",                default: 0,          null: false
     t.datetime "locked_at"
-    t.string   "provider"
-    t.string   "uid"
-    t.string   "name"
+    t.string   "provider",           limit: 255
+    t.string   "uid",                limit: 255
+    t.string   "name",               limit: 255
+    t.integer  "current_team_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
