@@ -17,7 +17,6 @@ export default class AssignmentsContainer extends Component {
           model={model} identifier_addition={scope}
           lockedParams={lockedParams} optionalParams={optionalParams}
         />
-        <hr />
       </div>
     )
   }
