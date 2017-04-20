@@ -7,19 +7,6 @@
       margin-bottom: 10px;
     }
 
-    .select-wrapper {
-      display: inline-block;
-      position: relative;
-
-      &::after {
-        content: "\25BE";
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translate(0, -50%);
-      }
-    }
-
     select.form-control {
       padding-right: 35px;
     }
@@ -61,7 +48,3 @@
     border-bottom: none;
   }
 }
-
-
-
-

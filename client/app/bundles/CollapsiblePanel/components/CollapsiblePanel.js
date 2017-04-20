@@ -29,9 +29,9 @@ export default class CollapsiblePanel extends Component {
 
   renderCollapsibleSymbol(open) {
     if (open) {
-      return <i className='fui-triangle-up' style={{float: 'right'}} />
+      return <i className='fa fa-angle-up' style={{float: 'right'}} />
     } else {
-      return <i className='fui-triangle-down' style={{float: 'right'}} />
+      return <i className='fa fa-angle-down' style={{float: 'right'}} />
     }
   }
 }
