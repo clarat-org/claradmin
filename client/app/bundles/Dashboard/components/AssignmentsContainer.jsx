@@ -24,8 +24,8 @@ export default class AssignmentsContainer extends Component {
   teamSelectOrNull(team_data) {
     if (team_data && team_data.length != 0) {
       return (
-        <div className="assignment-container">
-          Zeige Zuweisungen für:
+        <div className="select-set">
+          <span className="select-set__label">Zeige Zuweisungen für:</span>
           <ControlledSelectView identifier={'team-assignments'}>
             {team_data}
           </ControlledSelectView>
