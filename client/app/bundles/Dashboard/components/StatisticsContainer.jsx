@@ -25,11 +25,9 @@ export default class StatisticsContainer extends Component {
       )
     } else {
       return (
-        <ControlledTabView identifier="statistics"
-          tabNames={['Individualstatistiken', 'Teamstatistiken']}
-        >
-          <PersonalStatisticCharts />
-          <TeamStatisticCharts />
+        <ControlledTabView identifier="statistics">
+          <PersonalStatisticCharts tabTitle='Individualstatistiken' />
+          <TeamStatisticCharts tabTitle='Teamstatistiken' />
         </ControlledTabView>
       )
     }

@@ -11,8 +11,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     uniqIdentifier,
-    selectedTab,
-    tabNames: ownProps.tabNames
+    selectedTab
   }
 }
 

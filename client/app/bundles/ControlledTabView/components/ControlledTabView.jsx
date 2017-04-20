@@ -12,7 +12,7 @@ export default class ControlledTabView extends Component {
        {this.props.children.map( (child, index) => {
          return(
            <Tab eventKey={index}
-            title={this.props.tabNames[index]}
+            title={child.props.tabTitle}
             key={this.props.uniqIdentifier + index}
            >
              {index == this.props.selectedTab ? child : null}
