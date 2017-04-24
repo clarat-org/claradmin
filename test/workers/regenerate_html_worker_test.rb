@@ -16,8 +16,8 @@ class RegenerateHtmlWorkerTest < ActiveSupport::TestCase
       offer = offers(:basic)
       orga = organizations(:basic)
 
-      FactoryGirl.create :definition, key: offer.untranslated_description
-      FactoryGirl.create :definition, key: orga.untranslated_description
+      FactoryGirl.create :definition, key: 'basicOfferDescription', explanation: 'xy'
+      FactoryGirl.create :definition, key: 'basicOrganizationDescription', explanation: 'xy'
 
       # Doesn't request translations
       GoogleTranslateCommunicator.expects(:get_translations).never
