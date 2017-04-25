@@ -258,7 +258,6 @@ RailsAdmin.config do |config|
     end
     show do
       field :name
-      field :offers
       field :organizations
     end
     field :name
@@ -782,11 +781,6 @@ RailsAdmin.config do |config|
     end
     show do
       field :name
-      field :offers do
-        pretty_value do
-          "#{value.count} (#{value.visible_in_frontend.count})"
-        end
-      end
     end
   end
 
