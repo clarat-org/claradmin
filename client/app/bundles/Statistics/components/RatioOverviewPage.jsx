@@ -4,7 +4,7 @@ export default class OrgaOverviewPage extends React.Component {
   componentDidMount() {
     // Load sections unless they were already loaded
     if (!this.props.sections || !this.props.sections.length)
-      this.props.loadFilters()
+      this.props.loadSections()
   }
 
   componentWillReceiveProps(nextProps) {

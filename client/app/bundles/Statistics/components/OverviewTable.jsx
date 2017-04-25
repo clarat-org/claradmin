@@ -7,7 +7,7 @@ export default class OverviewTable extends React.Component {
     // Load states unless they were already loaded
     if(!this.props.states || !this.props.states.length ||
        !this.props.sections || !this.props.sections.length)
-      this.props.loadStatesAndFilters()
+      this.props.loadStatesAndSections()
   }
 
   componentWillReceiveProps(nextProps) {
