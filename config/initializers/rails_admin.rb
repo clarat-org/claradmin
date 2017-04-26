@@ -751,52 +751,29 @@ RailsAdmin.config do |config|
     end
   end
 
-  config.model 'Filter' do
-    weight 1
-    list do
-      field :id
-      field :name
-      field :identifier
-      field :offers
-    end
-  end
-
   config.model 'TraitFilter' do
-    parent Filter
-    field :filters_offers do
-      visible false
-    end
+    field :id
+    field :name
+    field :identifier
   end
 
   config.model 'LanguageFilter' do
-    parent Filter
-    field :filters_offers do
-      visible false
-    end
+    field :id
+    field :name
+    field :identifier
   end
 
   config.model 'TargetAudienceFilter' do
-    parent Filter
-    field :filters_offers do
-      visible false
-    end
+    field :id
+    field :name
+    field :identifier
   end
 
   config.model 'Section' do
     weight 3
-    list do
-      field :id
-      field :name
-      field :offers do
-        label 'Anzahl der Angebote ( davon sichtbar im Frontend)'
-        pretty_value do
-          "#{value.count} (#{value.visible_in_frontend.count})"
-        end
-      end
-    end
-    show do
-      field :name
-    end
+    field :id
+    field :name
+    field :identifier
   end
 
   config.model 'User' do
@@ -835,6 +812,12 @@ RailsAdmin.config do |config|
 
   config.model 'Area' do
     weight 1
+    field :id
+    field :name
+    field :minlat
+    field :maxlat
+    field :minlong
+    field :maxlong
   end
 
   config.model 'Contact' do
