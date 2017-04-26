@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require_relative '../../test_helper'
-# rubocop:disable Metrics/ClassLength
 class LinkAndInfuseTest < ActiveSupport::TestCase
   let(:operation) { Definition::LinkAndInfuse }
 
@@ -67,4 +66,3 @@ class LinkAndInfuseTest < ActiveSupport::TestCase
     end
   end
 end
-# rubocop:enable Metrics/ClassLength
