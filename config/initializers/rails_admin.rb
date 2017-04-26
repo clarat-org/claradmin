@@ -760,15 +760,30 @@ RailsAdmin.config do |config|
       field :offers
     end
   end
+
+  config.model 'TraitFilter' do
+    parent Filter
+    field :filters_offers do
+      visible false
+    end
+  end
+
   config.model 'LanguageFilter' do
     parent Filter
+    field :filters_offers do
+      visible false
+    end
   end
-  config.model 'Target_AudienceFilter' do
+
+  config.model 'TargetAudienceFilter' do
     parent Filter
+    field :filters_offers do
+      visible false
+    end
   end
+
   config.model 'Section' do
     weight 3
-    parent Filter
     list do
       field :id
       field :name
