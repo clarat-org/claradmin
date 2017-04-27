@@ -18,13 +18,13 @@ class RegenerateHtmlWorker
   def create_offer_array key_search_string
     Offer.visible_in_frontend.where(
       'LOWER(description) ~ ?', key_search_string
-    )
+    ).to_a
   end
 
   def create_orga_array key_search_string
     Organization.visible_in_frontend.where(
       'LOWER(description) ~ ?', key_search_string
-    )
+    ).to_a
   end
 
   def update_offers offers
