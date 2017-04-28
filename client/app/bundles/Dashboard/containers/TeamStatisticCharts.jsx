@@ -94,6 +94,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     let lowest_start_date = newProps.statisticCharts.map(chart => {
       return chart.starts_at
     }).sort((a, b) => +(a > b) || +(a === b) - 1)[0]
+    let page = newProps.dataLoaded != undefined && newProps.dataLoaded.meta ?
+      newProps.dataLoaded.meta.current_page + 1 : 1
     dispatchProps.dispatch(
       loadAjaxData(
         'statistics',
@@ -103,7 +105,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
           'filters[time_frame]': 'daily',
           'filters[date]': lowest_start_date,
           'operators[date]': '>=', // TODO? allow for ranges in filters and also filter <= ends_at ?!
-          'per_page': 9999
+          'per_page': 50,
+          'page': page
         },
         newProps.dataKey
       )
