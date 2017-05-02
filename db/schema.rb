@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170424081649) do
+ActiveRecord::Schema.define(version: 20170502133942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,8 @@ ActiveRecord::Schema.define(version: 20170424081649) do
     t.string   "aasm_state",            limit: 32,   default: "open", null: false
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
+    t.string   "topic"
+    t.boolean  "created_by_system",                  default: false
   end
 
   add_index "assignments", ["aasm_state"], name: "index_assignments_on_aasm_state", using: :btree
@@ -77,14 +79,6 @@ ActiveRecord::Schema.define(version: 20170424081649) do
 
   add_index "categories", ["name_de"], name: "index_categories_on_name_de", using: :btree
 
-  create_table "categories_filters", id: false, force: :cascade do |t|
-    t.integer "filter_id",   null: false
-    t.integer "category_id", null: false
-  end
-
-  add_index "categories_filters", ["category_id"], name: "index_filters_categories_on_category_id", using: :btree
-  add_index "categories_filters", ["filter_id"], name: "index_filters_categories_on_filter_id", using: :btree
-
   create_table "categories_offers", id: false, force: :cascade do |t|
     t.integer "offer_id",    null: false
     t.integer "category_id", null: false
@@ -93,15 +87,15 @@ ActiveRecord::Schema.define(version: 20170424081649) do
   add_index "categories_offers", ["category_id"], name: "index_categories_offers_on_category_id", using: :btree
   add_index "categories_offers", ["offer_id"], name: "index_categories_offers_on_offer_id", using: :btree
 
-  create_table "categories_sections", force: :cascade do |t|
-    t.integer  "category_id"
-    t.integer  "section_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+  create_table "categories_sections", id: false, force: :cascade do |t|
+    t.integer "section_id",  null: false
+    t.integer "category_id", null: false
   end
 
   add_index "categories_sections", ["category_id"], name: "index_categories_sections_on_category_id", using: :btree
+  add_index "categories_sections", ["category_id"], name: "index_filters_categories_on_category_id", using: :btree
   add_index "categories_sections", ["section_id"], name: "index_categories_sections_on_section_id", using: :btree
+  add_index "categories_sections", ["section_id"], name: "index_filters_categories_on_filter_id", using: :btree
 
   create_table "category_hierarchies", id: false, force: :cascade do |t|
     t.integer "ancestor_id",   null: false
