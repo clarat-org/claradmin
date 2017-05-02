@@ -31,14 +31,16 @@ const mapStateToProps = (state, ownProps) => {
 
   const dataLoaded = state.ajax.isLoading[dataKey] === false &&
                      state.ajax[dataKey]
-
+  const dataPercentage = !state.ajax[dataKey] ? '0 %' :
+    ((state.ajax[dataKey].meta.current_page / state.ajax[dataKey].meta.total_pages) * 100).toFixed(2) + ' %'
   return {
     trackableId,
     statisticCharts,
     selectable_data,
     dataKey,
     dataLoaded,
-    chartType
+    chartType,
+    dataPercentage
   }
 }
 
