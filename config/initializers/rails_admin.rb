@@ -819,6 +819,8 @@ RailsAdmin.config do |config|
     field :name_tr
     field :name_pl
     field :name_ru
+
+    object_label_method :name_de
   end
 
   config.model 'Area' do
