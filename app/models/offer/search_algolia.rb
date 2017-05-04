@@ -10,7 +10,7 @@ module Offer::SearchAlgolia
     algoliasearch do
       I18n.available_locales.each do |locale|
         index = %w(
-          name description code_word next_steps tag
+          name description code_word next_steps tags
           organization_names category_names stamp_family stamp_refugees
         )
         # :category_string,
