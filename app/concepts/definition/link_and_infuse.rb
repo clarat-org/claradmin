@@ -3,25 +3,23 @@ class Definition::LinkAndInfuse < Trailblazer::Operation
   step :link_definition_to_object
   step :infuse_object_description
 
-  # rubocop:disable MethodLength
   def link_definition_to_object(options)
-      found_definitions = []
-      key_occurence = []
-      string = options['string_to_infuse']
-      Definition.select(:id, :key).find_each do |definition|
-        # go through the set of keys for this definition
-        occurences = key_occurrences_in string, definition.key
-        # find the key that occurs first in the description and link models
-        first_key, _first_index = occurences.min_by { |_key, index| index }
-        if first_key
-          found_definitions.push(definition)
-          key_occurence.push(id: definition.id, key: first_key)
-        end
+    found_definitions = []
+    key_occurence = []
+    string = options['string_to_infuse']
+    Definition.select(:id, :key).find_each do |definition|
+      # go through the set of keys for this definition
+      occurences = key_occurrences_in string, definition.key
+      # find the key that occurs first in the description and link models
+      first_key, _first_index = occurences.min_by { |_key, index| index }
+      if first_key
+        found_definitions.push(definition)
+        key_occurence.push(id: definition.id, key: first_key)
       end
-      options['object_to_link'].definitions = found_definitions
-      options['definition_positions'] = key_occurence
+    end
+    options['object_to_link'].definitions = found_definitions
+    options['definition_positions'] = key_occurence
   end
-  # rubocop:enable MethodLength
 
   def infuse_object_description(options)
     string = options['string_to_infuse']
