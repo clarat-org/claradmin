@@ -56,8 +56,7 @@ class RegenerateHtmlWorker
       {},
       'object_to_link' => object,
       'string_to_infuse' => object.untranslated_description,
-      'definition_positions' => [],
-      'finished' => false
+      'definition_positions' => []
     )['infused_description'].to_s
   end
 end

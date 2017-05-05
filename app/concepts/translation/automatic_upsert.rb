@@ -117,8 +117,7 @@ module Translation
         {},
         'object_to_link' => object,
         'string_to_infuse' => output,
-        'definition_positions' => [],
-        'finished' => false
+        'definition_positions' => []
       )['infused_description']
     end
   end

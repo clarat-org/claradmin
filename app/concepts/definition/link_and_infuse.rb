@@ -5,7 +5,6 @@ class Definition::LinkAndInfuse < Trailblazer::Operation
 
   # rubocop:disable MethodLength
   def link_definition_to_object(options)
-    unless options['finished'] == true
       found_definitions = []
       key_occurence = []
       string = options['string_to_infuse']
@@ -21,7 +20,6 @@ class Definition::LinkAndInfuse < Trailblazer::Operation
       end
       options['object_to_link'].definitions = found_definitions
       options['definition_positions'] = key_occurence
-    end
   end
   # rubocop:enable MethodLength
 
@@ -35,7 +33,6 @@ class Definition::LinkAndInfuse < Trailblazer::Operation
                   '\1</dfn>'
     end
     options['infused_description'] = string
-    options['finished'] = true
   end
 
   # helper functions
