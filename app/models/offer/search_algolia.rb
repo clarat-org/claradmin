@@ -30,6 +30,7 @@ module Offer::SearchAlgolia
           attribute(:next_steps)  { _next_steps locale }
           attribute(:lang) { lang(locale) }
           attribute(:tags) { tag_string(locale) }
+          attribute(:definitions) { definitions_string(locale) }
           attribute(:_categories) { _categories(locale) }
           attribute(:stamp_family) { stamp_family(locale) }
           attribute(:stamp_refugees) { stamp_refugees(locale) }
@@ -51,6 +52,7 @@ module Offer::SearchAlgolia
           attribute(:next_steps)  { _next_steps locale }
           attribute(:lang) { lang(locale) }
           attribute(:tags) { tag_string(locale) }
+          attribute(:definitions) { definitions_string(locale) }
           attribute(:_categories) { _categories(locale) }
           attribute(:stamp_family) { stamp_family(locale) }
           attribute(:stamp_refugees) { stamp_refugees(locale) }
