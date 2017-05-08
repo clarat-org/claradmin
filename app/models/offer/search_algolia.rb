@@ -31,7 +31,7 @@ module Offer::SearchAlgolia
           attribute(:lang) { lang(locale) }
           attribute(:tags) { tag_string(locale) }
           attribute(:definitions) { definitions_string(locale) }
-          attribute(:_categories) { _categories(locale) }
+          attribute(:_tags) { _categories(locale) }
           attribute(:stamp_family) { stamp_family(locale) }
           attribute(:stamp_refugees) { stamp_refugees(locale) }
           attribute(:category_names) { category_names(locale) }
@@ -53,7 +53,7 @@ module Offer::SearchAlgolia
           attribute(:lang) { lang(locale) }
           attribute(:tags) { tag_string(locale) }
           attribute(:definitions) { definitions_string(locale) }
-          attribute(:_categories) { _categories(locale) }
+          attribute(:_tags) { _categories(locale) }
           attribute(:stamp_family) { stamp_family(locale) }
           attribute(:stamp_refugees) { stamp_refugees(locale) }
           attribute(:category_names) { category_names(locale) }
