@@ -23,15 +23,25 @@ module API::V1
         property :spoc
 
         property :organization_id
+        has_one :organization do
+          type :organizations
+          property :id
+          property :name, as: :label
+        end
 
         property :email_id
+        has_one :email do
+          type :organizations
+          property :id
+          property :address, as: :label
+        end
 
-        property :label, getter: ->(solution_category) do
-          solution_category[:represented].display_name
+        property :label, getter: ->(contact_person) do
+          contact_person[:represented].display_name
         end
       end
 
-      class Index < API::V1::Default::Representer::Index
+      class Index < Show
       end
     end
   end

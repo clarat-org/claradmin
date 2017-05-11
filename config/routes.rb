@@ -91,7 +91,11 @@ Rails.application.routes.draw do
       end
       resources :solution_categories, only: [:show, :index]
       resources :offers, only: [:index, :show]
-      resources :locations, only: [:index]
+      resources :locations, only: [:index, :show, :create]
+      resources :cities, only: [:index, :show, :create]
+      resources :federal_states, only: [:index, :show]
+      resources :contact_people, only: [:index, :show, :create]
+      resources :emails, only: [:index, :show, :create]
       resources :organizations, only: [:show, :index, :create, :update]
       resources :divisions, only: [:show, :index, :create, :update]
       get '/statistics' => 'statistics#index'
@@ -103,8 +107,6 @@ Rails.application.routes.draw do
       resources :time_allocations, only: [:create, :update]
       resources :user_teams
       resources :sections, only: [:index]
-      resources :cities, only: [:index]
-      resources :contact_people, only: [:index]
       resources :assignments, only: [:index, :show, :create, :update]
       post 'time_allocations/:year/:week_number',  controller: :time_allocations,
                                                    action: :report_actual

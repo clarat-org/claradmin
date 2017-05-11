@@ -8,6 +8,12 @@ class Email < ActiveRecord::Base
   has_many :known_offers, source: :offer, through: :offer_mailings,
                           inverse_of: :informed_emails
 
+  # Search
+  include PgSearch
+  pg_search_scope :search_everything,
+                  against: [:id, :address],
+                  using: { tsearch: { prefix: true } }
+
   # State Machine
   aasm do
     event :inform, guard: :informable_offers_or_orga_contact? do

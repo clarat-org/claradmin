@@ -53,7 +53,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...ownProps,
 
     handleResponse: (_formId, data, serverErrors) => {
-      if (!serverErrors.length) {
+      if (!serverErrors || !serverErrors.length) {
         dispatch(addEntities(data))
       }
     },

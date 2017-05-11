@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 module API::V1
-  module Location
+  module FederalState
     class Index < API::V1::Default::Index
       def base_query
-        ::Location
+        ::FederalState
       end
     end
   end
