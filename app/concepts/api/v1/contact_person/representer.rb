@@ -23,23 +23,24 @@ module API::V1
           property :zip_and_city
           property :spoc
 
-          property :organization_id
-          has_one :organization do
-            type :organizations
-            property :id
-            property :name, as: :label
-          end
-
-          property :email_id
-          has_one :email do
-            type :organizations
-            property :id
-            property :address, as: :label
-          end
-
           property :label, getter: ->(contact_person) do
             contact_person[:represented].display_name
           end
+
+          property :email_id
+          property :organization_id
+        end
+
+        has_one :organization do
+          type :organizations
+          property :id
+          property :name, as: :label
+        end
+
+        has_one :email do
+          type :organizations
+          property :id
+          property :address, as: :label
         end
       end
 
