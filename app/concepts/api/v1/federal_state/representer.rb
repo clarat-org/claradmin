@@ -3,14 +3,16 @@ module API::V1
   module FederalState
     module Representer
       class Show < API::V1::Default::Representer::Show
-        type :federal_states
+        include Roar::JSON::JSONAPI.resource :federal_states
 
-        property :name
-        property :label, getter: ->(federal_state) {
-          federal_state[:represented].name
-        }
-        property :created_at
-        property :updated_at
+        attributes do
+          property :name
+          property :label, getter: ->(federal_state) {
+            federal_state[:represented].name
+          }
+          property :created_at
+          property :updated_at
+        end
       end
 
       class Index < Show
