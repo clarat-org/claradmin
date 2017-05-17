@@ -347,7 +347,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_portile2 (2.0.0)
-    minitest (5.10.2)
+    minitest (5.10.1)
     minitest-capybara (0.8.2)
       capybara (~> 2.2)
       minitest (~> 5.0)
@@ -733,7 +733,7 @@ DEPENDENCIES
   memcachier
   memory_test_fix
   meta_request
-  minitest
+  minitest (= 5.10.1)
   minitest-line
   minitest-matchers
   minitest-rails-capybara
