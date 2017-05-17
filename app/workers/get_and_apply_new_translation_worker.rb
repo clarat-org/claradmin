@@ -5,19 +5,26 @@ class GetAndApplyNewTranslationWorker
   # TODO: reindex connected offers if a category translation was updated
   def perform gengo_order_id
     gengo_order = GengoOrder.find(gengo_order_id)
+    model, id, _field = gengo_order.expected_slug.split(':')
+
+    unless model.constantize.exists?(id)
+      gengo_order.delete
+      return
+    end
     order = GengoCommunicator.new.fetch_order gengo_order.order_id
-
-    # ignore unfinished orders (total_job_count != approved_jobs_count)
-    return unless order['total_jobs'].to_i == order['jobs_approved'].count
-
-    #
-    get_and_apply_translations_of_order order, gengo_order.expected_slug
-
-    # delete gengo_order
-    gengo_order.delete
+    continue_with_fetched_order order, gengo_order
   end
 
   private
+
+  def continue_with_fetched_order order, gengo_order
+    # ignore unfinished orders (total_job_count != approved_jobs_count)
+    if order['total_jobs'].to_i == order['jobs_approved'].count
+      get_and_apply_translations_of_order order, gengo_order.expected_slug
+      # delete gengo_order
+      gengo_order.delete
+    end
+  end
 
   def get_and_apply_translations_of_order order, expected_slug
     # store model_istance of single jobs
