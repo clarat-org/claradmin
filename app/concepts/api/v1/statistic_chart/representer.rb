@@ -2,7 +2,7 @@
 module API::V1
   module StatisticChart
     module Representer
-      class Show < API::V1::Default::Representer::Show
+      class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :statistic_charts
 
         attributes do

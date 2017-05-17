@@ -2,7 +2,7 @@
 module API::V1
   module OfferTranslation
     module Representer
-      class Show < API::V1::Assignable::Representer::Show
+      class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :offer_translations
 
         attributes do
@@ -32,9 +32,6 @@ module API::V1
             property :opening_specification
           end
         end
-      end
-
-      class Index < Show
       end
     end
   end

@@ -2,11 +2,8 @@
 module API::V1
   module UserTeam
     module Representer
-      class Show < API::V1::Default::Representer::Show
+      class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :user_teams
-        defaults do |name, _|
-          { as: JSONAPI::MemberName.(name, strict: false) }
-        end
 
         attributes do
           property :name
@@ -50,10 +47,6 @@ module API::V1
         #   property :message, as: :label
         # end
       end
-
-      # class Show < API::V1::Default::Representer::Show
-      #   # items extend: Show
-      # end
     end
   end
 end

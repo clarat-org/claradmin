@@ -2,8 +2,7 @@
 module API::V1
   module City
     module Representer
-      class Show < API::V1::Default::Representer::Show
-        # type :cities
+      class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :cities
 
         attributes do
@@ -12,9 +11,6 @@ module API::V1
             city[:represented].name
           }
         end
-      end
-
-      class Index < Show
       end
     end
   end
