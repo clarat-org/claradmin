@@ -35,8 +35,7 @@ class RegenerateHtmlWorker
 
   def update_offers offers
     offers.each do |offer|
-      output = MarkdownRenderer.render(offer.untranslated_description)
-      infused_description = link_and_infuse_description(offer, output)
+      infused_description = link_and_infuse_description(offer)
       old_infused_description = OfferTranslation.where(
         offer_id: offer.id, locale: 'de'
       ).first.description
@@ -53,8 +52,7 @@ class RegenerateHtmlWorker
       old_infused_description = OrganizationTranslation.where(
         organization_id: organization.id, locale: 'de'
       ).first.description.to_s
-      output = MarkdownRenderer.render(organization.untranslated_description)
-      infused_description = link_and_infuse_description(organization, output)
+      infused_description = link_and_infuse_description(organization)
       next unless infused_description != old_infused_description
       OrganizationTranslation.where(
         organization_id: organization.id, locale: 'de'
@@ -62,11 +60,13 @@ class RegenerateHtmlWorker
     end
   end
 
-  def link_and_infuse_description object, output
+  def link_and_infuse_description object
     Definition::LinkAndInfuse.(
       {},
       'object_to_link' => object,
-      'string_to_infuse' => output,
+      'string_to_infuse' => MarkdownRenderer.render(
+        object.untranslated_description
+      ),
       'definition_positions' => []
     )['infused_description'].to_s
   end
