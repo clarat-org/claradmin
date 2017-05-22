@@ -34,7 +34,7 @@ RailsAdmin.config do |config|
     Category Email UpdateRequest LanguageFilter User Contact
     Tag Definition Note Area SearchLocation ContactPerson
     Subscription Section NextStep SolutionCategory
-    LogicVersion SplitBase City
+    LogicVersion SplitBase City FiltersOffer
   )
 
   config.actions do
@@ -59,7 +59,7 @@ RailsAdmin.config do |config|
     end
 
     clone do
-      except ['Section', 'City']
+      except ['Section', 'City', 'FiltersOffer']
     end
     # nested_set do
     #   only ['Category']
@@ -378,7 +378,23 @@ RailsAdmin.config do |config|
     field :language_filters do
       inline_add false
     end
-    field :target_audience_filters do
+    # field :target_audience_filters do
+    #   help do
+    #     'Richtet sich das Angebot direkt an das Kind, oder an Erwachsene wie
+    #     z.B. die Eltern, einen Nachbarn oder einen Lotsen'
+    #   end
+    # end
+    field :filters_offers do
+      # searchable :offer_id
+      associated_collection_cache_all true
+      associated_collection_scope do
+        offer = bindings[:object]
+        Proc.new { |scope|
+          # binding.pry
+          scope = scope.where(offer_id: offer.id).joins(:filter).where('filters.type = ?', 'TargetAudienceFilter')
+          scope = scope.limit(offer.filters_offers.count)
+        }
+      end
       help do
         'Richtet sich das Angebot direkt an das Kind, oder an Erwachsene wie
         z.B. die Eltern, einen Nachbarn oder einen Lotsen'
@@ -472,6 +488,29 @@ RailsAdmin.config do |config|
     export do
       field :id
     end
+  end
+
+  config.model 'FiltersOffer' do
+    weight 3
+    field(:id) { read_only true }
+    field :offer_id
+    field :filter_id
+    # field :offer
+    # field :filter
+    field :residency_status
+    field :gender_first_part_of_stamp
+    field :gender_second_part_of_stamp
+    field :age_from
+    field :age_to
+    field :age_visible
+    list do
+      sort_by :id
+      field :offer_id
+      field :filter_id
+    end
+    # queryable false
+    # filterable false
+    object_label_method :name
   end
 
   config.model 'ContactPerson' do
