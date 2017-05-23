@@ -12,5 +12,6 @@ script:
   - RAILS_ENV=test bundle exec rake test:all
 before_install:
   - "npm install -g npm@latest"
-  - "npm install -g n"
+  - "curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -"
+  - "sudo apt-get install -y nodejs"
 sudo: false
