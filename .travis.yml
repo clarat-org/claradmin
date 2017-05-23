@@ -6,7 +6,8 @@ notifications:
     - dev@clarat.org
 before_script:
   - "RAILS_ENV=test bundle exec rake db:migrate"
-  - "npm install -g npm@latest"
+  - "node install"
+  - "npm install"
   - "cd client && npm run build:client"
 script:
   - RAILS_ENV=test bundle exec rake test:all
