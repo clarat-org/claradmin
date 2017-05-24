@@ -11,7 +11,7 @@ gem 'nokogiri', '1.6.7.2' # 1.6.8 doesnt install on some pcs. Remove when fixed
 gem 'rails', '~> 4.2'
 gem 'bundler', '>= 1.8.4'
 
-gem 'clarat_base', path: '../clarat_base' # github: 'clarat-org/clarat_base'
+gem 'clarat_base', github: 'clarat-org/clarat_base'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # gem 'rails', '~> 4.1.12'
@@ -191,7 +191,7 @@ group :development, :test do
   gem 'pry-doc' # read ruby docs in console
 
   # test suite
-  gem 'minitest' # Testing using Minitest
+  gem 'minitest', '5.10.1' # Testing using Minitest
   gem 'minitest-matchers'
   gem 'minitest-line'
   gem 'launchy' # save_and_open_page
