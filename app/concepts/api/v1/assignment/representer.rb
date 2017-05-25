@@ -4,7 +4,6 @@ module API::V1
     module Representer
       class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :assignments
-        include Default::Representer::NonStrictNaming
 
         attributes do
           property :assignable_id
@@ -23,7 +22,7 @@ module API::V1
           property :created_by_system
         end
 
-        has_one :creator do
+        has_one :creator, class: ::User do
           type :users
 
           attributes do

@@ -19,7 +19,7 @@ module API::V1
           property :organization_id
         end
 
-        has_one :organization do
+        has_one :organization, class: ::Organization do
           type :organizations
 
           attributes do
@@ -30,9 +30,6 @@ module API::V1
         # property :organization_section, getter: ->(ot) do
         #   ot[:represented].organization.sections.pluck(:identifier)
         # end
-      end
-
-      class Index < Show
       end
     end
   end

@@ -2,15 +2,13 @@
 module API::V1
   module UserTeam
     module Representer
-      class Show < API::V1::Default::Representer::Show
+      class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :user_teams
-        defaults do |name, _|
-          { as: JSONAPI::MemberName.(name, strict: false) }
-        end
 
         attributes do
           property :name
           property :classification
+          property :lead_id
           property :parent_id
           property :user_ids
         end
@@ -23,7 +21,7 @@ module API::V1
           end
         end
 
-        has_many :children do
+        has_many :children, class: ::UserTeam do
           type :user_teams
 
           attributes do
@@ -31,7 +29,7 @@ module API::V1
           end
         end
 
-        has_many :users, class: ::User do
+        has_many :users, class: ::User, populator: Lib::Populators::Find do
           type :users
 
           attributes do
@@ -50,10 +48,6 @@ module API::V1
         #   property :message, as: :label
         # end
       end
-
-      # class Show < API::V1::Default::Representer::Show
-      #   # items extend: Show
-      # end
     end
   end
 end

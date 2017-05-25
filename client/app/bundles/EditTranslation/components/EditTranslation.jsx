@@ -10,16 +10,16 @@ export default class EditTranslation extends Component {
 
   render() {
     const {
-      heading, current_assignment_id, may_edit, loadData
+      heading, currentAssignmentId, mayEdit, loadData
     } = this.props
 
     return (
       <div className='content EditTranslation'>
         <AssignableContainer
-          assignment_id={current_assignment_id} may_edit={may_edit}
+          assignmentId={currentAssignmentId} mayEdit={mayEdit}
           assignableDataLoad={loadData}
         />
-        <h2>{heading}</h2>
+        <h2 className="page-title">{heading}</h2>
 
         {this.renderLoadingOrForm()}
       </div>
@@ -28,14 +28,14 @@ export default class EditTranslation extends Component {
 
   renderLoadingOrForm() {
     const {
-      id, model, loaded, source, translation, may_edit
+      id, model, loaded, source, translation, mayEdit
     } = this.props
 
     if (loaded) {
       return(
         <EditTranslationForm
           model={model} source={source} id={id} translation={translation}
-          may_edit={may_edit}
+          mayEdit={mayEdit}
         />
       )
     } else {

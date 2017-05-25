@@ -2,8 +2,7 @@
 module API::V1
   module Category
     module Representer
-      class Show < API::V1::Default::Representer::Show
-        # type :categories
+      class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :categories
 
         attributes do
@@ -15,13 +14,9 @@ module API::V1
           end
         end
 
-        has_many :children, class: Category, extend: Show, if: (lambda do |opts|
-          opts[:represented].children.any?
-        end)
-      end
-
-      class Index < API::V1::Default::Representer::Index
-        # items extend: Show
+        has_many :children,
+                 class: Category, decorator: Show,
+                 if: ->(opts) { opts[:represented].children.any? }
       end
     end
   end

@@ -6,14 +6,14 @@ export default class EditTranslationForm extends Component {
   render() {
     const {
       seedData, action, formObjectClass, source, properties, formId,
-      handleResponse, afterResponse, may_edit, editLink, previewLink
+      afterResponse, mayEdit, editLink, previewLink
     } = this.props
 
     return (
       <Form ajax requireValid
         method='PATCH' action={action}
         id={formId} seedData={seedData} formObjectClass={formObjectClass}
-        handleResponse={handleResponse} afterResponse={afterResponse}
+        afterResponse={afterResponse}
       >
         <fieldset>
           <table className="table table-condensed offer-translations--form-table">
@@ -23,15 +23,15 @@ export default class EditTranslationForm extends Component {
                   Übersetzung von {this.renderTranslationSource()}
                 </th>
                 <th className='original'>
-                  <a href={editLink} target='_blank'>Original</a>&ensp;
-                  <a href={previewLink} target='_blank'>(Preview)</a>
+                  <a href={editLink} target='_blank'><i className="fa fa-file-text" /> Original</a> &nbsp;&nbsp;&nbsp;
+                  <a href={previewLink} target='_blank'><i className="fa fa-eye" /> Preview</a>
                 </th>
               </tr>
               {properties.map(property => {
                 return(
                   <EditTranslationRow
                     key={property} property={property} formId={formId}
-                    source={source} may_edit={may_edit}
+                    source={source} mayEdit={mayEdit}
                   />
                 )
               })}
@@ -50,18 +50,18 @@ export default class EditTranslationForm extends Component {
 
   renderTranslationSource() {
     if (this.props.translation.source == 'GoogleTranslate') {
-      return <span className='text-danger'>GoogleTranslate</span>
+      return <span className='text-danger translation-marker'>GoogleTranslate</span>
     }
     else if (this.props.translation.possibly_outdated) {
       return(
-        <span className='text-warning'>
+        <span className='text-warning translation-marker'>
           Menschenhand
           <dfn title='möglicherweise veraltet'>*</dfn>
         </span>
       )
     }
     else {
-      return <span className='text-success'>Menschenhand</span>
+      return <span className='text-success translation-marker'>Menschenhand</span>
     }
   }
 }

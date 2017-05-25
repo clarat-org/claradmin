@@ -2,7 +2,7 @@
 module API::V1
   module FederalState
     module Representer
-      class Show < API::V1::Default::Representer::Show
+      class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :federal_states
 
         attributes do

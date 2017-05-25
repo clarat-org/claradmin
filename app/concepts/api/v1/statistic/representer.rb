@@ -2,7 +2,7 @@
 module API::V1
   module Statistic
     module Representer
-      class Show < API::V1::Default::Representer::Show
+      class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :statistics
 
         attributes do
@@ -29,10 +29,6 @@ module API::V1
             end
           end
         end
-      end
-
-      class Index < API::V1::Default::Representer::Index
-        # items extend: Show
       end
     end
   end

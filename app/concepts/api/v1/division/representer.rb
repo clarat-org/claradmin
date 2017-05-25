@@ -2,8 +2,7 @@
 module API::V1
   module Division
     module Representer
-      class Show < API::V1::Default::Representer::Show
-        # type :divisions
+      class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :divisions
 
         attributes do
@@ -15,7 +14,7 @@ module API::V1
           property :comment
           property :size
 
-          property :website_id
+          property :website_ids
 
           property :organization_id
           property :section_id
@@ -29,7 +28,7 @@ module API::V1
           end
         end
 
-        has_one :section do
+        has_one :section, class: ::Section, populator: Lib::Populators::Find do
           type :sections
 
           attributes do
@@ -37,7 +36,7 @@ module API::V1
           end
         end
 
-        has_many :presumed_categories do
+        has_many :presumed_categories, class: ::Category do
           type :categories
 
           attributes do
@@ -45,16 +44,13 @@ module API::V1
           end
         end
 
-        has_many :presumed_solution_categories do
+        has_many :presumed_solution_categories, class: ::Category do
           type :solution_categories
 
           attributes do
             property :name_de, as: :label
           end
         end
-      end
-
-      class Index < Show
       end
     end
   end

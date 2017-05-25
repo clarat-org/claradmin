@@ -2,7 +2,7 @@
 module API::V1
   module ContactPerson
     module Representer
-      class Show < API::V1::Default::Representer::Show
+      class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :contact_people
 
         attributes do
@@ -42,9 +42,6 @@ module API::V1
           property :id
           property :address, as: :label
         end
-      end
-
-      class Index < Show
       end
     end
   end

@@ -2,7 +2,7 @@
 module API::V1
   module User
     module Representer
-      class Show < API::V1::Default::Representer::Show
+      class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :users
 
         attributes do
@@ -15,7 +15,7 @@ module API::V1
           property :user_team_ids
         end
 
-        has_many :user_teams do
+        has_many :user_teams, class: ::UserTeam do
           type :user_teams
 
           attributes do
@@ -26,7 +26,7 @@ module API::V1
           end
         end
 
-        has_many :led_teams do
+        has_many :led_teams, class: ::UserTeam do
           type :user_teams
 
           attributes do
@@ -47,10 +47,6 @@ module API::V1
         #   property :message, as: :label
         # end
       end
-
-      # class Index < API::V1::Default::Representer::Index
-      #   # items extend: Show
-      # end
 
       class Update < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :users

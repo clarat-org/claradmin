@@ -2,7 +2,7 @@
 module API::V1
   module Section
     module Representer
-      class Show < API::V1::Default::Representer::Show
+      class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :sections
 
         attributes do
@@ -13,9 +13,6 @@ module API::V1
           property :identifier
           property :name
         end
-      end
-
-      class Index < Show
       end
     end
   end

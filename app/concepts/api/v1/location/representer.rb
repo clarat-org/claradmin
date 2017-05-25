@@ -2,7 +2,7 @@
 module API::V1
   module Location
     module Representer
-      class Show < API::V1::Default::Representer::Show
+      class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :locations
 
         attributes do
@@ -47,9 +47,6 @@ module API::V1
           property :id
           property :name, as: :label
         end
-      end
-
-      class Index < Show
       end
 
       # class Update < Roar::Decorator

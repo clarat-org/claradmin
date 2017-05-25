@@ -89,25 +89,28 @@ Rails.application.routes.draw do
           put 'sort'
         end
       end
-      resources :solution_categories, only: [:show, :index]
-      resources :offers, only: [:index, :show]
-      resources :locations, only: [:index, :show, :create]
-      resources :cities, only: [:index, :show, :create]
-      resources :federal_states, only: [:index, :show]
-      resources :contact_people, only: [:index, :show, :create]
-      resources :emails, only: [:index, :show, :create]
-      resources :organizations, only: [:show, :index, :create, :update]
-      resources :divisions, only: [:show, :index, :create, :update]
-      get '/statistics' => 'statistics#index'
-      resources :users, only: [:index, :show, :update]
-      resources :websites, only: [:index, :create]
-      resources :offer_translations, only: [:index, :show, :update]
-      resources :organization_translations, only: [:index, :show, :update]
-      resources :statistic_charts, except: [:destroy]
-      resources :time_allocations, only: [:create, :update]
-      resources :user_teams
-      resources :sections, only: [:index]
-      resources :assignments, only: [:index, :show, :create, :update]
+      def api_resources name, options = {}
+        resources name, options.merge(path: name.to_s.dasherize)
+      end
+      api_resources :solution_categories, only: [:show, :index]
+      api_resources :offers, only: [:index, :show]
+      api_resources :locations, only: [:index, :show]
+      api_resources :organizations, only: [:show, :index, :create, :update]
+      api_resources :divisions, only: [:show, :index, :create, :update]
+      api_resources :statistics, only: [:index]
+      api_resources :users, only: [:index, :show, :update]
+      api_resources :websites, only: [:index, :create]
+      api_resources :offer_translations, only: [:index, :show, :update]
+      api_resources :organization_translations, only: [:index, :show, :update]
+      api_resources :statistic_charts, except: [:destroy]
+      api_resources :time_allocations, only: [:create, :update]
+      api_resources :user_teams
+      api_resources :sections, only: [:index]
+      api_resources :cities, only: [:index, :show]
+      api_resources :federal_states, only: [:index, :show]
+      api_resources :contact_people, only: [:index, :show]
+      api_resources :emails, only: [:index, :show]
+      api_resources :assignments, only: [:index, :show, :create, :update]
       post 'time_allocations/:year/:week_number',  controller: :time_allocations,
                                                    action: :report_actual
       # get '/statistics/:topic/:user_id(/:start/:end)' => 'statistics#index'
