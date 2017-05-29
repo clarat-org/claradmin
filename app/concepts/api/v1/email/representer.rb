@@ -19,24 +19,6 @@ module API::V1
             email[:represented].address
           end
         end
-
-        # has_many :contact_people do
-        #   type :contact_person
-        #   property :id
-        #   property :display_name, as: :label
-        # end
-        #
-        # has_many :offers do
-        #   type :offer
-        #   property :id
-        #   property :name, as: :label
-        # end
-        #
-        # has_many :organizations do
-        #   type :organization
-        #   property :id
-        #   property :name, as: :label
-        # end
       end
 
       class Index < Show

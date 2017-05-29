@@ -33,14 +33,16 @@ module API::V1
 
         has_one :organization do
           type :organizations
-          property :id
-          property :name, as: :label
+          attributes do
+            property :name, as: :label
+          end
         end
 
         has_one :email do
           type :organizations
-          property :id
-          property :address, as: :label
+          attributes do
+            property :name, as: :label
+          end
         end
       end
     end

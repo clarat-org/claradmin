@@ -11,6 +11,6 @@ class API::V1::ContactPerson::RepresenterTest < ActiveSupport::TestCase
     # NOTE: .create! does not work because the object has an id afterwards
     # and the Representer calls .empty? on 1:Fixnum.. FeelsWeirdMan
     result = subject.new(record).to_hash
-    result['data']['attributes']['label'].must_equal '#1 Foo Bar (foobar)'
+    result['data']['attributes']['label'].must_equal '# Foo Bar (foobar)'
   end
 end

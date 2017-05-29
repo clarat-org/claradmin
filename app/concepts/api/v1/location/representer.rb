@@ -32,20 +32,23 @@ module API::V1
 
         has_one :organization do
           type :organizations
-          property :id
-          property :name, as: :label
+          attributes do
+            property :name, as: :label
+          end
         end
 
         has_one :federal_state do
           type :federal_states
-          property :id
-          property :name, as: :label
+          attributes do
+            property :name, as: :label
+          end
         end
 
         has_one :city do
           type :cities
-          property :id
-          property :name, as: :label
+          attributes do
+            property :name, as: :label
+          end
         end
       end
 
