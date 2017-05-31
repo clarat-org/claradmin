@@ -19,9 +19,15 @@ class GenericSortFilterTest < ActiveSupport::TestCase
       result.must_equal invalid_query
     end
 
-    it 'searches with a filled param' do
+    it 'searches with a filled param for offer' do
       query.expects(:search_everything).with('foo').twice
       subject.send(:transform_by_searching, query, 'foo')
+    end
+
+    it 'searches with a filled param for orga' do
+      orgaQuery = Organization.where('1 = 1')
+      query.expects(:search_everything).with('orga').twice
+      subject.send(:transform_by_searching, query, 'orga')
     end
   end
 
