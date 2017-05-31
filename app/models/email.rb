@@ -3,6 +3,8 @@
 require ClaratBase::Engine.root.join('app', 'models', 'email') unless defined?(Email)
 
 class Email < ActiveRecord::Base
+  include ReformedValidationHack
+
   # Associations
   has_many :offer_mailings, inverse_of: :email
   has_many :known_offers, source: :offer, through: :offer_mailings,

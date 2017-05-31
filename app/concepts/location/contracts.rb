@@ -23,8 +23,7 @@ module Location::Contracts
 
     validates :city_id, presence: true
     validates :organization_id, presence: true
-    validates :federal_state_id, presence: true,
-                                 if: ->(location) { location.in_germany }
+    validates :federal_state_id, presence: true
   end
 
   class Update < Create
