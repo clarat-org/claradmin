@@ -25,9 +25,9 @@ class GenericSortFilterTest < ActiveSupport::TestCase
     end
 
     it 'searches with a filled param for orga' do
-      orgaQuery = Organization.where('1 = 1')
-      query.expects(:search_everything).with('orga').twice
-      subject.send(:transform_by_searching, query, 'orga')
+      orga_query = Organization.where('1 = 1')
+      orga_query.expects(:with_pg_search_rank).once
+      subject.send(:transform_by_searching, orga_query, 'orga')
     end
   end
 
