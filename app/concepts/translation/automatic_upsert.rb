@@ -25,10 +25,10 @@ module Translation
       user_id =
         if options['object_to_translate'].class.name == 'ContactPerson'
           User.system_user.id
-        elsif options['object_to_translate'].approved_by
-          options['object_to_translate'].approved_by
-        else
+        elsif options['object_to_translate'].created_by && User.find(options['object_to_translate'].created_by).active
           options['object_to_translate'].created_by
+        else
+          options['object_to_translate'].approved_by
         end
       options['last_acting_user'] = User.find(user_id)
     end
