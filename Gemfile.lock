@@ -7,6 +7,29 @@ GIT
       representable (~> 3.0.0)
 
 GIT
+  remote: git://github.com/clarat-org/clarat_base.git
+  revision: dcb4a1a189fac70118289350bf4ef5037976afd1
+  specs:
+    clarat_base (0.1.4)
+      aasm
+      algoliasearch-rails
+      bundler (>= 1.8.4)
+      closure_tree
+      easy_translate
+      enumerize (= 2.0.1)
+      friendly_id (>= 5.0)
+      geocoder
+      localeapp
+      paper_trail
+      rails (~> 4.2)
+      rails-i18n
+      rails-observers
+      redcarpet
+      sanitize
+      sidekiq (~> 4.1.2)
+      web-console (~> 2.0)
+
+GIT
   remote: git://github.com/efqdalton/dynamic_sitemaps.git
   revision: f229cb40391ab3283efd2091ab58bbec68c720cf
   branch: adds-custom-storages
@@ -27,28 +50,6 @@ GIT
   specs:
     trailblazer-endpoint (0.0.1)
       dry-matcher
-
-PATH
-  remote: ../clarat_base
-  specs:
-    clarat_base (0.1.4)
-      aasm
-      algoliasearch-rails
-      bundler (>= 1.8.4)
-      closure_tree
-      easy_translate
-      enumerize (= 2.0.1)
-      friendly_id (>= 5.0)
-      geocoder
-      localeapp
-      paper_trail
-      rails (~> 4.2)
-      rails-i18n
-      rails-observers
-      redcarpet
-      sanitize
-      sidekiq (~> 4.1.2)
-      web-console (~> 2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -378,7 +379,7 @@ GEM
     nokogumbo (1.4.12)
       nokogiri
     orm_adapter (0.5.0)
-    paper_trail (7.0.2)
+    paper_trail (7.0.3)
       activerecord (>= 4.0, < 5.2)
       request_store (~> 1.1)
     parser (2.3.3.1)
@@ -559,7 +560,7 @@ GEM
     rubyzip (1.2.0)
     rufus-scheduler (3.2.2)
     safe_yaml (1.0.4)
-    sanitize (4.4.0)
+    sanitize (4.5.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4.1)
