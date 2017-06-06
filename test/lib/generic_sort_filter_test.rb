@@ -20,7 +20,7 @@ class GenericSortFilterTest < ActiveSupport::TestCase
     end
 
     it 'searches with a filled param for offer' do
-      query.expects(:search_everything).with('foo').twice
+      query.expects(:search_everything).with('foo').once
       subject.send(:transform_by_searching, query, 'foo')
     end
 
