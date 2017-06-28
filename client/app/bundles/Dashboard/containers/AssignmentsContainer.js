@@ -2,6 +2,10 @@ import { connect } from 'react-redux'
 import filter from 'lodash/filter'
 import valuesIn from 'lodash/valuesIn'
 import AssignmentsContainer from '../components/AssignmentsContainer'
+import { browserHistory } from 'react-router'
+import { encode } from 'querystring'
+import merge from 'lodash/merge'
+import clone from 'lodash/clone'
 
 const mapStateToProps = (state, ownProps) => {
   const scope = ownProps.scope
@@ -23,7 +27,9 @@ const mapStateToProps = (state, ownProps) => {
   }
   const lockedParams = lockedParamsFor(scope, itemId, system_user.id)
   const optionalParams =
-    { 'sort_field': 'updated_at', 'sort_direction': 'DESC' }
+    { 'sort_field': 'created_at', 'sort_direction': 'DESC' }
+  const params = ownProps.params
+  const queryParams = merge(clone(optionalParams), clone(lockedParams))
   const heading = headingFor(scope)
 
   return {
@@ -32,11 +38,25 @@ const mapStateToProps = (state, ownProps) => {
     lockedParams,
     optionalParams,
     scope,
-    selectable_data
+    selectable_data,
+    params,
+    queryParams
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({ })
+const mapDispatchToProps = (dispatch, ownProps) => ({ 
+  dispatch
+})
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  ...stateProps,
+  ...dispatchProps,
+  ...ownProps,
+
+  setQueryParams() {
+    browserHistory.replace(`/?${encode(this.queryParams)}`)
+  }
+})
 
 function headingFor(scope) {
   switch(scope) {
@@ -80,4 +100,4 @@ function lockedParamsFor(scope, id, sys_id) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AssignmentsContainer)
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(AssignmentsContainer)

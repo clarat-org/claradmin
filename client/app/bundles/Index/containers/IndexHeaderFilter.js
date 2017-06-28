@@ -15,7 +15,8 @@ const mapStateToProps = (state, ownProps) => {
   const filterName =
     ownProps.filter[0].substring(8, ownProps.filter[0].length - 1)
   const filterType = setFilterType(filterName)
-  const filterValue = ownProps.filter[1] == 'nil' ? '' : ownProps.filter[1]
+  const filterValue = getValue(ownProps.filter[1], 0)
+  const secondFilterValue = getValue(ownProps.filter[1], 1)
   const nilChecked = ownProps.filter[1] == 'nil'
   // only show filters that are not locked (currently InlineIndex only)
   const fields =
@@ -24,21 +25,25 @@ const mapStateToProps = (state, ownProps) => {
         !ownProps.lockedParams.hasOwnProperty(`filters[${value.field}]`)
     )
   const operatorName = ownProps.params[`operators[${filterName}]`] || '='
+  const range = 
+    (operatorName == "..." && filterType != 'text') ? 'visible' : 'hidden'
   const operators = settings.OPERATORS.map(operator => {
     return {
       value: operator,
-      displayName: textForOperator(operator)
+      displayName: textForOperator(operator, filterType, ownProps)
     }
   })
 
   return {
     filterName,
-    filterValue,
     nilChecked,
     filterType,
     fields,
     operators,
-    operatorName
+    operatorName,
+    range,
+    filterValue,
+    secondFilterValue
   }
 }
 
@@ -47,12 +52,17 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     let filterId = ownProps.filter[0].split('[')
     const params = omit(clone(ownProps.params),
                   [ownProps.filter[0], 'operators[' + filterId[1]])
-    if(ownProps.uiKey){
-      dispatch(setUiAction(ownProps.uiKey, params))
-    }
-    else{
-      browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
-    }
+
+    let query = searchString(ownProps.model, params)
+    browserHistory.replace(`/${query}`)
+
+    // if(ownProps.uiKey){
+    //   debugger
+    //   dispatch(setUiAction(ownProps.uiKey, params))
+    // }
+    // else{
+    //   browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
+    // }
   },
 
   onFilterNameChange(event) {
@@ -60,12 +70,18 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     let newParam = {}
     newParam[`filters[${event.target.value}]`] = ''
     params = merge(params, newParam)
-    if(ownProps.uiKey){
-      dispatch(setUiAction(ownProps.uiKey, params))
-    }
-    else{
-      browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
-    }
+
+    let query = searchString(ownProps.model, params)
+    browserHistory.replace(`/${query}`)
+
+    // if(ownProps.uiKey){
+    //   debugger
+    //   dispatch(setUiAction(ownProps.uiKey, params))
+    // }
+    // else{
+    //   debugger
+    //   browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
+    // }
   },
 
   onFilterOperatorChange(event) {
@@ -77,12 +93,20 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     newParam[`operators[${filterName}]`] = operator
     params = merge(params, newParam)
 
-    if(ownProps.uiKey){
-      dispatch(setUiAction(ownProps.uiKey, params))
-    }
-    else{
-      browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
-    }
+    let query = searchString(ownProps.model, params)
+    browserHistory.replace(`/${query}`)
+
+    // if(ownProps.uiKey){
+    //   let search = {}
+    //   search[ownProps.uiKey] = params
+    //   let searchString = jQuery.param(search)
+    //   debugger
+    //   browserHistory.replace(`/?${searchString}`)
+    // }
+    // else{
+    //   debugger
+    //   browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
+    // }
   },
 
   onCheckboxChange(event) {
@@ -92,24 +116,83 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     } else {
       params[ownProps.filter[0]] = ''
     }
-    if (ownProps.uiKey){
-      dispatch(setUiAction(ownProps.uiKey, params))
-    }
-    else{
-      browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
-    }
+
+    let query = searchString(ownProps.model, params)
+    browserHistory.replace(`/${query}`)
+    // if (ownProps.uiKey){
+    //   debugger
+    //   dispatch(setUiAction(ownProps.uiKey, params))
+    // }
+    // else{
+    //   debugger
+    //   browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
+    // }
   },
 
   onFilterValueChange(event) {
     let params = clone(ownProps.params)
-    params[ownProps.filter[0]] = event.target.value
-    if(ownProps.uiKey){
-      dispatch(setUiAction(ownProps.uiKey, params))
+
+    if(params['operators[id]'] != '...') {
+      params[ownProps.filter[0]] = [event.target.value]
+    } else {
+      params[ownProps.filter[0]] = 
+        [params[ownProps.filter[0]][1]].concat([event.target.value]).slice(-2).
+          sort(function(a, b) {return a - b;}); //only take last two elements and sort them
     }
-    else{
-      browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
-    }
-  }
+    // console.log(ownProps.uiKey)
+    // let searchString = ownProps.uiKey ? '' : ownProps.model
+
+    // browserHistory.replace(`/${searchString}?${encode(params)}`)
+
+    let query = searchString(ownProps.model, params)
+    browserHistory.replace(`/${query}`)
+    
+    // if(ownProps.uiKey){
+    //   //dispatch(setUiAction(ownProps.uiKey, params))
+    //   let search = {}
+    //   search[ownProps.uiKey] = params
+    //   let searchString = jQuery.param(search)
+    //   debugger
+    //   browserHistory.replace(`/?${searchString}`)
+    // }
+    // else{
+    //   debugger
+    //   browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
+    // }
+  },
+
+  onSecondFilterValueChange(event) {
+    let params = clone(ownProps.params)
+    
+    params[ownProps.filter[0]] = 
+      [params[ownProps.filter[0]][0]].concat([event.target.value]).slice(-2).
+        sort(function(a, b) {return a - b;}); //only take last two elements and sort them
+    if(!params[ownProps.filter[0]][0].length){
+      alert('Bitte gib einen Anfangswert ein');
+
+      params[ownProps.filter[0]] = params[ownProps.filter[0]].filter(Boolean);
+    };
+
+    let query = searchString(ownProps.model, params)
+    browserHistory.replace(`/${query}`)
+    
+    // let searchString = ownProps.uiKey ? '' : ownProps.model
+
+    // browserHistory.replace(`/${searchString}?${encode(params)}`)
+
+    // if(ownProps.uiKey){
+    //   //dispatch(setUiAction(ownProps.uiKey, params))
+    //   let search = {}
+    //   search[ownProps.uiKey] = params
+    //   let searchString = jQuery.param(search)
+    //   debugger
+    //   browserHistory.replace(`/?${searchString}`)
+    // }
+    // else{
+    //   debugger
+    //   browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
+    // }
+  },
 })
 
 function setFilterType (filterName) {
@@ -125,19 +208,43 @@ function setFilterType (filterName) {
   }
 }
 
-function textForOperator(operator) {
-  switch(operator) {
-    case '<':
-      return 'kleiner als'
-    case '>':
-      return 'größer als'
-    case '=':
-      return 'genau gleich'
-    case '!=':
-      return 'nicht gleich'
-    default:
-      return '??'
+function getValue(props, index) {
+  if(Array.isArray(props)) {
+    return props[index]
+  } else {
+    if(props == 'nil') {
+      return ''
+    } else {
+      return [props]
+    }
   }
 }
+
+
+function textForOperator(operator, filterType, ownProps) {
+  switch(true) {
+    case operator == '<':
+      return 'kleiner als'
+    case operator == '>':
+      return 'größer als'
+    case operator == '=':
+      return 'genau gleich'
+    case operator == '!=':
+      return 'nicht gleich'
+    case operator == '...' && filterType != 'text':
+      return 'zwischen'
+    default:
+      return ''
+  }
+}
+
+function searchString(model, params) {
+  if(window.location.href.includes(model)) {
+    return `${model}?${encode(params)}`
+  } else {
+    return `?${encode(params)}`
+  }
+}
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(IndexHeaderFilter)
