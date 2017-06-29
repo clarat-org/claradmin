@@ -12,7 +12,6 @@ const mapStateToProps = (state, ownProps) => {
   const filters = toPairs(
     pickBy(ownProps.params, (value, key) => 
       key.substr(0, 7) == 'filters' && 
-        //ownProps.lockedParams.hasOwnProperty(key) == false)
         lockedParamsHaveKey(key, ownProps.lockedParams) == false)
   )
   const plusButtonDisabled = ownProps.params.hasOwnProperty('filters[id]')

@@ -30,7 +30,7 @@ const mapStateToProps = (state, ownProps) => {
   const optionalParams =
     { 'sort_field': 'updated-at', 'sort_direction': 'DESC' }
   const params = ownProps.params
-  const queryParams = merge(clone(optionalParams), clone(lockedParams))
+  const defaultParams = merge(clone(optionalParams), clone(lockedParams))
   const heading = headingFor(scope)
 
   return {
@@ -41,7 +41,7 @@ const mapStateToProps = (state, ownProps) => {
     scope,
     selectableData,
     params,
-    queryParams
+    defaultParams
   }
 }
 
@@ -54,8 +54,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
 
-  setQueryParams() {
-    browserHistory.replace(`/?${encode(this.queryParams)}`)
+  setDefaultParams() {
+    browserHistory.replace(`/?${encode(this.defaultParams)}`)
   }
 })
 
