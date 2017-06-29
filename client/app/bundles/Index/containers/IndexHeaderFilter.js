@@ -52,17 +52,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     let filterId = ownProps.filter[0].split('[')
     const params = omit(clone(ownProps.params),
                   [ownProps.filter[0], 'operators[' + filterId[1]])
-
     let query = searchString(ownProps.model, params)
     browserHistory.replace(`/${query}`)
-
-    // if(ownProps.uiKey){
-    //   debugger
-    //   dispatch(setUiAction(ownProps.uiKey, params))
-    // }
-    // else{
-    //   browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
-    // }
   },
 
   onFilterNameChange(event) {
@@ -73,15 +64,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
     let query = searchString(ownProps.model, params)
     browserHistory.replace(`/${query}`)
-
-    // if(ownProps.uiKey){
-    //   debugger
-    //   dispatch(setUiAction(ownProps.uiKey, params))
-    // }
-    // else{
-    //   debugger
-    //   browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
-    // }
   },
 
   onFilterOperatorChange(event) {
@@ -95,18 +77,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
     let query = searchString(ownProps.model, params)
     browserHistory.replace(`/${query}`)
-
-    // if(ownProps.uiKey){
-    //   let search = {}
-    //   search[ownProps.uiKey] = params
-    //   let searchString = jQuery.param(search)
-    //   debugger
-    //   browserHistory.replace(`/?${searchString}`)
-    // }
-    // else{
-    //   debugger
-    //   browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
-    // }
   },
 
   onCheckboxChange(event) {
@@ -119,14 +89,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
     let query = searchString(ownProps.model, params)
     browserHistory.replace(`/${query}`)
-    // if (ownProps.uiKey){
-    //   debugger
-    //   dispatch(setUiAction(ownProps.uiKey, params))
-    // }
-    // else{
-    //   debugger
-    //   browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
-    // }
   },
 
   onFilterValueChange(event) {
@@ -139,26 +101,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
         [params[ownProps.filter[0]][1]].concat([event.target.value]).slice(-2).
           sort(function(a, b) {return a - b;}); //only take last two elements and sort them
     }
-    // console.log(ownProps.uiKey)
-    // let searchString = ownProps.uiKey ? '' : ownProps.model
-
-    // browserHistory.replace(`/${searchString}?${encode(params)}`)
 
     let query = searchString(ownProps.model, params)
     browserHistory.replace(`/${query}`)
-    
-    // if(ownProps.uiKey){
-    //   //dispatch(setUiAction(ownProps.uiKey, params))
-    //   let search = {}
-    //   search[ownProps.uiKey] = params
-    //   let searchString = jQuery.param(search)
-    //   debugger
-    //   browserHistory.replace(`/?${searchString}`)
-    // }
-    // else{
-    //   debugger
-    //   browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
-    // }
   },
 
   onSecondFilterValueChange(event) {
@@ -175,23 +120,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
     let query = searchString(ownProps.model, params)
     browserHistory.replace(`/${query}`)
-    
-    // let searchString = ownProps.uiKey ? '' : ownProps.model
-
-    // browserHistory.replace(`/${searchString}?${encode(params)}`)
-
-    // if(ownProps.uiKey){
-    //   //dispatch(setUiAction(ownProps.uiKey, params))
-    //   let search = {}
-    //   search[ownProps.uiKey] = params
-    //   let searchString = jQuery.param(search)
-    //   debugger
-    //   browserHistory.replace(`/?${searchString}`)
-    // }
-    // else{
-    //   debugger
-    //   browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
-    // }
   },
 })
 

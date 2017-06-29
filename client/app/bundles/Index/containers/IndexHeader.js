@@ -46,17 +46,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
     let query = searchString(ownProps.model, params)
     browserHistory.replace(`/${query}`)
-    // if (params['filters[id]']) return // ID filtered - other filters not needed
-    // if(window.location.pathname.length > 1) {
-    //   merge(params, { 'filters[id]': '' })
-    //   debugger
-    //   browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
-    //   window.location.reload()
-    // } else {
-    //   //if (params['filters[id]']) return
-    //   merge(params, { 'filters[id]': '' })
-    //   browserHistory.replace(`/?${encode(params)}`) //used in Dashboard
-    // }
   }
 })
 

@@ -4,7 +4,6 @@ import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
 import IndexHeaderFilter from '../containers/IndexHeaderFilter'
 
 export default class IndexHeader extends Component {
-
   render() {
     const {
       onQueryChange, query, onPlusClick, filters, model, params, lockedParams,
