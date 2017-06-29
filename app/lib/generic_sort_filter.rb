@@ -71,16 +71,27 @@ module GenericSortFilter
     return query unless params[:filters]
     params[:filters].each do |filter, value|
       next if value.empty?
-
       # convert value to array for streamlined processing
       singular_or_multiple_values = value.is_a?(Array) ? value : [value]
-      # build query strings to every array entry (only one for simple filters)
-      filter_strings = singular_or_multiple_values.map do |singular_value|
-        build_singular_filter_query(query, params, filter, singular_value)
+      # build query strings for every array entry (only one for simple filters)
+      if range_filter_query?(params, singular_or_multiple_values)
+        query = build_range_filter_query(query, params, filter, value)
+      else
+        filtered_strings = filter_strings(singular_or_multiple_values, query, params, filter)
+        query = query.where(filtered_strings.join(join_operator(params, filter)))
       end
-      query = query.where(filter_strings.join(join_operator(params, filter)))
     end
     query
+  end
+
+  def self.filter_strings(values, query, params, filter)
+    values.reject(&:blank?).map do |value|
+      build_singular_filter_query(query, params, filter, value)
+    end
+  end
+
+  def self.range_filter_query?(params, values)
+    !params[:operators].nil? && params[:operators].value?('...') && values.reject(&:blank?).count > 1
   end
 
   def self.join_operator(params, filter)
@@ -90,6 +101,13 @@ module GenericSortFilter
     else
       ' AND '
     end
+  end
+
+  def self.build_range_filter_query(query, params, filter, value)
+    range = value.sort
+    filter_key = joined_or_own_table_name_for(query, filter, params)
+    filter_string = filter_key.to_s
+    query.where("#{filter_string} BETWEEN '#{range[0]}' and '#{range[1]}'")
   end
 
   def self.build_singular_filter_query(query, params, filter, value)
@@ -129,7 +147,7 @@ module GenericSortFilter
 
   # retrives the given operator or falls back to '='. Special case for 'nil'
   def self.process_operator(operators, filter, value)
-    operator = operators && operators[filter] ? operators[filter] : '='
+    operator = operators && operators[filter] && operators[filter] != '...' ? operators[filter] : '='
     if nullable_value?(value)
       operator = operator == '=' ? 'IS' : 'IS NOT'
     end
