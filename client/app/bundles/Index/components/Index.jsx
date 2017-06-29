@@ -16,7 +16,7 @@ export default class Index extends Component {
 
   render() {
     const {
-      location, model, heading, query, lockedParams, params, optionalParams, identifier, uiKey
+      location, model, heading, query, lockedParams, optionalParams, identifier, uiKey
     } = this.props
 
     return (

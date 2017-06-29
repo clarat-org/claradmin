@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
   let model = ownProps.model
   let query = ownProps.params
   let optional =
-    ownProps.identifier_addition ? '_' + ownProps.identifier_addition : ''
+    ownProps.identifierAddition ? '_' + ownProps.identifierAddition : ''
   const identifier = 'indexResults_' + model + optional
   const uiKey = 'index_' + model + optional
   // const count

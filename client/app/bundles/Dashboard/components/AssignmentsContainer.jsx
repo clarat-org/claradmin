@@ -18,7 +18,7 @@ export default class AssignmentsContainer extends Component {
         {this.teamSelectOrNull(this.props.selectableData)}
         <b>{heading}</b>
         <Index
-          model={model} identifier_addition={scope} params={params}
+          model={model} identifierAddition={scope} params={params}
           lockedParams={lockedParams} optionalParams={optionalParams}
         />
       </div>
