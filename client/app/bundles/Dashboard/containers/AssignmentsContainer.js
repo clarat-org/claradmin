@@ -39,7 +39,7 @@ const mapStateToProps = (state, ownProps) => {
     lockedParams,
     optionalParams,
     scope,
-    selectable_data,
+    selectableData,
     params,
     queryParams
   }
