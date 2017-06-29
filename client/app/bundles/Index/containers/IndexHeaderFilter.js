@@ -25,12 +25,14 @@ const mapStateToProps = (state, ownProps) => {
         !ownProps.lockedParams.hasOwnProperty(`filters[${value.field}]`)
     )
   const operatorName = ownProps.params[`operators[${filterName}]`] || '='
-  const range = 
+  const range =
     (operatorName == "..." && filterType != 'text') ? 'visible' : 'hidden'
-  const operators = settings.OPERATORS.map(operator => {
+  const operators = settings.OPERATORS.filter(operator =>
+    operator != '...' || filterType != 'text'
+  ).map(operator => {
     return {
       value: operator,
-      displayName: textForOperator(operator, filterType, ownProps)
+      displayName: textForOperator(operator)
     }
   })
 
@@ -97,7 +99,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     if(params['operators[id]'] != '...') {
       params[ownProps.filter[0]] = [event.target.value]
     } else {
-      params[ownProps.filter[0]] = 
+      params[ownProps.filter[0]] =
         [params[ownProps.filter[0]][1]].concat([event.target.value]).slice(-2).
           sort(function(a, b) {return a - b;}); //only take last two elements and sort them
     }
@@ -108,8 +110,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
   onSecondFilterValueChange(event) {
     let params = clone(ownProps.params)
-    
-    params[ownProps.filter[0]] = 
+
+    params[ownProps.filter[0]] =
       [params[ownProps.filter[0]][0]].concat([event.target.value]).slice(-2).
         sort(function(a, b) {return a - b;}); //only take last two elements and sort them
     if(!params[ownProps.filter[0]][0].length){
@@ -124,7 +126,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 })
 
 function setFilterType (filterName) {
-  let splitArray = filterName.split('_')
+  let splitArray = filterName.split('-')
   switch(splitArray[splitArray.length - 1]) {
     case 'at':
       return 'date'
@@ -149,7 +151,7 @@ function getValue(props, index) {
 }
 
 
-function textForOperator(operator, filterType, ownProps) {
+function textForOperator(operator) {
   switch(true) {
     case operator == '<':
       return 'kleiner als'
@@ -159,7 +161,7 @@ function textForOperator(operator, filterType, ownProps) {
       return 'genau gleich'
     case operator == '!=':
       return 'nicht gleich'
-    case operator == '...' && filterType != 'text':
+    case operator == '...':
       return 'zwischen'
     default:
       return ''
