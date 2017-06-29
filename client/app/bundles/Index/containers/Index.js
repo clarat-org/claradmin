@@ -1,14 +1,32 @@
 import { connect } from 'react-redux'
 import loadAjaxData from '../../../Backend/actions/loadAjaxData'
 import Index from '../components/Index'
+import merge from 'lodash/merge'
+import clone from 'lodash/clone'
+import size from 'lodash/size'
+import forIn from 'lodash/forIn'
 
 const mapStateToProps = (state, ownProps) => {
-  const pathname = ownProps.location.pathname
-  const model = pathname.substr(1, pathname.length)
+  const pathname = window.location.pathname
+  let model = ownProps.model
+  let query = ownProps.params
+  let optional =
+    ownProps.identifier_addition ? '_' + ownProps.identifier_addition : ''
+  const identifier = 'indexResults_' + model + optional
+  const uiKey = 'index_' + model + optional
+  // const count
+
+  if(pathname.length > 1 && ownProps.location) {
+    model = pathname.substr(1, pathname.length)
+    query = ownProps.location.query
+  }
 
   return {
     model,
     heading: headingFor(model),
+    query,
+    identifier,
+    uiKey
   }
 }
 
@@ -21,10 +39,21 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
 
-  loadData(query = ownProps.location.query, nextModel = stateProps.model) {
+  loadData(query, nextModel = stateProps.model) {
     dispatchProps.dispatch(
       loadAjaxData(nextModel, query, 'indexResults')
     )
+  },
+
+  equalParams(params1, params2) {
+    if (size(params1) != size(params2)) return false
+    let isSame = true
+    forIn(params1, (value, key) => {
+      if(!isSame || params2[key] != value) {
+        isSame = false
+      }
+    })
+    return isSame
   }
 })
 
