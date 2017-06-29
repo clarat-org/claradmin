@@ -152,19 +152,19 @@ function getValue(props, index) {
 
 
 function textForOperator(operator) {
-  switch(true) {
-    case operator == '<':
+  switch(operator) {
+    case '<':
       return 'kleiner als'
-    case operator == '>':
+    case '>':
       return 'größer als'
-    case operator == '=':
+    case '=':
       return 'genau gleich'
-    case operator == '!=':
+    case '!=':
       return 'nicht gleich'
-    case operator == '...':
+    case '...':
       return 'zwischen'
     default:
-      return ''
+      return '???'
   }
 }
 
