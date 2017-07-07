@@ -124,7 +124,11 @@ module GenericSortFilter
   def self.transform_value(value, filter, query)
     model_name =
       if filter.include?('.')
-        filter.split('.').first.classify.constantize
+        if referring_to_own_table?(query, filter.split('.').first)
+          filter.split('.').first.classify.constantize
+        else
+          query.model.reflections[filter.split('.').first].table_name.classify.constantize
+        end  
       else
         query.model
       end

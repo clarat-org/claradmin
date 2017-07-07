@@ -22,6 +22,7 @@ import StatisticsLayout from '../../bundles/Statistics/components/StatisticsLayo
 import Overview from '../../bundles/Statistics/components/Overview'
 import OfferOverviewPage from '../../bundles/Statistics/components/OfferOverviewPage'
 import OrgaOverviewPage from '../../bundles/Statistics/components/OrgaOverviewPage'
+import OrgaOfferCitiesOverview from '../../bundles/Statistics/components/OrgaOfferCitiesOverviewPage'
 import RatioOverviewPage from '../../bundles/Statistics/containers/RatioOverviewPage'
 // import OfferCreatedPage from '../../bundles/Statistics/components/OfferCreatedPage'
 // import OfferApprovedPage from '../../bundles/Statistics/components/OfferApprovedPage'
@@ -78,6 +79,7 @@ export default class Routes extends React.Component {
             <IndexRoute component={Overview}/>
             <Route path='offer_overview' component={OfferOverviewPage} />
             <Route path='organization_overview' component={OrgaOverviewPage} />
+            <Route path='orga_offer_cities_overview' component={OrgaOfferCitiesOverview} />
             <Route path='ratio_overview' component={RatioOverviewPage} />
             {/*
             <Route path='offer_created' component={OfferCreatedPage} />

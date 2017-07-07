@@ -15,7 +15,10 @@ export default class Navigation extends React.Component {
           Angebotsübersicht
         </Link>
         <Link to='/statistics/organization_overview' className='list-group-item'>
-          Orga-Übersicht
+          Orga-Übersicht (HQ)
+        </Link>
+        <Link to='/statistics/orga_offer_cities_overview' className='list-group-item'>
+          Orga-Übersicht (Angebotsstädte)
         </Link>
         <Link to='/statistics/ratio_overview' className='list-group-item'>
           Angebote pro Orgas
