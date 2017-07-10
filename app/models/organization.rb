@@ -16,7 +16,7 @@ class Organization < ActiveRecord::Base
   # Search
   pg_search_scope :search_everything,
                   against: [
-                    :id, :offers_count, :name, :aasm_state, :locations_count, :offer_cities
+                    :id, :offers_count, :name, :aasm_state, :locations_count
                   ],
                   using: { tsearch: { prefix: true } }
 
