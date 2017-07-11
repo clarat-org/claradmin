@@ -10,12 +10,15 @@ import setUiAction from '../../../Backend/actions/setUi'
 import { analyzeFields } from '../../../lib/settingUtils'
 import IndexHeaderFilter from '../components/IndexHeaderFilter'
 
+
 const mapStateToProps = (state, ownProps) => {
   const model = ownProps.model
   const filterName =
-    ownProps.filter[0].substring(8, ownProps.filter[0].length - 1)
+    ownProps.filter[0].split('][first]').join('').split('][second]').join('').
+      substring(8, ownProps.filter[0].length -1)
   const filterType = setFilterType(filterName)
   const filterValue = getValue(ownProps.filter[1], 0)
+  console.log(filterValue)
   const secondFilterValue = getValue(ownProps.filter[1], 1)
   const nilChecked = ownProps.filter[1] == 'nil'
   // only show filters that are not locked (currently InlineIndex only)
@@ -96,12 +99,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onFilterValueChange(event) {
     let params = clone(ownProps.params)
 
-    if(params['operators[id]'] != '...') {
-      params[ownProps.filter[0]] = [event.target.value]
+    if(params[ownProps.filter[0]]['second'] != undefined && params[ownProps.filter[0]]['second'].valueOf() < event.target.value) {
+      alert('Wert muss unter dem Zweitwert liegen');
     } else {
-      params[ownProps.filter[0]] =
-        [params[ownProps.filter[0]][1]].concat([event.target.value]).slice(-2).
-          sort(function(a, b) {return a - b;}); //only take last two elements and sort them
+      params[ownProps.filter[0]] = { 'first': event.target.value } 
     }
 
     let query = searchString(ownProps.model, params)
@@ -111,14 +112,16 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onSecondFilterValueChange(event) {
     let params = clone(ownProps.params)
 
-    params[ownProps.filter[0]] =
-      [params[ownProps.filter[0]][0]].concat([event.target.value]).slice(-2).
-        sort(function(a, b) {return a - b;}); //only take last two elements and sort them
-    if(!params[ownProps.filter[0]][0].length){
+    if(params[ownProps.filter[0]]['first'] != undefined) {
+      if (params[ownProps.filter[0]]['first'].valueOf() > event.target.value) {
+        alert('Wert muss über dem Anfangswert liegen');
+      } else {
+        debugger
+        params[ownProps.filter[0]]['second'] = event.target.value
+      }
+    } else {
       alert('Bitte gib einen Anfangswert ein');
-
-      params[ownProps.filter[0]] = params[ownProps.filter[0]].filter(Boolean);
-    };
+    }
 
     let query = searchString(ownProps.model, params)
     browserHistory.replace(`/${query}`)
@@ -139,8 +142,8 @@ function setFilterType (filterName) {
 }
 
 function getValue(props, index) {
-  if(Array.isArray(props)) {
-    return props[index]
+  if(props == Object(props)) {
+    return Object.values(props)[index]
   } else {
     if(props == 'nil') {
       return ''
@@ -170,11 +173,10 @@ function textForOperator(operator) {
 
 function searchString(model, params) {
   if(window.location.href.includes(model)) {
-    return `${model}?${encode(params)}`
+    return `${model}?${jQuery.param(params)}`
   } else {
-    return `?${encode(params)}`
+    return `?${jQuery.param(params)}`
   }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(IndexHeaderFilter)

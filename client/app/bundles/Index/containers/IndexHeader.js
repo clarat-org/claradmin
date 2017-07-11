@@ -22,7 +22,6 @@ const mapStateToProps = (state, ownProps) => {
     generalActions.includes(route.action)
   )
   const filterKeys = filterArray.map(function(key) { return key[0] })
-
   filterParams(ownProps.params)
   const params = ownProps.params
 
@@ -121,7 +120,6 @@ function filterParams(params) {
 }
 
 function replaceKey(params, filterKey, objectKey) {
-  debugger
   let newKey =  filterKey.replace(objectKey, '')
   let newObjectKey = objectKey.replace('[', '').replace(']', '')
   if(params.hasOwnProperty(newKey)) {

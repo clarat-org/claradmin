@@ -7,9 +7,10 @@ import size from 'lodash/size'
 import forIn from 'lodash/forIn'
 
 const mapStateToProps = (state, ownProps) => {
+  const location = ownProps.location
   const pathname = window.location.pathname
   let model = ownProps.model
-  let query = ownProps.params
+  let query = ownProps.params // TO DO: write method to clean up params 
   let optional =
     ownProps.identifierAddition ? '_' + ownProps.identifierAddition : ''
   const identifier = 'indexResults_' + model + optional
@@ -26,7 +27,8 @@ const mapStateToProps = (state, ownProps) => {
     heading: headingFor(model),
     query,
     identifier,
-    uiKey
+    uiKey,
+    location
   }
 }
 
@@ -49,7 +51,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     if (size(params1) != size(params2)) return false
     let isSame = true
     forIn(params1, (value, key) => {
-      if(!isSame || params2[key].toString() != value.toString()) {
+      if(!isSame || params2[key] != value) {
         isSame = false
       }
     })
