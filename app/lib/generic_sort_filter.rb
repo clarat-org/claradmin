@@ -71,8 +71,12 @@ module GenericSortFilter
     return query unless params[:filters]
     params[:filters].each do |filter, value|
       next if value.empty?
+      value = value.is_a?(Hash) && value.has_key?('second') ? value : value['first']
       # convert value to array for streamlined processing
-      singular_or_multiple_values = value.is_a?(Array) ? value : [value]
+      if value.is_a?(Hash)
+        value = value.values
+      end
+      singular_or_multiple_values = (value.is_a?(Array)) ? value : [value]
       # build query strings for every array entry (only one for simple filters)
       if range_filter_query?(params, singular_or_multiple_values)
         query = build_range_filter_query(query, params, filter, value)
