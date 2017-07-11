@@ -49,7 +49,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     if (size(params1) != size(params2)) return false
     let isSame = true
     forIn(params1, (value, key) => {
-      if(!isSame || params2[key] != value) {
+      if(!isSame || params2[key].toString() != value.toString()) {
         isSame = false
       }
     })
