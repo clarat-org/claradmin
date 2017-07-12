@@ -23,7 +23,7 @@ class UserTeamUpdateTest < ActiveSupport::TestCase
       operation_must_work ::UserTeam::Update, basic_params
     end
 
-    it 'should correctly update team statistics on user teamchange' do
+    it 'should update team statistics on user change, not on other change' do
       Statistic.where(trackable_type: 'UserTeam').count.must_equal 0
 
       UserTeam.find(1).users = User.where(id: [1, 2])
@@ -34,11 +34,11 @@ class UserTeamUpdateTest < ActiveSupport::TestCase
       team_statistics = Statistic.where(trackable_type: 'UserTeam')
       team_statistics.count.must_equal 1
       team_statistics.first.count.must_equal 4.0
-      operation_must_work ::UserTeam::Update, id: 1, name: 'UserTeamName', user_ids: [1, 2]
-      team_statistics.first.count.must_equal 4.0
       operation_must_work ::UserTeam::Update, id: 1, name: 'UserTeamName', user_ids: [1]
       team_statistics.first.reload
       team_statistics.first.count.must_equal 1.0
+      Statistic::DailyTeamStatisticSynchronizer.any_instance.expects(:record!).never
+      operation_must_work ::UserTeam::Update, id: 1, name: 'NewName', user_ids: [1]
     end
 
     describe 'validations' do
