@@ -13,8 +13,6 @@ const mapStateToProps = (state, ownProps) => {
   const associations = processAssociations(
     ownProps.associations || [], modelInstance, state.entities, modelFilterName
   )
-  console.log(ownProps.associations)
-  console.log('processed:', associations)
   return {
     associations,
     model,

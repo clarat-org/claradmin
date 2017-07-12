@@ -4,7 +4,6 @@ import loadAjaxData from '../../../Backend/actions/loadAjaxData'
 import Show from '../components/Show'
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(state)
   const id = ownProps.params.id
   const pathname = ownProps.location.pathname
   const model = pathname.split('/')[1]

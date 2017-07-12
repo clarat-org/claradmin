@@ -12,9 +12,6 @@ const mapStateToProps = (state, ownProps) => {
   // read own fields and associations of current model from the state
   const fieldSet =  state.entities['field-sets'] &&
     state.entities['field-sets'][ownProps.model]
-  console.log(modelInstance)
-  console.log(fieldSet)
-  // console.log(fieldSet)
   const columnNames = filterFields(
     fieldSet && fieldSet['column-names'] || [],
     modelInstance || {}
