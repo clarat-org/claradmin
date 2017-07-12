@@ -100,6 +100,12 @@ class GenericSortFilterTest < ActiveSupport::TestCase
     end
   end
 
+  describe '#check_if_reflection' do
+    it 'should classifiy and constantize for self-referring query' do
+      subject.send(:check_if_reflection, query, 'offer.name').must_equal Offer
+    end
+  end
+
   describe '#transform_by_filtering' do
     it 'wont transform without filters' do
       params = { filters: nil }

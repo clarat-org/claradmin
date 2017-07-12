@@ -10,24 +10,36 @@ module API::V1
 
       property :associations, getter: ->(r) do
         def filter_name_for_association(assoc)
-          results = []
           # puts assoc.name
           # puts assoc.options
           # puts '------------'
           if !assoc.options[:inverse_of] || assoc.options[:polymorphic] ||
              assoc.is_a?(::ActiveRecord::Reflection::BelongsToReflection)
-            results.push('')
+            ['']
           elsif assoc.options[:inverse_of].to_s.ends_with?('able') # polymorphic associations (_type & _id)
-            polymorphic_name = assoc.options[:inverse_of]
-            results.push "#{polymorphic_name}_id"
-            results.push "#{polymorphic_name}_type"
+            polymorphic_filter_for assoc
           else
-            name = assoc.options[:inverse_of]
-            is_plural = name.to_s == name.to_s.pluralize
-            prefix = assoc.options[:through] && !is_plural ? assoc.options[:through].to_s.singularize + '.' : ''
-            results.push(is_plural ? "#{name}.id" : "#{prefix}#{name.to_s.singularize}_id")
+            filter_for assoc
           end
-          results
+        end
+
+        def filter_for assoc
+          is_plural = name.to_s == name.to_s.pluralize
+          prefix = prefix_for(assoc)
+          [is_plural ? "#{name}.id" : "#{prefix}#{name.to_s.singularize}_id"]
+        end
+
+        def prefix_for assoc
+          if assoc.options[:through] && !is_plural
+            assoc.options[:through].to_s.singularize + '.'
+          else
+            ''
+          end
+        end
+
+        def polymorphic_filter_for assoc
+          polymorphic_name = assoc.options[:inverse_of]
+          ["#{polymorphic_name}_id", "#{polymorphic_name}_type"]
         end
 
         assocs = {}
@@ -35,7 +47,12 @@ module API::V1
           # NOTE: Hotfixed to avoid polymorphic modules as association
           next if assoc.options[:polymorphic]
           # build association object
-          class_name = assoc.options[:class_name] ? assoc.options[:class_name].underscore.pluralize : assoc.name
+          class_name =
+            if assoc.options[:class_name]
+              assoc.options[:class_name].underscore.pluralize
+            else
+              assoc.name
+            end
           keys = filter_name_for_association(assoc)
           assocs[assoc.name] = {
             'columns' => assoc.klass.column_names.map(&:dasherize),

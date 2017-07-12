@@ -6,7 +6,7 @@ module API::V1
         include Roar::JSON::JSONAPI.resource :categories
 
         attributes do
-          property :name
+          property :name_de
           property :visible
           property :section_ids
           property :child_ids
@@ -22,8 +22,8 @@ module API::V1
       end
 
       class Create < Show
-        has_many :section, class: ::Section,
-                           populator: API::V1::Lib::Populators::Find do
+        has_many :sections, class: ::Section,
+                            populator: API::V1::Lib::Populators::Find do
           type :sections
 
           attributes do
