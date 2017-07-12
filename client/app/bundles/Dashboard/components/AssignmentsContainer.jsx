@@ -5,14 +5,14 @@ import ControlledSelectView from '../../ControlledSelectView/containers/Controll
 export default class AssignmentsContainer extends Component {
 
   componentDidMount() {
-    this.props.setParams()
+    this.props.setParams(this.props.params)
   }
 
   render() {
     const {
       heading, model, lockedParams, optionalParams, scope, params
     } = this.props
-    
+
     return (
       <div className="panel-group">
         {this.teamSelectOrNull(this.props.selectableData, params)}
