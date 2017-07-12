@@ -7,7 +7,6 @@ import size from 'lodash/size'
 import forIn from 'lodash/forIn'
 
 const mapStateToProps = (state, ownProps) => {
-  const location = ownProps.location
   const pathname = window.location.pathname
   let model = ownProps.model
   let query = ownProps.params // TO DO: write method to clean up params 
@@ -15,7 +14,6 @@ const mapStateToProps = (state, ownProps) => {
     ownProps.identifierAddition ? '_' + ownProps.identifierAddition : ''
   const identifier = 'indexResults_' + model + optional
   const uiKey = 'index_' + model + optional
-  // const count
 
   if(pathname.length > 1 && ownProps.location) {
     model = pathname.substr(1, pathname.length)
@@ -27,8 +25,7 @@ const mapStateToProps = (state, ownProps) => {
     heading: headingFor(model),
     query,
     identifier,
-    uiKey,
-    location
+    uiKey
   }
 }
 

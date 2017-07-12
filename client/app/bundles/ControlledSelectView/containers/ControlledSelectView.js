@@ -1,6 +1,8 @@
 import { connect } from 'react-redux'
 import setUiAction from '../../../Backend/actions/setUi'
 import ControlledSelectView from '../components/ControlledSelectView'
+import { browserHistory } from 'react-router'
+import { encode } from 'querystring'
 
 const mapStateToProps = (state, ownProps) => {
   const uniqIdentifier = 'controlled-select-view-' + ownProps.identifier
@@ -8,10 +10,12 @@ const mapStateToProps = (state, ownProps) => {
   let selectedValue = state.ui[uniqIdentifier]
   if (selectedValue === undefined) selectedValue = ownProps.startIndex;
   if (selectedValue === undefined) selectedValue = 0;
+  const params = ownProps.params
 
   return {
     uniqIdentifier,
-    selectedValue
+    selectedValue,
+    params
   }
 }
 
@@ -24,11 +28,11 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
 
-  handleSelect(e){
-    if (stateProps.selectedValue != e.target.value) {
-      dispatchProps.dispatch(
-        setUiAction(stateProps.uniqIdentifier, e.target.value)
-      )
+  handleSelect(event){
+    if (stateProps.selectedValue != event.target.value) {
+      let params = stateProps.params
+      params['filters[receiver-team-id]'] = event.target.value
+      browserHistory.replace(`/?${encode(stateProps.params)}`)
     }
   }
 })

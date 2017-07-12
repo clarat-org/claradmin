@@ -15,7 +15,7 @@ export default class AssignmentsContainer extends Component {
     
     return (
       <div className="panel-group">
-        {this.teamSelectOrNull(this.props.selectableData)}
+        {this.teamSelectOrNull(this.props.selectableData, this.props.params)}
         <b>{heading}</b>
         <Index
           model={model} identifierAddition={scope} params={params}
@@ -25,12 +25,12 @@ export default class AssignmentsContainer extends Component {
     )
   }
 
-  teamSelectOrNull(team_data) {
+  teamSelectOrNull(team_data, params) {
     if (team_data && team_data.length != 0) {
       return (
         <div className="select-set">
           <span className="select-set__label">Zeige Zuweisungen für:</span>
-          <ControlledSelectView identifier={'team-assignments'}>
+          <ControlledSelectView identifier={'team-assignments'} params={params}>
             {team_data}
           </ControlledSelectView>
         </div>

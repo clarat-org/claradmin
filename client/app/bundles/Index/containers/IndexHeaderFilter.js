@@ -116,7 +116,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
       if (params[ownProps.filter[0]]['first'].valueOf() > event.target.value) {
         alert('Wert muss über dem Anfangswert liegen');
       } else {
-        debugger
         params[ownProps.filter[0]]['second'] = event.target.value
       }
     } else {
