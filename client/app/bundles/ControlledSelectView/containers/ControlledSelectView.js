@@ -32,7 +32,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     if (stateProps.selectedValue != event.target.value) {
       let params = stateProps.params
       params['filters[receiver-team-id]'] = event.target.value
-      browserHistory.replace(`/?${encode(stateProps.params)}`)
+      browserHistory.replace(`/?${jQuery.param(params)}`)
     }
   }
 })

@@ -5,7 +5,7 @@ import ControlledSelectView from '../../ControlledSelectView/containers/Controll
 export default class AssignmentsContainer extends Component {
 
   componentDidMount() {
-    this.props.setDefaultParams()
+    this.props.setParams()
   }
 
   render() {
@@ -15,7 +15,7 @@ export default class AssignmentsContainer extends Component {
     
     return (
       <div className="panel-group">
-        {this.teamSelectOrNull(this.props.selectableData, this.props.params)}
+        {this.teamSelectOrNull(this.props.selectableData, params)}
         <b>{heading}</b>
         <Index
           model={model} identifierAddition={scope} params={params}

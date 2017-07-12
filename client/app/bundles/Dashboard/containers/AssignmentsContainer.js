@@ -29,7 +29,7 @@ const mapStateToProps = (state, ownProps) => {
   const lockedParams = lockedParamsFor(scope, itemId, systemUser.id)
   const optionalParams =
     { 'sort_field': 'updated-at', 'sort_direction': 'DESC' }
-  const params = merge(ownProps.params, merge(clone(optionalParams), clone(lockedParams)))
+  const params = merge(merge(clone(optionalParams), clone(lockedParams)), ownProps.params)
   const heading = headingFor(scope)
 
   return {
@@ -52,7 +52,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
 
-  setDefaultParams() {
+  setParams() {
     browserHistory.replace(`/?${encode(this.params)}`)
   }
 })
