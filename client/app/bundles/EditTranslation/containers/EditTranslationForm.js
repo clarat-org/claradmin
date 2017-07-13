@@ -19,6 +19,7 @@ const mapStateToProps = (state, ownProps) => {
   const properties = formObjectClass.properties
   const editLink = `/admin/${model}/${ownProps.source.id}/edit`
   const previewLink = `/admin/${model}/${ownProps.source.id}/show_in_app`
+  const stamp = ownProps.translation.offer_stamp.join(', ') || []
 
   return {
     action,
@@ -27,7 +28,8 @@ const mapStateToProps = (state, ownProps) => {
     properties,
     formId,
     editLink,
-    previewLink
+    previewLink,
+    stamp
   }
 }
 
