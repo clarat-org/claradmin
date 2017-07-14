@@ -99,10 +99,14 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onFilterValueChange(event) {
     let params = clone(ownProps.params)
 
-    if(params[ownProps.filter[0]]['second'] != undefined && params[ownProps.filter[0]]['second'].valueOf() < event.target.value) {
-      alert('Wert muss unter dem Zweitwert liegen');
+    if(params[ownProps.filter[0]]['second'] != undefined) {
+      if(params[ownProps.filter[0]]['second'].valueOf() < event.target.value) {
+        alert('Wert muss unter dem Zweitwert liegen');
+      } else {
+        params[ownProps.filter[0]]['first'] = event.target.value
+      }
     } else {
-      params[ownProps.filter[0]] = { 'first': event.target.value } 
+      params[ownProps.filter[0]] = { 'first': event.target.value }
     }
 
     let query = searchString(ownProps.model, params)
