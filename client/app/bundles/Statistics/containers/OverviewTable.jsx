@@ -17,11 +17,14 @@ const mapStateToProps = (state, ownProps) => {
     (state.ajax[stateKey] && state.ajax[stateKey].data.attributes.states) || []
   const selectedCity = state.rform[stateKey] && state.rform[stateKey].city
   const data =
-    (state.entities.count && state.entities.count[ownProps.model] && state.entities.count[ownProps.model][modelKey] &&
+    (state.entities.count && state.entities.count[ownProps.model] &&
+      state.entities.count[ownProps.model][modelKey] &&
       state.entities.count[ownProps.model][modelKey][selectedCity || ALL]) || {}
   const sections = values(state.entities.sections)
   const loadedCities =
-    (state.entities.count && keys(state.entities.count[ownProps.model][modelKey])) || []
+    (state.entities.count &&
+      keys(state.entities.count[ownProps.model][modelKey])
+    ) || []
 
   return {
     data,
@@ -53,7 +56,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       obj[model][modelKey] = {}
       obj[model][modelKey][cityKey] = {}
       obj[model][modelKey][cityKey][stateKey] = {}
-      obj[model][modelKey][cityKey][stateKey][sectionKey] = json.meta.total_entries
+      obj[model][modelKey][cityKey][stateKey][sectionKey] =
+        json.meta.total_entries
       return { count: obj }
     }
   }

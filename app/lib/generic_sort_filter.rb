@@ -124,7 +124,7 @@ module GenericSortFilter
   def self.transform_value(value, filter, query)
     model_name =
       if filter.include?('.')
-        check_if_reflection(query, filter)
+        model_for_filter(query, filter)
       else
         query.model
       end
@@ -133,11 +133,12 @@ module GenericSortFilter
     nullable_value?(value) ? 'NULL' : "'#{value}'"
   end
 
-  def self.check_if_reflection(query, filter)
+  def self.model_for_filter(query, filter)
     if referring_to_own_table?(query, filter.split('.').first)
       filter.split('.').first.classify.constantize
     else
-      query.model.reflections[filter.split('.').first].table_name.classify.constantize
+      query.model.reflections[filter.split('.').first].table_name.classify
+           .constantize
     end
   end
 
