@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: 271b2af7f078c4eb61607938fd46689bed4f7de1
+  revision: 0c9b8d8b7c8664317cc2bc419852c3edbaac8ef5
   specs:
     clarat_base (0.1.4)
       aasm
@@ -146,7 +146,7 @@ GEM
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
     choice (0.2.0)
-    closure_tree (6.5.0)
+    closure_tree (6.6.0)
       activerecord (>= 4.1.0)
       with_advisory_lock (>= 3.0.0)
     code_analyzer (0.4.7)
