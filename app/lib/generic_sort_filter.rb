@@ -71,7 +71,6 @@ module GenericSortFilter
     return query unless params[:filters]
     params[:filters].each do |filter, value|
       next if value.empty?
-      value = value.is_a?(Hash) && value.has_key?('second') ? value : value['first']
       # convert value to array for streamlined processing
       if value.is_a?(Hash)
         value = value.values
