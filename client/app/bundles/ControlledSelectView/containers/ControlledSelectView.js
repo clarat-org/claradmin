@@ -3,6 +3,7 @@ import setUiAction from '../../../Backend/actions/setUi'
 import ControlledSelectView from '../components/ControlledSelectView'
 import { browserHistory } from 'react-router'
 import { encode } from 'querystring'
+import loadAjaxData from '../../../Backend/actions/loadAjaxData'
 
 const mapStateToProps = (state, ownProps) => {
   const uniqIdentifier = 'controlled-select-view-' + ownProps.identifier
@@ -32,9 +33,12 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     if (stateProps.selectedValue != event.target.value) {
       let params = stateProps.params
       params['filters[receiver-team-id]'] = event.target.value
+      dispatchProps.dispatch(
+        loadAjaxData('assignments', params, 'indexResults')
+      )
       browserHistory.replace(`/?${jQuery.param(params)}`)
     }
-  }
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(

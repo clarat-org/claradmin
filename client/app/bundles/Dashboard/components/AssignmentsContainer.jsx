@@ -5,7 +5,7 @@ import ControlledSelectView from '../../ControlledSelectView/containers/Controll
 export default class AssignmentsContainer extends Component {
 
   componentDidMount() {
-    this.props.setParams(this.props.params)
+    this.props.setParams()
   }
 
   render() {
