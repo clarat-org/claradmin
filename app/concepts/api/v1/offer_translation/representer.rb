@@ -26,13 +26,20 @@ module API::V1
           type :offers
 
           attributes do
-            property :name
+            property :untranslated_name
             property :approved_at
             property :created_by
-            property :description
-            property :opening_specification
+            property :untranslated_description
+            property :untranslated_opening_specification
           end
         end
+
+        property :offer_stamp, getter: ->(ot) do
+          ot[:represented].offer.target_audience_filters.pluck(:stamp_de)
+        end
+      end
+
+      class Index < Show
       end
     end
   end

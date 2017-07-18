@@ -6,7 +6,7 @@ import filter from 'lodash/filter'
 import { encode } from 'querystring'
 import { browserHistory } from 'react-router'
 import settings from '../../../lib/settings'
-import setUiAction from '../../../Backend/actions/setUi'
+import { setUi } from '../../../Backend/actions/setUi'
 import { analyzeFields } from '../../../lib/settingUtils'
 import IndexHeaderFilter from '../components/IndexHeaderFilter'
 
@@ -66,7 +66,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     let newParam = {}
     newParam[`filters[${event.target.value}]`] = ''
     params = merge(params, newParam)
-
     let query = searchString(ownProps.model, params)
     browserHistory.replace(`/${query}`)
   },
@@ -79,7 +78,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
         ownProps.filter[0].substring(8, ownProps.filter[0].length - 1)
     newParam[`operators[${filterName}]`] = operator
     params = merge(params, newParam)
-
     let query = searchString(ownProps.model, params)
     browserHistory.replace(`/${query}`)
   },
@@ -91,14 +89,12 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     } else {
       params[ownProps.filter[0]] = ''
     }
-
     let query = searchString(ownProps.model, params)
     browserHistory.replace(`/${query}`)
   },
 
   onFilterValueChange(event) {
     let params = clone(ownProps.params)
-
     if(params[ownProps.filter[0]]['second'] != undefined) {
       if(params[ownProps.filter[0]]['second'].valueOf() < event.target.value) {
         alert('Wert muss unter dem Zweitwert liegen');

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import setUiAction from '../actions/setUi'
+import { setUi } from '../actions/setUi'
 import TopNav from '../components/TopNav'
 
 const mapStateToProps = (state, ownProps) => {
@@ -13,7 +13,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onSelect(eventKey) {
-    dispatch(setUiAction('activeKey', eventKey))
+    dispatch(setUi('activeKey', eventKey))
   }
 })
 
@@ -77,12 +77,12 @@ const routes = [
     access: all,
   }, {
     id: 12,
-    pathname: '/federal_states',
+    pathname: '/federal-states',
     anchor: 'Bundesländer',
     access: all,
   }, {
     id: 13,
-    pathname: '/contact_people',
+    pathname: '/contact-people',
     anchor: 'Kontaktpersonen',
     access: all,
   }, {

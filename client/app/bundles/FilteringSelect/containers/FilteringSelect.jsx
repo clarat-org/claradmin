@@ -43,6 +43,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({ dispatch })
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { dispatch } = dispatchProps
+  const { alreadyLoadedInputs, resource } = stateProps
+  const { filters } = ownProps
 
   return {
     ...stateProps,
@@ -63,18 +65,19 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     },
 
     onMount() {
-      dispatch(loadForFilteringSelect('', stateProps.resource))
+      dispatch(loadForFilteringSelect('', resource, filters))
     },
 
     onFirstValue(value) {
-      for (let id of value.split(',')) {
-        dispatch(loadForFilteringSelect(id, stateProps.resource))
-      }
+      let filter_ids = value.split(',').filter(
+        value => alreadyLoadedInputs.includes(value) == false
+      ).join(',')
+      dispatch(loadForFilteringSelect('', resource, filters, filter_ids))
     },
 
     onInputChange(input) {
-      if (stateProps.alreadyLoadedInputs.includes(input)) return
-      dispatch(loadForFilteringSelect(input, stateProps.resource))
+      if (alreadyLoadedInputs.includes(input)) return
+      dispatch(loadForFilteringSelect(input, resource, filters))
     },
   }
 }

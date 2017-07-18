@@ -14,20 +14,24 @@ module API::V1
           property :name
           property :comment
           property :size
-
-          property :website_ids
+          property :done
 
           property :organization_id
           property :section_id
           property :city_id
           property :area_id
+
+          # NOTE: do we need this here? or only for create/update or not at all?
+          property :website_ids
+          property :presumed_category_ids
+          property :presumed_solution_category_ids
         end
 
         has_one :organization, class: ::Organization do
           type :organizations
 
           attributes do
-            property :name, as: :label
+            property :label, getter: ->(o) { o[:represented].name }
             property :name
           end
         end
@@ -37,7 +41,7 @@ module API::V1
           type :sections
 
           attributes do
-            property :identifier, as: :label
+            property :label, getter: ->(o) { o[:represented].identifier }
             property :identifier
           end
         end
@@ -47,7 +51,7 @@ module API::V1
           type :cities
 
           attributes do
-            property :name, as: :label
+            property :label, getter: ->(o) { o[:represented].name }
             property :name
           end
         end
@@ -57,16 +61,21 @@ module API::V1
           type :areas
 
           attributes do
-            property :name, as: :label
+            property :label, getter: ->(o) { o[:represented].name }
             property :name
           end
         end
+      end
 
+      class Index < Show
+      end
+
+      class Create < Index
         has_many :presumed_categories, class: ::Category do
           type :categories
 
           attributes do
-            property :name_de, as: :label
+            property :label, getter: ->(o) { o[:represented].name_de }
             property :name_de
           end
         end
@@ -75,14 +84,15 @@ module API::V1
           type :solution_categories
 
           attributes do
-            property :name, as: :label
+            property :label, getter: ->(o) { o[:represented].name }
             property :name
           end
         end
 
-        has_many :websites, class: ::Website,
-                            populator: API::V1::Lib::Populators::FindOrInstantiate,
-                            decorator: API::V1::Website::Representer::Show
+        has_many :websites,
+                 class: ::Website,
+                 decorator: API::V1::Website::Representer::Show,
+                 populator: API::V1::Lib::Populators::FindOrInstantiate
       end
     end
   end

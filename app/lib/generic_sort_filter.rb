@@ -7,7 +7,7 @@ module GenericSortFilter
     query = transform_by_searching(query, adjusted_params[:query])
     query = transform_by_joining(query, adjusted_params)
     query = transform_by_ordering(query, adjusted_params)
-    transform_by_filtering(query, adjusted_params)
+    transform_by_filtering(query, adjusted_params).uniq
   end
 
   private_class_method
@@ -43,14 +43,14 @@ module GenericSortFilter
 
   def self.transform_by_joining(query, params)
     if params[:sort_model]
-      query = query.eager_load(params[:sort_model].split('.').first)
+      query = query.joins(params[:sort_model].split('.').first)
     end
 
     params[:filters]&.each do |filter, _value|
       next unless filter['.']
       association_name = filter.split('.').first
       next if referring_to_own_table?(query, association_name) # dont join self
-      query = query.eager_load(association_name.to_sym)
+      query = query.joins(association_name.to_sym)
     end
 
     query
@@ -72,10 +72,8 @@ module GenericSortFilter
     params[:filters].each do |filter, value|
       next if value.empty?
       # convert value to array for streamlined processing
-      if value.is_a?(Hash)
-        value = value.values
-      end
-      singular_or_multiple_values = (value.is_a?(Array)) ? value : [value]
+      value = value.is_a?(Hash) ? value.values : value
+      singular_or_multiple_values = value.is_a?(Array) ? value : [value]
       # build query strings for every array entry (only one for simple filters)
       if range_filter_query?(params, singular_or_multiple_values)
         query = build_range_filter_query(query, params, filter, value)
@@ -160,13 +158,22 @@ module GenericSortFilter
   def self.transform_value(value, filter, query)
     model_name =
       if filter.include?('.')
-        filter.split('.').first.classify.constantize
+        model_for_filter(query, filter)
       else
         query.model
       end
     value = parse_value_by_type(value, filter, model_name)
     # NULL-filters are not allowed to stand within ''
     nullable_value?(value) ? 'NULL' : "'#{value}'"
+  end
+
+  def self.model_for_filter(query, filter)
+    if referring_to_own_table?(query, filter.split('.').first)
+      filter.split('.').first.classify.constantize
+    else
+      query.model.reflections[filter.split('.').first].table_name.classify
+           .constantize
+    end
   end
 
   def self.parse_value_by_type(value, filter, model_name)

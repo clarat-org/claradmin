@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import setUiAction from '../../../Backend/actions/setUi'
+import { setUi } from '../../../Backend/actions/setUi'
 import ControlledSelectView from '../components/ControlledSelectView'
 import { browserHistory } from 'react-router'
 import { encode } from 'querystring'

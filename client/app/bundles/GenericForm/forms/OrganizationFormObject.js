@@ -1,10 +1,12 @@
 import { FormObject, JsonApiAdapter } from 'rform'
+import merge from 'lodash/merge'
+import concat from 'lodash/concat'
 import WebsiteFormObject from './WebsiteFormObject'
 import DivisionFormObject from './DivisionFormObject'
 import LocationFormObject from './LocationFormObject'
 import ContactPersonFormObject from './ContactPersonFormObject'
 
-export default class OrganizationFormObject extends FormObject {
+class OrgaCreateFormObject extends FormObject {
   static get model() {
     return 'organization'
   }
@@ -16,7 +18,7 @@ export default class OrganizationFormObject extends FormObject {
   static get properties() {
     return [
       'name', 'website', 'locations', 'contact-people',
-      'comment', 'priority', 'pending_reason', 'divisions'
+      'comment', 'priority', 'pending-reason', 'divisions'
     ]
   }
 
@@ -54,7 +56,9 @@ export default class OrganizationFormObject extends FormObject {
       comment: { type: 'textarea' },
       priority: { type: 'checkbox' },
       divisions: { type: 'creating-multiselect' },
-      pending_reason: { type: 'select', options: ['unstable', 'on_hold', 'foreign'] },
+      'pending-reason': {
+        type: 'select', options: ['', 'unstable', 'on_hold', 'foreign']
+      },
     }
   }
 
@@ -66,4 +70,54 @@ export default class OrganizationFormObject extends FormObject {
     this.required('name').filled()
     this.required('website').filled()
   }
+}
+
+class OrgaUpdateFormObject extends OrgaCreateFormObject {
+  static get properties() {
+    return concat(
+      OrgaCreateFormObject.properties,
+      ['description', 'legal-form', 'charitable', 'umbrella-filters']
+    )
+  }
+
+  static get formConfig() {
+    return merge(
+      OrgaCreateFormObject.formConfig,
+      {
+        description: { type: 'textarea' },
+        charitable: { type: 'checkbox' },
+        'legal-form': {
+          type: 'select',
+          options: [
+            'ev', 'ggmbh', 'gag', 'foundation', 'gug', 'gmbh', 'ag', 'ug',
+            'kfm', 'gbr', 'ohg', 'kg', 'eg', 'sonstige', 'state_entity'
+          ]
+        },
+        'umbrella-filters': {
+          type: 'filtering-select',
+          resource: 'filters',
+          filters: { 'type': 'UmbrellaFilter' }
+        }
+      }
+    )
+  }
+
+  static get submodels() {
+    return concat(OrgaCreateFormObject.submodels, 'umbrella-filters')
+  }
+
+  static get submodelConfig() {
+    return merge(
+      OrgaCreateFormObject.formConfig, {
+        'umbrella-filters': {
+          type: 'filters',
+          relationship: 'oneToMany'
+        }
+      }
+    )
+  }
+}
+
+export {
+  OrgaCreateFormObject, OrgaUpdateFormObject
 }
