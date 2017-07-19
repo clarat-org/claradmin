@@ -26,7 +26,7 @@ export default class Dashboard extends React.Component {
         <CollapsiblePanel
           title={`Willkommen, ${user.name}`} identifier='dashboard'
           visible={true} >
-          <OverviewPanel params={this.props.location.query} location={this.props.location}/>
+          <OverviewPanel params={this.props.location.query}/>
         </CollapsiblePanel>
         <CollapsiblePanel
           title='W&A Statistiken' identifier='overall-statistic-charts'

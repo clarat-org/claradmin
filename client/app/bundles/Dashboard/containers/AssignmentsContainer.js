@@ -6,6 +6,7 @@ import { browserHistory } from 'react-router'
 import { encode } from 'querystring'
 import merge from 'lodash/merge'
 import clone from 'lodash/clone'
+import loadAjaxData from '../../../Backend/actions/loadAjaxData'
 
 const mapStateToProps = (state, ownProps) => {
   const scope = ownProps.scope
@@ -26,6 +27,7 @@ const mapStateToProps = (state, ownProps) => {
              state.ui[selectIdentifier] :
              selectableData[0][0]
   }
+
   const lockedParams = lockedParamsFor(scope, itemId, systemUser.id)
   const optionalParams =
     { 'sort_field': 'updated-at', 'sort_direction': 'DESC' }
@@ -54,6 +56,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 
   setParams() {
+    dispatchProps.dispatch(
+      loadAjaxData('assignments', this.defaultParams, 'indexResults')
+    )
     browserHistory.replace(`/?${jQuery.param(this.defaultParams)}`)
   }
 })

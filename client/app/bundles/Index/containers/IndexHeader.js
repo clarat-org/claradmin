@@ -15,7 +15,6 @@ const mapStateToProps = (state, ownProps) => {
         lockedParamsHaveKey(key, ownProps.lockedParams) == false)
   )
   const filters = toObject(filterArray)
-  const location = ownProps.location
   const plusButtonDisabled = ownProps.params.hasOwnProperty('filters[id]')
   const generalActions = settings.index[ownProps.model].general_actions
   const routes = generalRoutes(ownProps.model, ownProps.params).filter(route =>
@@ -29,8 +28,7 @@ const mapStateToProps = (state, ownProps) => {
     params,
     filters,
     plusButtonDisabled,
-    routes,
-    location
+    routes
   }
 }
 
