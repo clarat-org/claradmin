@@ -4,11 +4,12 @@ import OfferTranslationFormObject from '../forms/OfferTranslationFormObject'
 import OrganizationTranslationFormObject from
   '../forms/OrganizationTranslationFormObject'
 import EditTranslationForm from '../components/EditTranslationForm'
+import generateFormId from '../../GenericForm/lib/generateFormId'
 
 const mapStateToProps = (state, ownProps) => {
   const { id, model, translation } = ownProps
-  const formId = `${model}Translation${id}`
-
+  // const formId = `${model}Translation${id}`
+  const formId = generateFormId(model, '', 'translation', id)
   const action = `/api/v1/${model}_translations/${id}`
   const seedData = {
     fields: translation

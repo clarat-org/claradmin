@@ -19,7 +19,7 @@ export default class AssignmentActions extends Component {
   }
 
   renderForm(action) {
-    const { afterResponse, users, topics, assignment } = this.props
+    const { afterResponse, users, topics, assignment, assignableChanged } = this.props
 
     const optionalUserSelection = action.userChoice ?
       <div className="select-wrapper">
@@ -56,7 +56,8 @@ export default class AssignmentActions extends Component {
         {optionalMessage}
         {optionalUserSelection}
         {optionalTopicSelection}
-        <button type='submit' className='btn btn-default'>
+        <button type='submit' className='btn btn-default'
+          disabled={assignableChanged}>
           {action.buttonText}
         </button>
       </Form>
