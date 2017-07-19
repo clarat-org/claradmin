@@ -49,6 +49,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...stateProps,
   ...dispatchProps,
   ...ownProps,
+
+  onSubmitButtonClick(e) {
+    const formId = stateProps.formId
+    if(e.target.value){
+      dispatch(updateAction(formId, 'commit', [], e.target.value))
+    }
+    return true
+  },
 })
 
 export default connect(

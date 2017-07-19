@@ -44,6 +44,13 @@ export default class EditTranslationForm extends Component {
           disableOnInvalid disableOnUnchanged
           label='Speichern' unchangedDisabledLabel='Gespeichert!'
           invalidDisabledLabel='Es existieren Formular-Fehler!'
+        /> <span>&ensp;&ensp; </span>
+        <Button
+          className='btn btn-primary'
+          disableOnInvalid disableOnUnchanged value='closeAssignment'
+          label='Speichern und Zuweisung schließen'
+          unchangedDisabledLabel='Gespeichert!'
+          invalidDisabledLabel='Es existieren Formular-Fehler!'
         />
       </Form>
     )
