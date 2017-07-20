@@ -6,7 +6,7 @@ export default class EditTranslationForm extends Component {
   render() {
     const {
       seedData, action, formObjectClass, source, properties, formId,
-      afterResponse, editLink, previewLink, stamp
+      afterResponse, editLink, previewLink, stamp, buttonData
     } = this.props
 
     return (
@@ -39,20 +39,15 @@ export default class EditTranslationForm extends Component {
             </tbody>
           </table>
         </fieldset>
-        <Button
-          className='btn btn-primary'
-          disableOnInvalid disableOnUnchanged
-          label='Speichern' unchangedDisabledLabel='Gespeichert!'
-          invalidDisabledLabel='Es existieren Formular-Fehler!'
-        /> <span>&ensp;&ensp; </span>
-        <Button
-          className='btn btn-primary'
-          disableOnInvalid disableOnUnchanged
-          commit='closeAssignment'
-          label='Speichern und Zuweisung schließen'
-          unchangedDisabledLabel='Gespeichert!'
-          invalidDisabledLabel='Es existieren Formular-Fehler!'
-        />
+        {buttonData.map((action, index) => (
+          <Button
+            className={action.className}
+            disableOnInvalid disableOnUnchanged
+            commit = {action.actionName} key={index}
+            label={action.buttonLabel} unchangedDisabledLabel='Gespeichert!'
+            invalidDisabledLabel='Es existieren Formular-Fehler!'
+          />
+        ))}
       </Form>
     )
   }
