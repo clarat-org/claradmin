@@ -12,7 +12,7 @@ module Assignable
       def create_new_assignment_if_assignable_should_be_reassigned!(
         _options, model:, current_user:, **
       )
-        assignable_twin = ::Assignable::Twin.new(model)
+        assignable_twin = get_twin(model)
         if assignable_twin.should_create_new_assignment?
           ::Assignment::CreateBySystem.(
             {}, assignable: model, last_acting_user: current_user
@@ -27,23 +27,21 @@ module Assignable
       def create_new_assignment_if_save_and_close_clicked!(
         options, model:, current_user:, **
       )
-        if options['params']['meta']['commit'] &&
-           options['params']['meta']['commit'] == 'closeAssignment'
-             params = {
-               assignable_id: model.id,
-               assignable_type: model.class.name,
-               creator_id: current_user.id,
-               creator_team_id: nil,
-               receiver_id: 4,
-               receiver_team_id: nil,
-               message: 'Erledigt!',
-               created_by_system: true,
-               topic: 'translation'
-             }
-             ::Assignment::Create.(params, 'current_user' => current_user)
-             true
+        meta = options['params']['meta']
+        if meta && meta['commit'] == 'closeAssignment'
+          current_assignment = get_twin(model).current_assignment
+          params = { assignable_id: model.id, assignable_type: model.class.name,
+                     creator_id: current_user.id,
+                     creator_team_id: current_assignment.receiver_team_id,
+                     receiver_id: User.system_user.id, receiver_team_id: nil,
+                     message: 'Erledigt!', created_by_system: true,
+                     topic: current_assignment.topic }
+          create_success?(params, current_user)
+        else
+          true
         end
       end
+
       # Side-Effect: iterate organizations and create assignments for
       # translations
       def create_optional_assignment_for_organization_translation!(
@@ -79,8 +77,16 @@ module Assignable
         end
       end
 
+      def get_twin(model)
+        ::Assignable::Twin.new(model)
+      end
+
+      def create_success?(params, current_user)
+        ::Assignment::Create.(params, 'current_user' => current_user).success?
+      end
+
       def should_create_automated_organization_assignment?(model, organization)
-        orga_twin = ::Assignable::Twin.new(organization)
+        orga_twin = get_twin(organization)
         !model.receiver_id.nil? && model.receiver_id != ::User.system_user.id &&
           orga_twin.current_assignment.receiver_id == ::User.system_user.id &&
           organization.initialized?

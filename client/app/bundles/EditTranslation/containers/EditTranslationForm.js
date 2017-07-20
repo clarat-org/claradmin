@@ -41,11 +41,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatch,
 
   afterResponse(_formId, changes, errors, _meta, response) {
-    console.log(_formId)
-    console.log(changes)
-    console.log(errors)
-    console.log(_meta)
-    console.log(response)
     if (response.data && response.data.id) {
       dispatch(addFlashMessage('success', 'Erfolgreich gespeichert!'))
       dispatch(addEntities(changes))
