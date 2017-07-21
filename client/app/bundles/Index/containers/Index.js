@@ -39,9 +39,12 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 
   loadData(query, nextModel = stateProps.model) {
-    dispatchProps.dispatch(
-      loadAjaxData(nextModel, query, 'indexResults')
-    )
+    // Ugly hack but we don't want to render all assignments in the dashboard
+    if (!(nextModel == 'assignments' && query == undefined)) {
+      dispatchProps.dispatch(
+        loadAjaxData(nextModel, query, 'indexResults')
+      )
+    }
   },
 
   equalParams(params1, params2) {
