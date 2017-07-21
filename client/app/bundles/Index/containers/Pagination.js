@@ -45,7 +45,7 @@ function gotoPage(page, ownProps) {
   const params = merge(clone(ownProps.params), { page })
   let href = `/?${jQuery.param(params)}`
   if(window.location.pathname.length > 1) {
-    href = `/${model}?${jQuery.param(params)}`
+    href = `/${ownProps.model}?${jQuery.param(params)}`
   }
   browserHistory.push(href)
 }
