@@ -10,7 +10,7 @@ export default class AssignmentsContainer extends Component {
 
   render() {
     const {
-      heading, model, lockedParams, optionalParams, scope, params
+      heading, model, lockedParams, optionalParams, scope, params, defaultParams
     } = this.props
 
     return (
@@ -19,7 +19,7 @@ export default class AssignmentsContainer extends Component {
         <b>{heading}</b>
         <Index
           model={model} identifierAddition={scope} params={params}
-          lockedParams={lockedParams} optionalParams={optionalParams}
+          lockedParams={lockedParams} optionalParams={optionalParams} defaultParams={defaultParams}
         />
       </div>
     )

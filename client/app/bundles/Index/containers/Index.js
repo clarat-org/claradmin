@@ -13,6 +13,7 @@ const mapStateToProps = (state, ownProps) => {
   let optional =
     ownProps.identifierAddition ? '_' + ownProps.identifierAddition : ''
   const identifier = 'indexResults_' + model + optional
+  const defaultParams = ownProps.defaultParams
   const uiKey = 'index_' + model + optional
 
   if(pathname.length > 1 && ownProps.location) {
@@ -25,7 +26,8 @@ const mapStateToProps = (state, ownProps) => {
     heading: headingFor(model),
     query,
     identifier,
-    uiKey
+    uiKey,
+    defaultParams
   }
 }
 
@@ -40,7 +42,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
   loadData(query, nextModel = stateProps.model) {
     // Ugly hack but we don't want to render all assignments in the dashboard
-    if (!(nextModel == 'assignments' && query == undefined)) {
+    if (!(nextModel == 'assignments' && query == undefined && this.defaultParams !== undefined)) {
       dispatchProps.dispatch(
         loadAjaxData(nextModel, query, 'indexResults')
       )
