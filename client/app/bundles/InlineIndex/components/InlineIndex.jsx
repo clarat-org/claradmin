@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react'
 import isEqual from 'lodash/isEqual'
 import InlineIndexTable from '../containers/InlineIndexTable'
 import InlinePagination from '../containers/InlinePagination'
-import IndexHeader from '../../Index/containers/IndexHeader'
 
 export default class InlineIndex extends Component {
   componentWillReceiveProps(nextProps) {
@@ -27,9 +26,6 @@ export default class InlineIndex extends Component {
 
     return (
       <div className='content InlineIndex table-header'>
-        <IndexHeader
-          model={model} params={params} lockedParams={lockedParams}
-        />
         <p className="index-title">Gefundene Daten: {count}</p>
         <InlineIndexTable
           model={model} params={params} identifier={identifier} uiKey={uiKey}
