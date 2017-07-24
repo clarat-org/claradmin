@@ -8,14 +8,14 @@ gem 'nokogiri', '1.6.7.2' # 1.6.8 doesnt install on some pcs. Remove when fixed
 # General #
 ###########
 
-gem 'rails', '~> 4.2'
+gem 'rails', '~> 5.1'
 gem 'bundler', '>= 1.8.4'
 
-gem 'clarat_base', github: 'clarat-org/clarat_base', branch: 'develop'
+gem 'clarat_base', github: 'clarat-org/clarat_base', branch: 'feature/975-rails-5-upgrade'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # gem 'rails', '~> 4.1.12'
-gem 'rails-observers', '= 0.1.2' # observers got extracted since rails 4
+gem 'rails-observers', '= 0.1.5' # observers got extracted since rails 4
 
 # Translations
 gem 'rails-i18n'
@@ -120,7 +120,7 @@ gem 'puma'
 gem 'uglifier', '>= 1.3.0'
 
 # Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.0'
+gem 'coffee-rails', '~> 4.2.0'
 
 gem 'hogan_assets' # TODO: deprecated!
 group :assets do # TODO: deprecated!
@@ -155,9 +155,6 @@ group :development do
 
   # debugging in chrome with RailsPanel
   gem 'meta_request'
-
-  # Quiet Assets to disable asset pipeline in log
-  gem 'quiet_assets'
 
   # requires graphviz to generate
   # entity relationship diagrams

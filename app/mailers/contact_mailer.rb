@@ -4,8 +4,8 @@ class ContactMailer < ActionMailer::Base
     @contact = Contact.find(contact_id)
     sender = @contact.email? ? @contact.email : 'fehler@clarat.org'
     mail subject: 'Neue Nachricht vom clarat-Kontaktformular',
-         to:      Rails.application.secrets.emails['admin'],
+         to:      Rails.application.secrets.emails[:admin],
          reply_to: sender,
-         from:    Rails.application.secrets.emails['admin']
+         from:    Rails.application.secrets.emails[:admin]
   end
 end

@@ -5,8 +5,8 @@ class GengoCommunicator
 
   def initialize
     @connection = Gengo::API.new(
-      public_key: Rails.application.secrets.gengo['public_key'],
-      private_key: Rails.application.secrets.gengo['private_key'],
+      public_key: Rails.application.secrets.gengo[:public_key],
+      private_key: Rails.application.secrets.gengo[:private_key],
       sandbox: !Rails.env.production?
     )
     # do not send :de, :en (inhouse) and :fa (not supported) to gengo
