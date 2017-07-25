@@ -148,7 +148,6 @@ feature 'Admin Backend' do
     end
 
     scenario 'Set offer completed, then edit and back to completed' do
-      orga = organizations(:basic)
       split_base = split_bases(:basic)
       offer = FactoryGirl.create :offer, split_base: split_base
 
@@ -172,7 +171,6 @@ feature 'Admin Backend' do
     end
 
     scenario 'disapprove offer then edit and approve it again' do
-      orga = organizations(:basic)
       split_base = split_bases(:basic)
       offer = FactoryGirl.create :offer, split_base: split_base
 
@@ -212,7 +210,6 @@ feature 'Admin Backend' do
     end
 
     scenario 'under_construction state should work correctly on offer' do
-      orga = organizations(:basic)
       split_base = split_bases(:basic)
       offer = FactoryGirl.create :offer, :approved, split_base: split_base
 
@@ -236,7 +233,6 @@ feature 'Admin Backend' do
     end
 
     scenario 'create a seasonal pending offer' do
-      orga = organizations(:basic)
       split_base = split_bases(:basic)
       offer = FactoryGirl.create :offer, split_base: split_base,
                                          starts_at: (Time.zone.now + 1.day)
@@ -266,7 +262,6 @@ feature 'Admin Backend' do
     end
 
     scenario 'checkup_process must be possible for invalid offers' do
-      orga = organizations(:basic)
       researcher.user_teams = [UserTeam.first]
       split_base = split_bases(:basic)
       offer = FactoryGirl.create :offer, :approved, split_base: split_base
@@ -300,7 +295,6 @@ feature 'Admin Backend' do
     end
 
     scenario 'edit-state must be possible for invalid offers' do
-      orga = organizations(:basic)
       split_base = split_bases(:basic)
       offer = FactoryGirl.create :offer, :approved, split_base: split_base
 
@@ -333,7 +327,6 @@ feature 'Admin Backend' do
     end
 
     scenario 'deactivate seasonal_pending offer and reactivate it afterwards' do
-      orga = organizations(:basic)
       split_base = split_bases(:basic)
       offer = FactoryGirl.create :offer, :approved, split_base: split_base,
                                                     starts_at: (Time.zone.now - 1.day)
@@ -536,13 +529,7 @@ feature 'Admin Backend' do
 
       ## Test general validations
 
-      # Doesnt save, needs organization
-      # click_button 'Speichern und bearbeiten'
-      # page.must_have_content 'Organizations benötigt mindestens eine'\
-      #                        ' Organisation'
-
-      # Organization given, needs an area and no location when remote
-      # select 'foobar', from: 'offer_organization_ids'
+      # SplitBase given, needs an area and no location when remote
       select 'basicSplitBaseTitle', from: 'offer_split_base_id'
       click_button 'Speichern und bearbeiten'
       page.wont_have_content 'Organizations benötigt mindestens eine'\

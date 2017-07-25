@@ -77,7 +77,7 @@ class UninformedEmailsMailingsSpawnerWorkerTest < ActiveSupport::TestCase
     # .. but one orga has an expired offer
     expired_offer = FactoryGirl.create(:offer, aasm_state: 'expired')
     expired_offer.split_base.divisions.first
-                .update_columns organization_id: email.organizations.first.id
+                 .update_columns organization_id: email.organizations.first.id
     UninformedEmailMailingWorker.expects(:perform_async).with(email.id)
     worker.perform
   end
