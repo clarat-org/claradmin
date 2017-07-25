@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: fc79b3549d86658bb7b3966e667e3a929a1414c3
+  revision: 3c99dc1c3286e0864ab5d24b26878dde52581bb9
   branch: feature/975-rails-5-upgrade
   specs:
     clarat_base (0.1.4)
@@ -661,7 +661,7 @@ GEM
     thor (0.19.4)
     thread (0.2.2)
     thread_safe (0.3.6)
-    tilt (2.0.7)
+    tilt (2.0.8)
     timecop (0.9.1)
     tins (1.15.0)
     trailblazer (2.0.7)
@@ -827,4 +827,4 @@ RUBY VERSION
    ruby 2.3.3p222
 
 BUNDLED WITH
-   1.14.5
+   1.15.3
