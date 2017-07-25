@@ -36,6 +36,8 @@ class Assignment::CreateBySystem < Trailblazer::Operation
       assignable_twin.should_be_created_by_system? ? ::User.system_user : last_acting_user
     when 'ContactPersonTranslation'
       ::User.system_user
+    when 'Organization'
+      assignable.initialized? && assignable.assignments.any? ? ::User.system_user : last_acting_user
     else
       last_acting_user # NOTE: this is not used yet - rethink when other models become assignable!
     end
@@ -56,7 +58,7 @@ class Assignment::CreateBySystem < Trailblazer::Operation
     when 'Division'
       assignable.done == false ? nil : ::User.system_user.id
     when 'Organization'
-      ::User.system_user.id
+      assignable.initialized? && assignable.assignments.any? ? last_acting_user.id : ::User.system_user.id
     else
       last_acting_user.id # NOTE: this is not used yet - rethink when other models become assignable!
     end
@@ -105,7 +107,7 @@ class Assignment::CreateBySystem < Trailblazer::Operation
         'Managed by system'
       end
     when 'Organization'
-      'Managed by system'
+      assignable.initialized? && assignable.assignments.any? ? 'Bitte den Orga Datensatz vervollständigen' : 'Managed by system'
     else
       'Assigned by system'
     end

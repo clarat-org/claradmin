@@ -30,7 +30,10 @@ const mapStateToProps = (state, ownProps) => {
     name: user.name + ` (${involvementCount(assignments, user.id)})`,
     value: user.id, sortValue: involvementCount(assignments, user.id)
   })), ['sortValue', 'name'],  ['desc', 'asc'])
-
+  const teams = valuesIn(state.entities['user-teams']).filter(team => (
+    team.name.indexOf('ARCHIV') < 0 && team.name.indexOf('Developers') < 0
+  )).map(team => ({ name: team.name, value: team.id }))
+  teams.unshift({ name: '-', value: null })
   const actions = settingsActions.filter(
     action => visibleFor(action, state.entities, model,
                          assignment['assignable-id'], systemUser)
@@ -39,7 +42,7 @@ const mapStateToProps = (state, ownProps) => {
     href: '/api/v1/assignments/',
     formId: `Assignment${assignment.id}:${action}`,
     seedData: seedDataFor(action, state.entities, assignment, systemUser, users),
-    userChoice: action == 'assign-someone-else',
+    userAndTeamChoice: action == 'assign-someone-else',
     topicChoice: model == 'divisions' && action == 'assign-someone-else',
     messageField: action != 'assign-to-system' && action != 'assign-to-current-user'
   }))
@@ -52,6 +55,7 @@ const mapStateToProps = (state, ownProps) => {
     assignment,
     actions,
     users,
+    teams,
     topics
   }
 }
