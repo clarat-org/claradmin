@@ -2,7 +2,7 @@
 # Monkeypatch clarat_base Offer
 require ClaratBase::Engine.root.join('app', 'models', 'offer')
 
-class Offer < ActiveRecord::Base
+class Offer < ApplicationRecord
   has_paper_trail
 
   EDITABLE_IN_STATES =

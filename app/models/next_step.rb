@@ -2,7 +2,7 @@
 # Monkeypatch clarat_base NextStep
 require ClaratBase::Engine.root.join('app', 'models', 'next_step')
 
-class NextStep < ActiveRecord::Base
+class NextStep < ApplicationRecord
   after_save :translate_if_text_en_changed
 
   include ReformedValidationHack

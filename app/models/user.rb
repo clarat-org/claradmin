@@ -2,7 +2,7 @@
 # Monkeypatch clarat_base User
 require ClaratBase::Engine.root.join('app', 'models', 'user')
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   has_paper_trail
 
   devise :database_authenticatable, :validatable, :lockable, :timeoutable

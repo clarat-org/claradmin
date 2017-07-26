@@ -3,7 +3,7 @@
 # NOTE only required for old backend - do this differently in new backend!
 require ClaratBase::Engine.root.join('app', 'models', 'target_audience_filters_offer')
 
-class TargetAudienceFiltersOffer < ActiveRecord::Base
+class TargetAudienceFiltersOffer < ApplicationRecord
   # Enumerization
   extend Enumerize
 

@@ -2,7 +2,7 @@
 # Monkeypatch clarat_base CotactPerson
 require ClaratBase::Engine.root.join('app', 'models', 'contact_person')
 
-class ContactPerson < ActiveRecord::Base
+class ContactPerson < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,

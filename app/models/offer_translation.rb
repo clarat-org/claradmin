@@ -2,7 +2,7 @@
 # Monkeypatch clarat_base OfferTranslation
 require ClaratBase::Engine.root.join('app', 'models', 'offer_translation')
 
-class OfferTranslation < ActiveRecord::Base
+class OfferTranslation < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,

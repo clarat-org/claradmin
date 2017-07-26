@@ -2,7 +2,7 @@
 # Monkeypatch clarat_base Filter
 require ClaratBase::Engine.root.join('app', 'models', 'filter')
 
-class Filter < ActiveRecord::Base
+class Filter < ApplicationRecord
   include PgSearch
   pg_search_scope :search_pg,
                   against: [:id, :name, :identifier],

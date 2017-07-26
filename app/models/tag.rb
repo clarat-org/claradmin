@@ -2,7 +2,7 @@
 # Monkeypatch clarat_base Category
 require ClaratBase::Engine.root.join('app', 'models', 'tag')
 
-class Tag < ActiveRecord::Base
+class Tag < ApplicationRecord
   after_save :translate_if_name_en_changed
   # Methods
 

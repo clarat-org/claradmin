@@ -2,7 +2,7 @@
 # Monkeypatch clarat_base Website
 require ClaratBase::Engine.root.join('app', 'models', 'website')
 
-class Website < ActiveRecord::Base
+class Website < ApplicationRecord
   # Scopes
   scope :unreachable, -> { where('unreachable_count > ?', 0) }
   scope :unreachableAndNotIgnored, -> {

@@ -2,7 +2,7 @@
 require_relative '../test_helper'
 
 class ReformedValidationHackTest < ActiveSupport::TestCase
-  class HackyTestModel < ActiveRecord::Base
+  class HackyTestModel < ApplicationRecord
     def self.columns() []; end
     attr_accessor :foo
 
@@ -16,7 +16,7 @@ class ReformedValidationHackTest < ActiveSupport::TestCase
     end
   end
 
-  class ClassicTestModel < ActiveRecord::Base
+  class ClassicTestModel < ApplicationRecord
     def self.columns() []; end
     attr_accessor :foo
     validates :foo, presence: true

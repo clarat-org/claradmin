@@ -2,7 +2,7 @@
 # Monkeypatch clarat_base Location
 require ClaratBase::Engine.root.join('app', 'models', 'location')
 
-class Location < ActiveRecord::Base
+class Location < ApplicationRecord
   # Admin specific methods
   include PgSearch, ReformedValidationHack
 

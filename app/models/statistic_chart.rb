@@ -4,7 +4,7 @@ require ClaratBase::Engine.root.join('app', 'models', 'statistic_chart')
 require_relative 'offer'
 require_relative 'organization'
 
-class StatisticChart < ActiveRecord::Base
+class StatisticChart < ApplicationRecord
   include PgSearch
   pg_search_scope :search_pg,
                   against: [

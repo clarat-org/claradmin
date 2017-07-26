@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-class UserTeam < ActiveRecord::Base
+class UserTeam < ApplicationRecord
   class GeneralContract < Reform::Form
     property :name
     property :users

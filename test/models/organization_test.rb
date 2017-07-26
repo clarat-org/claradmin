@@ -257,7 +257,6 @@ describe Organization do
         offer.update_column :aasm_state, :organization_deactivated
         offer.organizations <<
           FactoryGirl.create(:organization, aasm_state: 'external_feedback')
-
         orga.reactivate_offers!
         offer.reload.must_be :organization_deactivated?
       end

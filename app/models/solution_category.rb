@@ -2,7 +2,7 @@
 # Monkeypatch clarat_base SolutionCategory
 require ClaratBase::Engine.root.join('app', 'models', 'solution_category')
 
-class SolutionCategory < ActiveRecord::Base
+class SolutionCategory < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,
