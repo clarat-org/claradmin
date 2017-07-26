@@ -38,7 +38,7 @@ class Organization::Update < Trailblazer::Operation
   end
 
   def assign_to_system_on_approve(
-    _, changed_state: false, model:, params:, **
+    options, changed_state: false, model:, params:, **
   )
     meta = params['meta'] && params['meta']['commit']
     current_user = options['current_user']
