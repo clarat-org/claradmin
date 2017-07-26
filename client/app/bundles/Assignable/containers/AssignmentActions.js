@@ -33,7 +33,8 @@ const mapStateToProps = (state, ownProps) => {
   const teams = valuesIn(state.entities['user-teams']).filter(team => (
     team.name.indexOf('ARCHIV') < 0 && team.name.indexOf('Developers') < 0
   )).map(team => ({ name: team.name, value: team.id }))
-  teams.unshift({ name: '-', value: null })
+  users.push({ name: '-', sortValue: -1,  value: '' })
+  teams.unshift({ name: '-', value: '' })
   const actions = settingsActions.filter(
     action => visibleFor(action, state.entities, model,
                          assignment['assignable-id'], systemUser)
@@ -75,7 +76,8 @@ function visibleFor(action, entities, model, id, systemUser) {
       return isTeamOfCurrentUserAssignedToModel(entities, model, id) &&
         !isCurrentUserAssignedToModel(entities, model, id)
     case 'assign-someone-else':
-      return isCurrentUserAssignedToModel(entities, model, id)
+      return isCurrentUserAssignedToModel(entities, model, id) ||
+        isTeamOfCurrentUserAssignedToModel(entities, model, id)
     case 'retrieve-assignment':
       return !isTeamOfCurrentUserAssignedToModel(entities, model, id) &&
         !isCurrentUserAssignedToModel(entities, model, id)

@@ -38,9 +38,10 @@ class Organization::Update < Trailblazer::Operation
   end
 
   def assign_to_system_on_approve(
-    options, changed_state: false, current_user:, model:, params:, **
+    _, changed_state: false, model:, params:, **
   )
     meta = params['meta'] && params['meta']['commit']
+    current_user = options['current_user']
     if meta.to_s == 'approve' && changed_state
       ::Assignment::CreateBySystem.(
         {}, assignable: model, last_acting_user: current_user

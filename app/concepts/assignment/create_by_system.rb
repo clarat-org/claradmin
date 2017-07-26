@@ -28,7 +28,7 @@ class Assignment::CreateBySystem < Trailblazer::Operation
   end
 
   # --- Utils describing default logic --- #
-
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def creator(assignable, last_acting_user)
     case assignable.class.to_s
     when 'OfferTranslation', 'OrganizationTranslation'
@@ -43,7 +43,6 @@ class Assignment::CreateBySystem < Trailblazer::Operation
     end
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
   def receiver_id(assignable, last_acting_user)
     case assignable.class.to_s
     when 'OfferTranslation', 'OrganizationTranslation'
@@ -112,5 +111,5 @@ class Assignment::CreateBySystem < Trailblazer::Operation
       'Assigned by system'
     end
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 end

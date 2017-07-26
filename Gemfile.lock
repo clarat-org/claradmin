@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: 74e0a7026f286ee56b619c66e5914724187e109c
+  revision: 55d1b3a1108bc1c994afef9d844366e2db054b2d
   branch: feature/945-refactored-associations
   specs:
     clarat_base (0.1.4)
