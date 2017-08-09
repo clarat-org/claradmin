@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 FactoryGirl.define do
   factory :division do
-    name 'default division name'
+    #name 'default division name'
     section { Section.all.sample }
     city { City.all.sample }
     organization
