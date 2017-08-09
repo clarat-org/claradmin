@@ -4,6 +4,7 @@ module API::V1
     module Representer
       class Show < Roar::Decorator
         include Roar::JSON::JSONAPI.resource :assignments
+        include API::V1::Lib::JsonapiWithPolymorphy
 
         attributes do
           property :assignable_id
@@ -26,6 +27,7 @@ module API::V1
           type :users
 
           attributes do
+            property :label, getter: ->(o) { o[:represented].name }
             property :name
           end
         end
@@ -34,6 +36,7 @@ module API::V1
           type :users
 
           attributes do
+            property :label, getter: ->(o) { o[:represented].name }
             property :name
           end
         end
@@ -42,6 +45,7 @@ module API::V1
           type :user_teams
 
           attributes do
+            property :label, getter: ->(o) { o[:represented].name }
             property :name
           end
         end
@@ -50,16 +54,17 @@ module API::V1
           type :user_teams
 
           attributes do
+            property :label, getter: ->(o) { o[:represented].name }
             property :name
           end
         end
 
         has_one :assignable do
-          type :assignables
+          type :polymorphic
           # Above is technically incorrect. Wish the following would work ...
           # as[:represented].assignable_type.tableize.to_sym
           # property :type , getter: ->(object) do
-          #   object[:represented].class.name.tableize.dasherize
+          #   object[:represented].class.table_name.dasherize
           # end
 
           attributes do
@@ -68,13 +73,14 @@ module API::V1
               # TODO: This spaghetti code needs to be somewhere else
               if object[:represented].class.to_s.include?('Translation')
                 if object[:represented].respond_to?(:organization)
-                  object[:represented].organization.untranslated_description
+                  object[:represented].organization.description
                 elsif object[:represented].respond_to?(:contact_person)
-                  object[:represented].contact_person
-                                      .untranslated_responsibility
+                  object[:represented].contact_person.responsibility
                 else
-                  object[:represented].offer.untranslated_name
+                  object[:represented].offer.name
                 end
+              elsif object[:represented].respond_to?(:display_name)
+                object[:represented].display_name
               elsif object[:represented].respond_to?(:name)
                 object[:represented].name
               else # create a generic label that works for any model

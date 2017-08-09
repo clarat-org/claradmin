@@ -9,12 +9,14 @@ class GenericSortFilterTest < ActiveSupport::TestCase
   describe '#snake_case_contents' do
     it 'should transform kebab-case contents to snake_case' do
       params = {
-        sort_field: 'foo-bar', sort_model: 'split-base', sort_direction: 'ASC',
+        sort_field: 'foo-bar', sort_model: %w(split-base baz-fuz),
+        sort_direction: 'ASC',
         filters: { 'split-base.foo-bar' => 'dont-touch' }
       }
       result = subject.send(:snake_case_contents, params)
       result.must_equal(
-        sort_field: 'foo_bar', sort_model: 'split_base', sort_direction: 'ASC',
+        sort_field: 'foo_bar', sort_model: %w(split_base baz_fuz),
+        sort_direction: 'ASC',
         filters: { 'split_base.foo_bar' => 'dont-touch' }
       )
     end
@@ -38,24 +40,31 @@ class GenericSortFilterTest < ActiveSupport::TestCase
       subject.send(:transform_by_searching, query, 'foo')
     end
 
-    it 'searches with a filled param for orga' do
-      orga_query = Organization.where('1 = 1')
-      orga_query.expects(:with_pg_search_rank).once
-      subject.send(:transform_by_searching, orga_query, 'orga')
-    end
+    # it 'searches with a filled param for orga' do
+    #   orga_query = Organization.where('1 = 1')
+    #   orga_query.expects(:with_pg_search_rank).once
+    #   subject.send(:transform_by_searching, orga_query, 'orga')
+    # end
   end
 
   describe '#transform_by_joining' do
-    it 'eager_loads with a sort_model' do
-      params = { sort_model: 'contact_people.fooooo' }
-      query.expects(:eager_load).with(:contact_people)
+    it 'eager_loads with a plain sort_model' do
+      params = { sort_model: 'contact_people' }
+      query.expects(:eager_load).with('contact_people')
+      subject.send(:transform_by_joining, query, params)
+    end
+
+    it 'eager_loads with a nested sort_model' do
+      params = { sort_model: 'contact_people.foo_bars' }
+      query.expects(:eager_load).with('contact_people' => 'foo_bars')
       subject.send(:transform_by_joining, query, params)
     end
 
     it 'eager_loads with a filter' do
-      params = { filters: { 'split_base.foo' => 'a', 'logic_version.bar' => 'b' } }
-      query.expects(:eager_load).with(:split_base).returns(query)
-      query.expects(:eager_load).with(:logic_version).returns(query)
+      params =
+        { filters: { 'split_base.foo' => 'a', 'logic_version.bar' => 'b' } }
+      query.expects(:eager_load).with('split_base').returns(query)
+      query.expects(:eager_load).with('logic_version').returns(query)
       result = subject.send(:transform_by_joining, query, params)
       result.must_equal query
     end
@@ -153,6 +162,12 @@ class GenericSortFilterTest < ActiveSupport::TestCase
       subject.send(:transform_by_filtering, query, params)
     end
 
+    it 'filters with a 2-level deep association' do
+      params = { filters: { 'section.cities.foobar' => 'bazfuz' } }
+      query.expects(:where).with("cities.foobar = 'bazfuz'")
+      subject.send(:transform_by_filtering, query, params)
+    end
+
     it 'filters with referring_to_own_table' do
       params = { filters: { 'offers.foobar' => 'bazfuz' } }
       query.expects(:where).with("offers.foobar = 'bazfuz'")
@@ -181,6 +196,16 @@ class GenericSortFilterTest < ActiveSupport::TestCase
     it 'parses date-times and converts them from CET to UTC' do
       params = { filters: { 'created_at' => '15.09.2014, 13:02:00+0200' } }
       query.expects(:where).with("created_at = '2014-09-15T11:02:00+00:00'")
+      subject.send(:transform_by_filtering, query, params)
+    end
+
+    it 'filters with interconnecting OR operator' do
+      params = {
+        filters: { 'foo' => '1', 'fuz' => 'nil' },
+        operators: { 'fuz' => '=', 'interconnect' => 'OR' }
+      }
+      query.expects(:where).with("foo = '1'").returns query
+      query.expects(:or).with('fuz IS NULL')
       subject.send(:transform_by_filtering, query, params)
     end
   end

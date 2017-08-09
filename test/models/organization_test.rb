@@ -254,9 +254,10 @@ describe Organization do
       end
 
       it 'wont approve offers, that have another deactivated orga' do
-        offer.update_column :aasm_state, :organization_deactivated
-        offer.organizations <<
-          FactoryGirl.create(:organization, aasm_state: 'external_feedback')
+        offer.update_column :aasm_state, :organization_deactivated=
+        division = FactoryGirl.create(:division) # new division with orga
+        offer.split_base.divisions << division
+        division.organization.update_columns aasm_state: 'external_feedback'
         orga.reactivate_offers!
         offer.reload.must_be :organization_deactivated?
       end

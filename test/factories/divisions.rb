@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 FactoryGirl.define do
   factory :division do
-    #name 'default division name'
+    addition 'default division addition'
     section { Section.all.sample }
     city { City.all.sample }
-    organization
+    organization { FactoryGirl.create(:organization, :approved) }
 
     after :create do |division, _evaluator|
       division.assignments << ::Assignment::CreateBySystem.(
