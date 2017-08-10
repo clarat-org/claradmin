@@ -37,7 +37,7 @@ module API
       set_jsonapi_raw_post(params, klass)
       model = klass.find(id)
       original_attributes = collect_attributes(model, params)
-      patch :update, jsonapi_params(id: id)
+      patch :update, params: jsonapi_params(id: id)
       original_attributes.wont_equal collect_attributes(model.reload, params)
 
       # Validate JSONAPI spec implementation: returns 200 + resource document
@@ -49,7 +49,7 @@ module API
       set_jsonapi_raw_post(params, klass)
       model = klass.find(id)
       original_attributes = collect_attributes(model, params)
-      patch :update, jsonapi_params(id: id)
+      patch :update, params: jsonapi_params(id: id)
       original_attributes.must_equal collect_attributes(model.reload, params)
 
       # Validate JSONAPI spec implementation: returns Forbidden, error hash

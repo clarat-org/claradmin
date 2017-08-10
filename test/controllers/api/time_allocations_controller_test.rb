@@ -46,7 +46,7 @@ describe API::V1::TimeAllocationsController do
     TimeAllocation.create valid_params
     sign_in users(:researcher)
     set_jsonapi_raw_post({ actual_wa_hours: 1 }, TimeAllocation)
-    post :report_actual, year: 2000, week_number: 1
+    post :report_actual, params: { year: 2000, week_number: 1 }
     assert_response 200
     response.body.must_include '"type":"time-allocations"'
     response.body.must_include '"id":"2"'

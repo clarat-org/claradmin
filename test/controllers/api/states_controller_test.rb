@@ -7,7 +7,7 @@ describe API::V1::StatesController do
   before { sign_in users(:researcher) }
 
   it 'responds to a #show request' do
-    get :show, model: 'Offer'
+    get :show, params: { model: 'Offer' }
     assert_response 200
     response.body.must_include 'website_unreachable' # ie
   end

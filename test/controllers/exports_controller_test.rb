@@ -10,7 +10,7 @@ describe ExportsController do
 
     it 'should start a streaming export' do
       sign_in user
-      post :create, object_name: 'cities', export: working_export_hash
+      post :create, params: { object_name: 'cities', export: working_export_hash }
       assert_response :success
       response.header['Content-Type'].must_equal 'text/csv'
       response.header['Content-disposition'].must_include 'attachment;'
@@ -18,8 +18,8 @@ describe ExportsController do
 
     it 'should render an error when an invalid request is issued' do
       sign_in user
-      post :create, object_name: 'cities', export: {
-        model_fields: [:doesntexist]
+      post :create, params: { object_name: 'cities', export: {
+        model_fields: [:doesntexist] }
       }
       assert_response 403
       response.body.must_equal 'error'

@@ -15,7 +15,7 @@ describe CategoriesController do
   describe 'GET #suggest_categories' do
     it 'should render a list of category names in offers with given name' do
       sign_in users(:researcher)
-      get :suggest_categories, offer_name: 'basicOfferName', format: :json
+      get :suggest_categories, params: { offer_name: 'basicOfferName', format: :json }
       assert_response 200
       response.body.must_include '["main1"]'
     end

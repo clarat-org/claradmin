@@ -6,7 +6,7 @@ describe API::V1::FieldSetController do
 
   it 'should respond to #show' do
     sign_in user
-    get :show, model: 'City'
+    get :show, params: { model: 'City' }
     assert_response 200
   end
 end

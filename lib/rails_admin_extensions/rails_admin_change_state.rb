@@ -53,8 +53,7 @@ module RailsAdmin
               flash[:error] = error_message.html_safe
               # rubocop:enable OutputSafety
             end
-
-            redirect_to :back
+            redirect_to request.referer
           end
         end
       end

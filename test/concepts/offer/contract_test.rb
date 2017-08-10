@@ -192,7 +192,7 @@ class OfferContractTest < ActiveSupport::TestCase
         category.sections = [sections(:refugees)]
         subject.categories = [category]
         subject.valid?.must_equal true
-        subject.errors.messages[:categories].must_be :nil?
+        subject.errors.messages[:categories].must_be :empty?
       end
 
       it 'should succeed when sections of offer and categories (2 sect.) match' do
@@ -202,28 +202,28 @@ class OfferContractTest < ActiveSupport::TestCase
         subject.categories = [category]
         category.sections = [sections(:refugees), sections(:family)]
         subject.valid?.must_equal true
-        subject.errors.messages[:categories].must_be :nil?
+        subject.errors.messages[:categories].must_be :empty?
       end
 
       it 'should fail when version < 7' do
         subject.logic_version = LogicVersion.create(name: 'chunky', version: 6)
         subject.split_base_id = nil
         subject.valid?
-        subject.errors.messages[:split_base].must_be :nil?
+        subject.errors.messages[:split_base].must_be :empty?
       end
 
       it 'should fail when split_base is nil with version >= 7' do
         subject.logic_version = LogicVersion.create(name: 'bacon', version: 7)
         subject.split_base_id = nil
         subject.valid?
-        subject.errors.messages[:split_base].wont_be :nil?
+        subject.errors.messages[:split_base].wont_be :empty?
       end
 
       it 'should validate that split_base is assigned with version >= 7' do
         subject.logic_version = LogicVersion.create(name: 'bacon', version: 7)
         subject.split_base_id = 1
         subject.valid?
-        subject.errors.messages[:split_base].must_be :nil?
+        subject.errors.messages[:split_base].must_be :empty?
       end
 
       # it 'should ensure chosen contact people belong to a chosen orga' do

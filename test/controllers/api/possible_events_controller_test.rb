@@ -6,7 +6,7 @@ describe API::V1::PossibleEventsController do
 
   it 'should respond to #show' do
     sign_in user
-    get :show, model: 'Organization', id: 1
+    get :show, params: { model: 'Organization', id: 1 }
     assert_response 200
   end
 end
