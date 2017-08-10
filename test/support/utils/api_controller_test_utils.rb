@@ -9,7 +9,7 @@ module API
     end
 
     def api_get_works_for action, additional_params = {}
-      get action, jsonapi_params(additional_params)
+      get action, params: jsonapi_params(additional_params)
       assert_response :success
     end
 

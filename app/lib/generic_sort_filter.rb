@@ -14,7 +14,7 @@ module GenericSortFilter
 
   UNDERSCORABLE_PARAMS = [:sort_field, :sort_model, :filters, :operators].freeze
   def self.snake_case_contents(original_params)
-    original_params.map do |string_key, value|
+    original_params.to_unsafe_h.map do |string_key, value|
       key = string_key.to_sym
       if UNDERSCORABLE_PARAMS.include?(key)
         [key, snake_case_value(value)]
