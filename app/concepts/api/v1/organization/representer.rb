@@ -10,20 +10,21 @@ module API::V1
           property :label, getter: ->(organization) do
             organization[:represented].name
           end
-          property :description, getter: ->(organization) do
-            organization[:represented].untranslated_description
+          # TODO: make this work correctly!!
+          property :offers_count, getter: ->(organization) do
+            organization[:represented].offers.count
           end
+          # property :offers_count
 
+          property :description
           property :name
           property :priority
           property :comment
-          property :offers_count
           property :aasm_state
           property :locations_count
           property :pending_reason
           property :legal_form
           property :charitable
-
           property :website_id
           # NOTE: do we need this here? or only for create/update or not at all?
           property :location_ids

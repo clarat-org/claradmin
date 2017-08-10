@@ -3,6 +3,7 @@ import isArray from 'lodash/isArray'
 import { updateAction, navigateThroughSubmodels } from 'rform'
 import { pluralize } from '../../../lib/inflection'
 import { loadForFilteringSelect } from '../actions/loadForFilteringSelect'
+import { resetFilteringSelectData } from '../actions/resetFilteringSelectData'
 import FilteringSelect from '../components/FilteringSelect'
 
 const mapStateToProps = (state, ownProps) => {
@@ -44,11 +45,11 @@ const mapDispatchToProps = (dispatch, ownProps) => ({ dispatch })
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { dispatch } = dispatchProps
   const { alreadyLoadedInputs, resource } = stateProps
-  const { filters } = ownProps
+  const { filters, inverseRelationship, model } = ownProps
 
   return {
-    ...stateProps,
     ...ownProps,
+    ...stateProps,
 
     onChange(selected) {
       let newValue
@@ -65,19 +66,32 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     },
 
     onMount() {
-      dispatch(loadForFilteringSelect('', resource, filters))
+      dispatch(loadForFilteringSelect(
+        '', resource, model, inverseRelationship, filters
+      ))
+    },
+
+    onUnmount() {
+      if (inverseRelationship != 'belongsTo') return
+      // only filtered FilteringSelect need to be cleaned up
+
+      dispatch(resetFilteringSelectData(resource))
     },
 
     onFirstValue(value) {
       let filter_ids = value.split(',').filter(
         value => alreadyLoadedInputs.includes(value) == false
       ).join(',')
-      dispatch(loadForFilteringSelect('', resource, filters, filter_ids))
+      dispatch(loadForFilteringSelect(
+        '', resource, model, inverseRelationship, filters, filter_ids
+      ))
     },
 
     onInputChange(input) {
       if (alreadyLoadedInputs.includes(input)) return
-      dispatch(loadForFilteringSelect(input, resource, filters))
+      dispatch(loadForFilteringSelect(
+        input, resource, model, inverseRelationship, filters
+      ))
     },
   }
 }

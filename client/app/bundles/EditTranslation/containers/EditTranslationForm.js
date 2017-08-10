@@ -24,7 +24,7 @@ const mapStateToProps = (state, ownProps) => {
   const previewLink = `/admin/${model}/${ownProps.source.id}/show_in_app`
   const stamp = ownProps.translation['offer-stamp'] ?
                 ownProps.translation['offer-stamp'].join(', ') : 'nicht angegeben'
-  const buttonData = getButtonData()
+  const buttonData = BUTTON_DATA
 
   return {
     action,
@@ -58,19 +58,16 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 })
 
-function getButtonData() {
-  // start with default save button (might be extended)
-  let buttonData = [{
-    className: 'btn btn-primary',
-    buttonLabel: 'Speichern',
-    actionName: ''
-  },{
-    className: 'btn btn-primary',
-    buttonLabel: 'Speichern und Zuweisung schließen',
-    actionName: 'closeAssignment'
-  }]
-  return buttonData
-}
+const BUTTON_DATA = [{
+// start with default save button (might be extended)
+  className: 'btn btn-primary',
+  buttonLabel: 'Speichern',
+  actionName: ''
+},{
+  className: 'btn btn-primary',
+  buttonLabel: 'Speichern und Zuweisung schließen',
+  actionName: 'closeAssignment'
+}]
 
 export default connect(
   mapStateToProps,

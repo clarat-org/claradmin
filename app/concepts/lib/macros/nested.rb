@@ -33,16 +33,21 @@ module Lib
 
       def self.each_nested iterator_suffix, field, options, iterator_attrs = []
         results = []
+        reset_contract_field(options, field) if nested_given?(field, options)
         send(
           "each_nested_#{iterator_suffix}", field, options, *iterator_attrs
         ) do |response|
-          reset_contract_field(options, field) if results.empty?
           settable, pushable = yield response
           set_contract_field(options, field, settable)
           results.push pushable
         end
         set_contract_errors(options, field, results.select { |r| r != true })
         results.all? { |r| r == true || r.success? }
+      end
+
+      def self.nested_given?(field, options)
+        (options['params'] && options['params'][field]) ||
+          (options['document'] && parsed_document(options['document'], field))
       end
 
       def self.each_nested_paramset(field, options, &block)
@@ -75,7 +80,7 @@ module Lib
             nested_params = params_from_document(single_document)
             yield nested_params, completed_single_document
           end
-        else
+        elsif document.any?
           yield params_from_document(document['data']), document.to_json
         end
       end
@@ -130,19 +135,29 @@ module Lib
 
       def self.reset_contract_field(options, field_name)
         field_value = options['contract.default'].send(field_name)
-        if iterable?(field_value)
-          options['contract.default'].send(:"#{field_name}=", [])
-        elsif !field_value.is_a? Hash
-          options['contract.default'].send(:"#{field_name}=", nil)
+        without_changes(options['contract.default']) do
+          if iterable?(field_value)
+            options['contract.default'].send(:"#{field_name}=", [])
+          elsif !field_value.is_a? Hash
+            options['contract.default'].send(:"#{field_name}=", nil)
+          end
         end
       end
 
       def self.set_contract_field(options, field_name, field_value)
-        if iterable?(options['contract.default'].send(field_name))
-          options['contract.default'].send(field_name).push(field_value)
-        else
-          options['contract.default'].send(:"#{field_name}=", field_value)
+        without_changes(options['contract.default']) do
+          if iterable?(options['contract.default'].send(field_name))
+            options['contract.default'].send(field_name).push(field_value)
+          else
+            options['contract.default'].send(:"#{field_name}=", field_value)
+          end
         end
+      end
+
+      def self.without_changes(contract)
+        original_changes = contract.instance_variable_get(:"@_changes").dup
+        yield
+        contract.instance_variable_set(:"@_changes", original_changes)
       end
 
       def self.set_contract_errors(options, field_name, results)

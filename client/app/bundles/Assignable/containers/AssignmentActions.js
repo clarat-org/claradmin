@@ -12,14 +12,12 @@ import orderBy from 'lodash/orderBy'
 
 const mapStateToProps = (state, ownProps) => {
   const assignment = ownProps.assignment
-  let model = pluralize(kebabCase(assignment['assignable-type']))
-  let assignableFormId = `GenericForm-${kebabCase(assignment['assignable-type'])
-                                        }-${assignment['assignable-id']}`
-  let assignableFormChanges = state.rform[assignableFormId] ?
-                              state.rform[assignableFormId]['_changes'].length :
-                              state.rform[assignableFormId]
-  let assignableChanged = assignableFormChanges &&
-                          (assignableFormChanges.length != 0) ? true : false
+  const type = kebabCase(assignment['assignable-type'])
+  const model = pluralize(type)
+  const assignableFormId = `GenericForm-${type}-${assignment['assignable-id']}`
+  const assignableFormChanges = state.rform[assignableFormId] ?
+    state.rform[assignableFormId]['_changes'] : state.rform[assignableFormId]
+  let assignableChanged = assignableFormChanges && assignableFormChanges.length
   let assignments = filter(
     state.entities.assignments,
     a => {
@@ -37,7 +35,11 @@ const mapStateToProps = (state, ownProps) => {
     name: user.name + ` (${involvementCount(assignments, user.id)})`,
     value: user.id, sortValue: involvementCount(assignments, user.id)
   })), ['sortValue', 'name'],  ['desc', 'asc'])
-
+  const teams = valuesIn(state.entities['user-teams']).filter(team => (
+    team.name.indexOf('ARCHIV') < 0 && team.name.indexOf('Developers') < 0
+  )).map(team => ({ name: team.name, value: team.id }))
+  users.push({ name: '-', sortValue: -1,  value: '' })
+  teams.unshift({ name: '-', value: '' })
   const actions = settingsActions.filter(
     action => visibleFor(action, state.entities, model,
                          assignment['assignable-id'], systemUser)
@@ -46,7 +48,7 @@ const mapStateToProps = (state, ownProps) => {
     href: '/api/v1/assignments/',
     formId: `Assignment${assignment.id}:${action}`,
     seedData: seedDataFor(action, state.entities, assignment, systemUser, users),
-    userChoice: action == 'assign-someone-else',
+    userAndTeamChoice: action == 'assign-someone-else',
     topicChoice: model == 'divisions' && action == 'assign-someone-else',
     messageField: action != 'assign-to-system' && action != 'assign-to-current-user'
   }))
@@ -59,8 +61,9 @@ const mapStateToProps = (state, ownProps) => {
     assignment,
     actions,
     users,
+    teams,
     topics,
-    assignableChanged
+    assignableChanged,
   }
 }
 
@@ -79,7 +82,8 @@ function visibleFor(action, entities, model, id, systemUser) {
       return isTeamOfCurrentUserAssignedToModel(entities, model, id) &&
         !isCurrentUserAssignedToModel(entities, model, id)
     case 'assign-someone-else':
-      return isCurrentUserAssignedToModel(entities, model, id)
+      return isCurrentUserAssignedToModel(entities, model, id) ||
+        isTeamOfCurrentUserAssignedToModel(entities, model, id)
     case 'retrieve-assignment':
       return !isTeamOfCurrentUserAssignedToModel(entities, model, id) &&
         !isCurrentUserAssignedToModel(entities, model, id)
