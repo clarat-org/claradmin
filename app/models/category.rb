@@ -3,6 +3,7 @@
 require ClaratBase::Engine.root.join('app', 'models', 'category')
 
 class Category < ApplicationRecord
+  after_create :translate_if_name_en_changed
   after_save :translate_if_name_en_changed
 
   # Search
