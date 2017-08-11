@@ -33,11 +33,6 @@ class CheckSingleWebsiteWorkerTest < ActiveSupport::TestCase # to have fixtures
      'website' do
     website = FactoryGirl.create :website, :own, unreachable_count: 1
     offer = FactoryGirl.create :offer, :approved
-    offer.section =
-      Section.find_by(identifier: 'refugees') ||
-      FactoryGirl.create(
-        :section, identifier: 'refugees', name: 'Refugees'
-      )
     website.offers << offer
     Offer.any_instance.expects(:index!)
     AsanaCommunicator.any_instance.expects(:create_website_unreachable_task_offer)
