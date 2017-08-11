@@ -269,7 +269,7 @@ GEM
       thor (~> 0.19.1)
     friendly_id (5.2.1)
       activerecord (>= 4.0.0)
-    gengo (0.2.1)
+    gengo (0.2.0)
       json
       mime-types
       multipart-post
@@ -753,7 +753,7 @@ DEPENDENCIES
   faraday_middleware
   ffaker
   foreman
-  gengo
+  gengo (= 0.2.0)
   gibbon (~> 1.2.0)
   haml
   hawk-auth

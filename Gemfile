@@ -80,7 +80,7 @@ gem 'sidekiq-cron', '~> 0.4.0'
 gem 'rufus-scheduler', '3.2.2'
 
 # 3rd Party APIs
-gem 'gengo'
+gem 'gengo', '0.2.0'
 
 # converting between unicode and ascii urls
 gem 'simpleidn'
