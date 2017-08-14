@@ -84,6 +84,18 @@ export default {
       ]
     },
 
+    openings: {
+      fields: [
+        'name', 'day', 'open', 'close', 'sort_value'
+      ],
+      general_actions: [
+        'index', 'export', 'new'
+      ],
+      member_actions: [
+        'show'
+      ]
+    },
+
     'federal-states': {
       fields: [
         'id', 'name'

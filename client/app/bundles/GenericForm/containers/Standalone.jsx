@@ -34,6 +34,9 @@ function headingFor(model, id) {
   case 'cities':
     heading = 'Stadt'
     break
+  case 'openings':
+    heading = 'Offnungszeiten'
+    break
   case 'federal-states':
     heading = 'Bundesland'
     break

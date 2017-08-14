@@ -8,6 +8,7 @@ import CityFormObject from '../forms/CityFormObject'
 import FederalStateFormObject from '../forms/FederalStateFormObject'
 import ContactPersonFormObject from '../forms/ContactPersonFormObject'
 import EmailFormObject from '../forms/EmailFormObject'
+import OpeningFormObject from '../forms/OpeningFormObject'
 
 export default function formObjectSelect(model, editing) {
   switch(model) {
@@ -29,6 +30,8 @@ export default function formObjectSelect(model, editing) {
     return ContactPersonFormObject
   case 'emails':
     return EmailFormObject
+  case 'openings':
+    return OpeningFormObject
   default:
     throw new Error(
       `Please provide a configuring FormObject for ${model} if you want to
