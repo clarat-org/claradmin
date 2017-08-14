@@ -3,8 +3,8 @@
 require ClaratBase::Engine.root.join('app', 'models', 'category')
 
 class Category < ApplicationRecord
-  after_create :translate_if_name_en_changed
   after_save :translate_if_name_en_changed
+  after_create :translate_if_name_en_changed
 
   # Search
   include PgSearch
@@ -28,7 +28,7 @@ class Category < ApplicationRecord
   private
 
   def translate_if_name_en_changed
-    return if !name_en_changed? && !@new_record_before_save
+    return if !saved_change_to_name_en? && !@new_record_before_save
     GengoCommunicator.new.create_translation_jobs(self, 'name')
   end
 end
