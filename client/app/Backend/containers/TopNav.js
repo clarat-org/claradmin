@@ -90,6 +90,11 @@ const routes = [
     pathname: '/emails',
     anchor: 'Emails',
     access: all,
+  }, {
+    id: 15,
+    pathname: '/openings',
+    anchor: 'Öffnungszeiten',
+    access: all,
   }/*,
   {
     id: 10,
