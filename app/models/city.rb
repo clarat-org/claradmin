@@ -8,7 +8,7 @@ class City < ApplicationRecord
   ORGANIZATION_THRESHOLD = Integer(ENV['THRESHOLDS_ORGA_COUNT'] || 1)
 
   # Associations
-  has_many :sections, -> { uniq }, through: :offers, inverse_of: :cities
+  has_many :sections, -> { distinct }, through: :offers, inverse_of: :cities
 
   include ReformedValidationHack
 
