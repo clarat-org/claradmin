@@ -92,14 +92,16 @@ class OfferContractTest < ActiveSupport::TestCase
 
       it 'should fail when chosen contact people not SPoC nor belong to orga' do
         cp = FactoryGirl.create :contact_person, spoc: false,
-                                                 offers: [subject.model]
+                                                 organization_id:
+                                                 organizations(:second).id
         subject.contact_people << cp
         subject.wont_be :valid?
       end
 
       it 'should ensure chosen contact people are SPoC' do
         cp = FactoryGirl.create :contact_person, spoc: true,
-                                                 offers: [subject.model]
+                                                 organization_id:
+                                                 organizations(:second).id
         subject.contact_people << cp
         subject.must_be :valid?
       end

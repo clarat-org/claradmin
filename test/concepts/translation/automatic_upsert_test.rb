@@ -102,7 +102,7 @@ class AutomaticUpsertTest < ActiveSupport::TestCase
     operation.({}, 'locale' => :en, 'fields' => :all,
                    'object_to_translate' => refugees_section_offer)
     assignments.count.must_equal 2
-    assignments.first.aasm_state.must_equal 'closed'
+    assignments.map(&:aasm_state).first.must_equal 'closed'
     assignments.last.creator_id.must_equal refugees_section_offer.created_by
     assignments.last.receiver_team_id.must_equal 1 # test default for translator teams
     assignments.last.aasm_state.must_equal 'open'

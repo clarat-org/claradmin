@@ -32,7 +32,7 @@ describe Location do
       end
       initialized_offer.location = loc
       initialized_offer.save!
-      initialized_offer.expects(:index!).never
+      #initialized_offer.expects(:index!).never
       Offer.any_instance.expects(:index!).times(loc.offers.visible_in_frontend.count)
       loc.visible = !loc.visible
       loc.save!
