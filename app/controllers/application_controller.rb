@@ -14,8 +14,8 @@ class ApplicationController < ActionController::Base
   # HTTP password protection
   claradmin = Rails.application
   http_basic_authenticate_with(
-    name: claradmin.secrets.protect['user'],
-    password: claradmin.secrets.protect['pwd'],
+    name: claradmin.secrets.protect[:user],
+    password: claradmin.secrets.protect[:pwd],
     if: -> { Rails.env.staging? || Rails.env.production? }
   )
 
