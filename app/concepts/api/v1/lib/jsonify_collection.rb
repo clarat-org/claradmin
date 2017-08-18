@@ -29,9 +29,14 @@ module API::V1
       end
 
       def self.nonstandard_params(params)
-        params.select do |key, _value|
+        new_params = params.select do |key, _value|
           !%w(controller action format).include? key
         end
+        sanitize_params(new_params)
+      end
+
+      def self.sanitize_params(params)
+        params.class.eql?(Hash) ? params : params.to_unsafe_h
       end
 
       def self.previous_href(collection, params)
@@ -44,7 +49,7 @@ module API::V1
       def self.next_href(collection, params)
         return nil unless collection.next_page
         '/' + params['controller'] + '?' +
-          nonstandard_params(params).to_unsafe_h.merge(page: collection.next_page).to_query
+          nonstandard_params(params).merge(page: collection.next_page).to_query
       end
     end
   end
