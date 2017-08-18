@@ -44,7 +44,7 @@ module API::V1
       def self.next_href(collection, params)
         return nil unless collection.next_page
         '/' + params['controller'] + '?' +
-          nonstandard_params(params).merge(page: collection.next_page).to_query
+          nonstandard_params(params).to_unsafe_h.merge(page: collection.next_page).to_query
       end
     end
   end
