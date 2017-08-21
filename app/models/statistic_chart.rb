@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Monkeypatch clarat_base StatisticChart
 require ClaratBase::Engine.root.join('app', 'models', 'statistic_chart')
 require_relative 'offer'
@@ -12,12 +13,12 @@ class StatisticChart < ApplicationRecord
                   ],
                   using: { tsearch: { prefix: true } }
 
-  TARGET_MODELS = %w(Offer Organization SplitBase).freeze
+  TARGET_MODELS = %w[Offer Organization SplitBase].freeze
 
   TARGET_FIELD_NAMES = {
-    'Offer' => %w(aasm_state logic_version id?),
-    'Organization' => %w(aasm_state id?),
-    'SplitBase' => %w(id?)
+    'Offer' => %w[aasm_state logic_version id?],
+    'Organization' => %w[aasm_state id?],
+    'SplitBase' => %w[id?]
   }.freeze
 
   TARGET_FIELD_VALUES = {

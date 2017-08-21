@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module TimeAllocation::Contracts
   class Update < Reform::Form
     property :id, writeable: false

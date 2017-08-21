@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # rubocop:disable Metrics/ClassLength
 class OfferMailer < ActionMailer::Base
   add_template_helper(EmailHelper)
@@ -126,11 +127,11 @@ class OfferMailer < ActionMailer::Base
   end
 
   def get_section_names_sorted_by_offer_count offers_hash
-    offers_hash['family'].count < offers_hash['refugees'].count ? %w(family refugees) : %w(refugees family)
+    offers_hash['family'].count < offers_hash['refugees'].count ? %w[family refugees] : %w[refugees family]
   end
 
   def get_offers_per_section offers
-    return [] unless offers && !offers.empty?
+    return [] if offers.blank?
     offers_per_section = {}
     Section.pluck(:identifier).each do |filter|
       section_offers = offers.map { |o| o if o.in_section? filter }.compact

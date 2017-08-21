@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class City::Create < Trailblazer::Operation
   step Model(::City, :new)
   step Policy::Pundit(CityPolicy, :create?)

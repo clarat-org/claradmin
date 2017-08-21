@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Non-Active-Record object to provide helper methods for exports
 # TODO: This isn't actually a model. Put this somewhere else.
 class Export

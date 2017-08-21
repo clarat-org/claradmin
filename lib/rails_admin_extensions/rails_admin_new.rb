@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_admin/config/actions'
 require 'rails_admin/config/actions/base'
 

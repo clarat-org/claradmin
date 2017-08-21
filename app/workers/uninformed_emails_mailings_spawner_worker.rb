@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Worker to check weekly, whether there are emails that
 # - have not yet been informed
 # - have approved offers

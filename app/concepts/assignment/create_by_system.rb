@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # rubocop:disable Metrics/ClassLength
 class Assignment::CreateBySystem < Trailblazer::Operation
   # Expected options: assignable, last_acting_user

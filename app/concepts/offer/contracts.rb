@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Offer::Contracts
   # rubocop:disable Metrics/ClassLength
   class Create < Reform::Form
@@ -138,7 +139,7 @@ module Offer::Contracts
       encounter == 'personal'
     end
 
-    VISIBLE_FRONTEND_STATES = %w(approved expired).freeze
+    VISIBLE_FRONTEND_STATES = %w[approved expired].freeze
 
     def visible_in_frontend?
       VISIBLE_FRONTEND_STATES.include?(aasm_state)

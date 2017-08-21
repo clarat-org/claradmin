@@ -87,14 +87,6 @@ ActiveRecord::Schema.define(version: 20170802094621) do
     t.index ["filter_id"], name: "index_filters_categories_on_filter_id"
   end
 
-  create_table "categories_filters", id: false, force: :cascade do |t|
-    t.integer "filter_id",   null: false
-    t.integer "category_id", null: false
-  end
-
-  add_index "categories_filters", ["category_id"], name: "index_filters_categories_on_category_id", using: :btree
-  add_index "categories_filters", ["filter_id"], name: "index_filters_categories_on_filter_id", using: :btree
-
   create_table "categories_offers", id: false, force: :cascade do |t|
     t.integer "offer_id", null: false
     t.integer "category_id", null: false

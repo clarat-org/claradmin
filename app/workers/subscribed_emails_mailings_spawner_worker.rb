@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Worker to check bi-weekly, whether there are emails that
 # - have subscribed to updates about new approved offers
 # - have approved offers that do not yet have an OfferMailing

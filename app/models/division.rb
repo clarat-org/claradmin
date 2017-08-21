@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Monkeypatch clarat_base Division
 require ClaratBase::Engine.root.join('app', 'models', 'division')
 
@@ -14,7 +15,7 @@ class Division < ApplicationRecord
     display_name = "#{organization&.name} (#{section.identifier})"
     display_name += ", City: #{city.name}" if city
     display_name += ", Area: #{area.name}" if area
-    display_name += ", Addition: #{addition}" unless addition.blank?
+    display_name += ", Addition: #{addition}" if addition.present?
     display_name
   end
 end

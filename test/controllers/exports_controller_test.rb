@@ -1,10 +1,11 @@
 # frozen_string_literal: true
+
 require_relative '../test_helper'
 
 describe ExportsController do
   describe "POST 'create'" do
     let(:working_export_hash) do
-      { model_fields: %w(id name), sections: ['id'] }
+      { model_fields: %w[id name], sections: ['id'] }
     end
     let(:user) { users(:researcher) }
 
@@ -19,8 +20,7 @@ describe ExportsController do
     it 'should render an error when an invalid request is issued' do
       sign_in user
       post :create, params: { object_name: 'cities', export: {
-        model_fields: [:doesntexist] }
-      }
+        model_fields: [:doesntexist] } }
       assert_response 403
       response.body.must_equal 'error'
     end
@@ -41,7 +41,7 @@ describe ExportsController do
 
       it 'should include a dash for nil-association' do
         # parent on categories can be nil
-        export_hash = { model_fields: %w(id name_de), parent: ['id'] }
+        export_hash = { model_fields: %w[id name_de], parent: ['id'] }
         result = Export::Create.(
           { object_name: 'categories', export: export_hash },
           'current_user' => users(:researcher)

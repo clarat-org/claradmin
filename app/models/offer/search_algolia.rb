@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require ClaratBase::Engine.root.join('app', 'models', 'offer')
 
 module Offer::SearchAlgolia
@@ -9,10 +10,10 @@ module Offer::SearchAlgolia
 
     algoliasearch do
       I18n.available_locales.each do |locale|
-        index = %w(
+        index = %w[
           name description code_word next_steps category_keywords definitions
           organization_names category_names stamps_string tags category_explanations
-        )
+        ]
         attributes = [:organization_count, :location_address, :location_name,
                       :slug, :encounter, :organization_names,
                       :location_visible, :code_word]
@@ -23,7 +24,7 @@ module Offer::SearchAlgolia
                   disable_indexing: Rails.env.test?,
                   if: :personal_indexable? do
           attributesToIndex index
-          ranking %w(typo geo words proximity attribute exact custom)
+          ranking %w[typo geo words proximity attribute exact custom]
           attribute(:name) { send("name_#{locale}") }
           attribute(:description) { send("description_#{locale}") }
           attribute(:next_steps)  { _next_steps locale }
@@ -66,7 +67,7 @@ module Offer::SearchAlgolia
           optionalWords STOPWORDS
 
           # no geo necessary
-          ranking %w(typo words proximity attribute exact custom)
+          ranking %w[typo words proximity attribute exact custom]
         end
       end
     end

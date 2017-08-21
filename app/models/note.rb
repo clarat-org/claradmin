@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Monkeypatch clarat_base NextStep
 require ClaratBase::Engine.root.join('app', 'models', 'note')
 # Comment for internal use by admins.

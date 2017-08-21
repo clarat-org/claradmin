@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+
 require_relative '../test_helper'
-# rubocop:disable Metrics/ClassLength
+
 class CheckSingleWebsiteWorkerTest < ActiveSupport::TestCase # to have fixtures
   let(:single_worker) { CheckSingleWebsiteWorker.new }
 
@@ -109,4 +110,3 @@ class CheckSingleWebsiteWorkerTest < ActiveSupport::TestCase # to have fixtures
     end
   end
 end
-# rubocop:enable Metrics/ClassLength

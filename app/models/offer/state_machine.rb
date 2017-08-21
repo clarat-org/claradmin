@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This module represents the entire offer state machine and should stay
 # together
 # rubocop:disable Metrics/ModuleLength
@@ -117,7 +118,7 @@ module Offer::StateMachine
     private
 
     def at_least_one_organization_not_visible?
-      organizations.where.not(aasm_state: %w(approved all_done)).any?
+      organizations.where.not(aasm_state: %w[approved all_done]).any?
     end
 
     def expiration_date_in_future?

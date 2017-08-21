@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # rubocop:disable Metrics/ModuleLength
 module GenericSortFilter
   def self.transform(base_query, params)
@@ -42,7 +43,7 @@ module GenericSortFilter
   end
 
   def self.transform_by_searching(query, param)
-    if !param || param.empty? || query.search_pg(param).nil?
+    if param.blank? || query.search_pg(param).nil?
       query
     else
       query.search_pg(param).extend(EnableEagerLoading)

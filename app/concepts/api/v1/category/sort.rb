@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module API::V1
   module Category
     class Sort < Trailblazer::Operation
@@ -32,6 +33,7 @@ module API::V1
         desired_sort_order = sort_order.to_i + 1
         was_updated = false
 
+        # rubocop:disable SkipsModelValidations
         if found_category.sort_order != desired_sort_order
           found_category.update_column(:sort_order, desired_sort_order)
           was_updated = true
@@ -41,6 +43,7 @@ module API::V1
           found_category.update_column(:parent_id, parent_id)
           was_updated = true
         end
+        # rubocop:enable SkipsModelValidations
 
         if was_updated
           opts['update_count'] += 1

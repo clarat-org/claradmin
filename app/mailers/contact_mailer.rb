@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class ContactMailer < ActionMailer::Base
   def admin_notification contact_id
     @contact = Contact.find(contact_id)

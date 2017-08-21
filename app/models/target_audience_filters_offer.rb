@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Monkeypatch clarat_base FiltersOffer
 # NOTE only required for old backend - do this differently in new backend!
 require ClaratBase::Engine.root.join('app', 'models', 'target_audience_filters_offer')

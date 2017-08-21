@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Monkeypatch clarat_base CotactPerson
 require ClaratBase::Engine.root.join('app', 'models', 'contact_person')
 
@@ -33,7 +34,7 @@ class ContactPerson < ApplicationRecord
   end
 
   def position_display_name
-    if position && !position.empty?
+    if position.present?
       I18n.t("enumerize.contact_person.position.#{position}") + ': '
     else
       ''

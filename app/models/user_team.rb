@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Monkeypatch clarat_base UserTeam
 require ClaratBase::Engine.root.join('app', 'models', 'user_team')
 
