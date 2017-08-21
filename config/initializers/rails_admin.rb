@@ -664,14 +664,6 @@ RailsAdmin.config do |config|
     nestable_tree(max_depth: 5)
   end
 
-  config.model 'Definition' do
-    weight(-4)
-    field :key
-    field :explanation
-
-    object_label_method :key
-  end
-
   config.model 'Email' do
     weight(-3)
     field :address

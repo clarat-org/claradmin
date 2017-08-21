@@ -96,6 +96,18 @@ export default {
       ]
     },
 
+    definitions: {
+      fields: [
+        'key', 'explanation'
+      ],
+      general_actions: [
+        'index', 'export', 'new'
+      ],
+      member_actions: [
+        'show'
+      ]
+    },
+
     'federal-states': {
       fields: [
         'id', 'name'

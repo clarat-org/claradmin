@@ -11,13 +11,13 @@ class OpeningCreateTest < ActiveSupport::TestCase
   end
 
   describe '::Opening::Create' do
-    it 'must create a Opening given valid data' do
+    it 'must create a Opening given valid data open & close' do
       result = operation_must_work ::Opening::Create, basic_params
       result['model'].name.must_equal 'Mon 12:12-12:45'
       result['model'].sort_value.must_equal 403_320_0
     end
 
-    it 'must create a Opening given valid data' do
+    it 'must create a Opening given valid data open = close = nil' do
       # needed because this test is randomly failing
       Opening.delete_all
       params = { day: 'mon', open: nil, close: nil }
