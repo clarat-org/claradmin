@@ -54,7 +54,7 @@ export default {
         'index', 'export'
       ],
       member_actions: [
-        'show'
+        'show', 'old-backend-edit'
       ]
     },
 
@@ -137,7 +137,11 @@ export default {
 
     organizations: {
       fields: [
-        'id', 'offers-count', 'name', 'aasm-state', 'pending-reason',
+        'id', {
+          'current-assignment': {
+            receiver: ['name'], 'receiver-team': ['name']
+          }
+        }, 'offers-count', 'name', 'aasm-state', 'pending-reason',
         'locations-count'
       ],
       general_actions: [
@@ -150,8 +154,12 @@ export default {
 
     divisions: {
       fields: [
-        'id', 'name', { organization: ['name'] }, { section: ['identifier'] },
-        { city: ['name'] }, { area: ['name'] }, 'size', 'done',
+        'id', {
+          'current-assignment': {
+            receiver: ['name'], 'receiver-team': ['name']
+          }
+        }, { organization: ['name'] }, { section: ['identifier'] },
+        { city: ['name'] }, { area: ['name'] }, 'size', 'done', 'addition'
       ],
       general_actions: [
         'index', 'export', 'new',
@@ -184,13 +192,13 @@ export default {
       inline_fields: [
         'assignable-type', 'assignable-id', 'topic',
         {assignable: ['label']}, {creator: ['name']},  {receiver: ['name']},
-        'message', 'updated-at'
+        {'receiver-team': ['name']}, 'message', 'updated-at'
       ],
       general_actions: [
         'index'
       ],
       member_actions: [
-        'show', 'edit_assignable'
+        'show-assignable', 'edit-assignable'
       ]
     },
 
@@ -239,6 +247,18 @@ export default {
       ],
       member_actions: [
         'show', 'open_url'
+      ]
+    },
+
+    'split-bases': {
+      fields: [
+        'id', 'title', 'clarat-addition', 'comments'
+      ],
+      general_actions: [
+        'index'
+      ],
+      member_actions: [
+        'show', 'old-backend-edit'
       ]
     },
   },

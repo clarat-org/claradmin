@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class Organization::Update < Trailblazer::Operation
+  include SyncWithDivisions
+
   step Model(::Organization, :find_by)
   step Policy::Pundit(OrganizationPolicy, :update?)
 
@@ -12,13 +14,16 @@ class Organization::Update < Trailblazer::Operation
   step Wrap(::Lib::Transaction) {
     step ::Lib::Macros::Nested::Create :website, Website::Create
     step ::Lib::Macros::Nested::Create :divisions, Division::Create
+    # step ::Lib::Macros::Debug::Breakpoint()
     step ::Lib::Macros::Nested::Create :contact_people, ContactPerson::Create
     step ::Lib::Macros::Nested::Create :locations, Location::Create
     step ::Lib::Macros::Nested::Find :umbrella_filters, ::UmbrellaFilter
   }
   step :change_state_side_effect # prevents persist on faulty state change
-  # step ::Lib::Macros::Debug::Breakpoint()
+  step :assign_to_section_team_via_classification_on_complete
+  step :assign_to_system_on_approve
   step Contract::Persist()
+  step :syncronize_done_state
   step :generate_translations!
 
   def change_state_side_effect(options, model:, params:, **)
@@ -36,8 +41,34 @@ class Organization::Update < Trailblazer::Operation
     result.success?
   end
 
-  def generate_translations!(options, changed_state: false, model:, params:, **)
-    changes = options['contract.default'].changed
+  def assign_to_system_on_approve(
+    options, changed_state: false, model:, params:, **
+  )
+    meta = params['meta'] && params['meta']['commit']
+    if meta.to_s == 'approve' && changed_state
+      ::Assignment::CreateBySystem.(
+        {}, assignable: model, last_acting_user: options['current_user']
+      ).success?
+    end
+    true
+  end
+
+  def assign_to_section_team_via_classification_on_complete(
+    options, changed_state: false, model:, params:, **
+  )
+    meta = params['meta'] && params['meta']['commit']
+    if meta.to_s == 'complete' && changed_state &&
+       ::User::Twin.new(options['current_user']).presumed_section
+      result = ::Assignment::CreateBySystem.(
+        {}, assignable: model, last_acting_user: options['current_user']
+      ).success?
+      result
+    end
+    true
+  end
+
+  def generate_translations!(opts, changed_state: false, model:, params:, **)
+    changes = opts['contract.default'].changed
     fields = model.translated_fields.select { |f| changes[f.to_s] }
     meta = params['meta'] && params['meta']['commit']
     if (meta.to_s == 'approve' && changed_state) || fields.any?

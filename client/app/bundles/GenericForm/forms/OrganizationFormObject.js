@@ -34,15 +34,18 @@ class OrgaCreateFormObject extends FormObject {
       },
       divisions: {
         object: DivisionFormObject,
-        relationship: 'oneToMany'
+        relationship: 'oneToMany',
+        inverseRelationship: 'belongsTo'
       },
       locations: {
         object: LocationFormObject,
-        relationship: 'oneToMany'
+        relationship: 'oneToMany',
+        inverseRelationship: 'belongsTo'
       },
       'contact-people': {
         object: ContactPersonFormObject,
-        relationship: 'oneToMany'
+        relationship: 'oneToMany',
+        inverseRelationship: 'belongsTo'
       }
     }
   }
@@ -76,7 +79,7 @@ class OrgaUpdateFormObject extends OrgaCreateFormObject {
   static get properties() {
     return concat(
       OrgaCreateFormObject.properties,
-      ['description', 'legal-form', 'charitable', 'umbrella-filters']
+      [ 'description', 'legal-form', 'charitable', 'umbrella-filters' ]
     )
   }
 
@@ -97,7 +100,7 @@ class OrgaUpdateFormObject extends OrgaCreateFormObject {
           type: 'filtering-select',
           resource: 'filters',
           filters: { 'type': 'UmbrellaFilter' }
-        }
+        },
       }
     )
   }
@@ -115,6 +118,10 @@ class OrgaUpdateFormObject extends OrgaCreateFormObject {
         }
       }
     )
+  }
+
+  static get readOnlyProperties() {
+    return ['aasm-state']
   }
 }
 

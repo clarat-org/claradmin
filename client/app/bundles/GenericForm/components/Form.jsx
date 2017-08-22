@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react'
-import { Form, InputSet, Input, Button } from 'rform'
+import { Form, InputSet, Input, Button, Errors } from 'rform'
 import { MenuItem } from 'react-bootstrap'
 import FormInputs from '../containers/FormInputs'
+import ReadOnlyProperties from '../containers/ReadOnlyProperties'
 import DisableableSplitButton from '../wrappers/DisableableSplitButton'
 import FilteringSelect from '../../FilteringSelect/wrappers/FilteringSelect'
 import CreatingSelect from '../../FilteringSelect/containers/CreatingSelect'
@@ -18,21 +19,26 @@ export default class GenericFormForm extends React.Component {
       afterResponse, model, nestingModel, instance, loadData,
       isAssignable, buttonData, afterRequireValid, afterSaveActions,
       beforeSubmit, splitButtonMenuItemOnclick, onSubmitButtonClick,
+      afterError
     } = this.props
 
     return(
       this.renderFormWithOptionalAssignableContainer(
         (<div className='form FormWrapper'>
+          <Errors model={model} formId={formId} attribute='base' />
           <Form ajax requireValid preventEnterSubmit
             method={method} className='form'
             formObjectClass={formObjectClass} model={model}
             action={action} id={formId} seedData={seedData}
-            afterResponse={afterResponse}
+            afterResponse={afterResponse} afterError={afterError}
             afterRequireValid={afterRequireValid} beforeSubmit={beforeSubmit}
           />
           <FormInputs
             model={model} formObjectClass={formObjectClass} formId={formId}
             nestingModel={nestingModel} submodelPath={submodelPath}
+          />
+          <ReadOnlyProperties
+            instance={instance} formObjectClass={formObjectClass}
           />
           {this.renderButtons(
             formId, nestingModel, buttonData, afterSaveActions,

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# rubocop:disable Metrics/ClassLength
 class Assignment::CreateBySystem < Trailblazer::Operation
   # Expected options: assignable, last_acting_user
   step :collect_initial_params
@@ -10,6 +11,9 @@ class Assignment::CreateBySystem < Trailblazer::Operation
   def execute_nested_create!(options, params:, last_acting_user:, **)
     result = Assignment::Create.(params, 'current_user' => last_acting_user)
     options['model'] = result['model']
+    if result['contract.default']&.errors.any?
+      options['errors'] = result['contract.default'].errors
+    end
     result.success?
   end
 
@@ -20,7 +24,7 @@ class Assignment::CreateBySystem < Trailblazer::Operation
       creator_id: creator(assignable, last_acting_user).id,
       creator_team_id: nil,
       receiver_id: receiver_id(assignable, last_acting_user),
-      receiver_team_id: receiver_team_id(assignable),
+      receiver_team_id: receiver_team_id(assignable, last_acting_user),
       message: message_for_new_assignment(assignable, last_acting_user),
       created_by_system: true,
       topic: topic(assignable)
@@ -28,7 +32,7 @@ class Assignment::CreateBySystem < Trailblazer::Operation
   end
 
   # --- Utils describing default logic --- #
-
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def creator(assignable, last_acting_user)
     case assignable.class.to_s
     when 'OfferTranslation', 'OrganizationTranslation'
@@ -36,12 +40,13 @@ class Assignment::CreateBySystem < Trailblazer::Operation
       assignable_twin.should_be_created_by_system? ? ::User.system_user : last_acting_user
     when 'ContactPersonTranslation'
       ::User.system_user
+    when 'Organization'
+      assignable.initialized? && assignable.assignments.any? ? ::User.system_user : last_acting_user
     else
       last_acting_user # NOTE: this is not used yet - rethink when other models become assignable!
     end
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
   def receiver_id(assignable, last_acting_user)
     case assignable.class.to_s
     when 'OfferTranslation', 'OrganizationTranslation'
@@ -54,15 +59,19 @@ class Assignment::CreateBySystem < Trailblazer::Operation
     when 'ContactPersonTranslation'
       ::User.system_user.id
     when 'Division'
-      assignable.done == false ? nil : ::User.system_user.id
+      assignable.done ? ::User.system_user.id : nil
     when 'Organization'
-      ::User.system_user.id
+      if assignable.initialized? && assignable.assignments.any?
+        last_acting_user.id
+      else
+        assignable.aasm_state != 'completed' ? ::User.system_user.id : nil
+      end
     else
       last_acting_user.id # NOTE: this is not used yet - rethink when other models become assignable!
     end
   end
 
-  def receiver_team_id(assignable)
+  def receiver_team_id(assignable, last_acting_user)
     case assignable.class.to_s
     when 'OfferTranslation', 'OrganizationTranslation'
       translation_twin = ::Translation::Twin.new(assignable)
@@ -73,18 +82,28 @@ class Assignment::CreateBySystem < Trailblazer::Operation
       if assignable.done == false
         AssignmentDefaults.screening_team
       end
+    when 'Organization'
+      if assignable.completed?
+        AssignmentDefaults.section_teams[
+          ::User::Twin.new(last_acting_user).presumed_section
+        ]
+      end
     end
   end
 
   def topic(assignable)
-    twin = ::Assignable::Twin.new(assignable)
+    assignment = assignable.current_assignment
     case assignable.class.to_s
     when 'OfferTranslation', 'OrganizationTranslation'
       'translation'
-    when 'Division'
-      assignable.done == false ? 'new' : twin.current_assignment.topic
+    when 'Organization'
+      if assignable.aasm_state == 'completed'
+        'approval'
+      else
+        assignment ? assignment.topic : 'new'
+      end
     else
-      twin.current_assignment ? twin.current_assignment.topic : 'new'
+      assignment ? assignment.topic : 'new'
     end
   end
 
@@ -105,10 +124,17 @@ class Assignment::CreateBySystem < Trailblazer::Operation
         'Managed by system'
       end
     when 'Organization'
-      'Managed by system'
+      if assignable.initialized? && assignable.assignments.any?
+        'Bitte den Orga Datensatz vervollständigen'
+      elsif assignable.completed?
+        'Bitte den Orga Datensatz approven'
+      else
+        'Managed by system'
+      end
     else
       'Assigned by system'
     end
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 end
+# rubocop:enable Metrics/ClassLength
