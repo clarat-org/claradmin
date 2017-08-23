@@ -199,13 +199,16 @@ class GenericSortFilterTest < ActiveSupport::TestCase
       subject.send(:transform_by_filtering, query, params)
     end
 
-    it 'filters for a range when range operator is given' do
-      params = { filters: { 'foo' => %w(5 1) }, operators: { 'foo' => '...' } }
-      query.expects(:where).with("foo BETWEEN '1' AND '5'")
+    it 'filters and sorts a range when range consists of dates' do
+      params = {
+        filters: { 'foo' => { 'first' => '2017-08-15', 'second' => '2017-08-09' } },
+        operators: { 'foo' => '...' }
+      }
+      query.expects(:where).with("foo BETWEEN '2017-08-09' AND '2017-08-15'")
       subject.send(:transform_by_filtering, query, params)
     end
 
-    it 'filters for a range when range operator is given with hash values' do
+    it 'filters and sorts a range when range consists of numbers' do
       params = {
         filters: { 'foo' => { 'first' => '5', 'second' => '1' } },
         operators: { 'foo' => '...' }

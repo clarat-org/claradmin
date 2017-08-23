@@ -96,11 +96,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onFilterValueChange(event) {
     let params = clone(ownProps.params)
     if(params[ownProps.filter[0]]['second'] != undefined) {
-      if(params[ownProps.filter[0]]['second'].valueOf() < event.target.value) {
-        alert('Wert muss unter dem Zweitwert liegen');
-      } else {
-        params[ownProps.filter[0]]['first'] = event.target.value
-      }
+      params[ownProps.filter[0]]['first'] = event.target.value
     } else {
       params[ownProps.filter[0]] = { 'first': event.target.value }
     }
@@ -113,11 +109,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     let params = clone(ownProps.params)
 
     if(params[ownProps.filter[0]]['first'] != undefined) {
-      if (params[ownProps.filter[0]]['first'].valueOf() > event.target.value) {
-        alert('Wert muss über dem Anfangswert liegen');
-      } else {
-        params[ownProps.filter[0]]['second'] = event.target.value
-      }
+      params[ownProps.filter[0]]['second'] = event.target.value
     } else {
       alert('Bitte gib einen Anfangswert ein');
     }
