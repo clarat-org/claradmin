@@ -807,27 +807,6 @@ RailsAdmin.config do |config|
     end
   end
 
-  config.model 'Tag' do
-    weight 1
-    field :name_de
-    field :keywords_de
-    field :explanations_de
-    field :name_en
-    field :keywords_en
-    field :explanations_en
-    field :name_ar
-    field :keywords_ar
-    field :explanations_ar
-    field :name_fa
-    field :keywords_fa
-    field :explanations_fa
-    field :name_tr
-    field :name_pl
-    field :name_ru
-
-    object_label_method :name_de
-  end
-
   config.model 'Area' do
     weight 1
     field :id

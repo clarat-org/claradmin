@@ -10,6 +10,7 @@ import ContactPersonFormObject from '../forms/ContactPersonFormObject'
 import EmailFormObject from '../forms/EmailFormObject'
 import OpeningFormObject from '../forms/OpeningFormObject'
 import DefinitionFormObject from '../forms/DefinitionFormObject'
+import TagFormObject from '../forms/TagFormObject'
 
 export default function formObjectSelect(model, editing) {
   switch(model) {
@@ -33,6 +34,8 @@ export default function formObjectSelect(model, editing) {
     return EmailFormObject
   case 'openings':
     return OpeningFormObject
+  case 'tags':
+    return TagFormObject
   case 'definitions':
     return DefinitionFormObject
   default:

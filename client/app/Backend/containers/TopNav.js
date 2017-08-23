@@ -100,6 +100,11 @@ const routes = [
     pathname: '/definitions',
     anchor: 'Definitions',
     access: all,
+  }, {
+    id: 17,
+    pathname: '/tags',
+    anchor: 'Tags',
+    access: all,
   }/*,
   {
     id: 10,

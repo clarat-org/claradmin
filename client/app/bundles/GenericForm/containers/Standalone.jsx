@@ -40,6 +40,9 @@ function headingFor(model, id) {
   case 'definitions':
     heading = 'Definitions'
     break
+  case 'tags':
+    heading = 'Tags'
+    break
   case 'federal-states':
     heading = 'Bundesland'
     break
