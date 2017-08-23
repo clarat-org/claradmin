@@ -202,7 +202,7 @@ export default {
         'index', 'export', 'new',
       ],
       member_actions: [
-        'show', 'edit'
+        'show', 'edit', 'delete'
       ]
     },
 
@@ -284,6 +284,18 @@ export default {
       ],
       member_actions: [
         'show', 'open_url'
+      ]
+    },
+
+    'split-bases': {
+      fields: [
+        'id', 'title', 'clarat-addition', 'comments'
+      ],
+      general_actions: [
+        'index'
+      ],
+      member_actions: [
+        'show', 'old-backend-edit'
       ]
     },
   },

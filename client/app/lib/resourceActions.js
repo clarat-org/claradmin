@@ -1,4 +1,5 @@
 import kebabCase from 'lodash/kebabCase'
+import snakeCase from 'lodash/snakeCase'
 import settings from './settings'
 import { pluralize, singularize } from './inflection'
 
@@ -18,11 +19,13 @@ export function actionsFromSettings(model, id, entity) {
 function routeForAction(action, model, id, entity) {
   switch(action) {
     case 'old-backend-edit':
-      return `/admin/${singularize(model)}/${id}/edit`
+      return `/admin/${snakeCase(singularize(model))}/${id}/edit`
     case 'edit':
       return `/${model}/${id}/edit`
     case 'show':
       return `/${model}/${id}`
+    case 'delete':
+      return `/${model}/${id}/delete`
     case 'show-assignable':
     case 'edit-assignable':
       let assignableModel = pluralize(kebabCase(entity['assignable-type']))
@@ -55,6 +58,8 @@ function iconFor(action) {
       return 'fa fa-arrow-circle-o-right'
     case 'show':
       return 'fa fa-eye'
+    case 'delete':
+      return 'fa fa-trash'
     case 'edit-assignable':
       return 'fa fa-pencil-square-o'
     case 'open_url':
