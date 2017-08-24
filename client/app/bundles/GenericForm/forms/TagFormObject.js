@@ -1,6 +1,6 @@
-import { FormObject, JsonApiAdapter } from 'rform'
+import GenericFormObject from '../lib/GenericFormObject'
 
-export default class TagFormObject extends FormObject {
+export default class TagFormObject extends GenericFormObject {
   static get model() {
     return 'tag'
   }
@@ -38,12 +38,11 @@ export default class TagFormObject extends FormObject {
     }
   }
 
-  static get ajaxAdapter() {
-    return JsonApiAdapter
+  static get requiredInputs() {
+    return ['name-de', 'name-en']
   }
 
   validation() {
-    this.required('name-de').filled()
-    this.required('name-en').filled()
+    this.applyRequiredInputs()
   }
 }
