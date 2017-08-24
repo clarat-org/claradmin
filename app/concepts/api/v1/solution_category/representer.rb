@@ -22,7 +22,6 @@ module API::V1
             property :name
           end
         end
-
       end
 
       class Index < Show
