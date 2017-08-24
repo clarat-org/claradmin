@@ -122,6 +122,18 @@ export default {
       ]
     },
 
+    'solution-categories': {
+      fields: [
+        'name', 'parent'
+      ],
+      general_actions: [
+        'index', 'export', 'new'
+      ],
+      member_actions: [
+        'show', 'edit'
+      ]
+    },
+
     users: {
       fields: [
         'id', 'name', 'email', { 'user-teams': ['name'] },
@@ -217,18 +229,6 @@ export default {
     categories: {
       fields: [
         'id', 'name-de', 'sort-order', 'visible', 'parent-id'
-      ],
-      general_actions: [
-        'index'
-      ],
-      member_actions: [
-        'show'
-      ]
-    },
-
-    'solution-categories': {
-      fields: [
-        'id', 'name', 'parent-id'
       ],
       general_actions: [
         'index'

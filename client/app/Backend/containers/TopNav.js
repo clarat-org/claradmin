@@ -90,7 +90,13 @@ const routes = [
     pathname: '/emails',
     anchor: 'Emails',
     access: all,
-  }/*,
+  }, {
+    id: 15,
+    pathname: '/solution-categories',
+    anchor: 'Lösungskategorien',
+    access: all,
+  }
+  /*,
   {
     id: 10,
     pathname: '/statistic-charts',
