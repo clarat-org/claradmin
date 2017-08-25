@@ -20,4 +20,11 @@ class SolutionCategoryCreateTest < ActiveSupport::TestCase
       operation_wont_work ::SolutionCategory::Create, params
     end
   end
+
+  describe '::SolutionCategory::Update' do
+    it 'must update a SolutionCategory given valid data' do
+      params = { id: 1, name: 'name', parent_id: nil }
+      operation_must_work ::SolutionCategory::Update, params
+    end
+  end
 end
