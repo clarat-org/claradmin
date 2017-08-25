@@ -12,8 +12,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-})
+const mapDispatchToProps = (dispatch, ownProps) => ({ })
 
 function getBaseData(ownProps) {
   if (ownProps.location && ownProps.location.pathname) {
