@@ -10,7 +10,7 @@ export default {
     'offer-translations': {
       fields: [
         'id', 'offer-id', 'locale', 'source', 'name', 'offer_stamp',
-        'possibly-outdated', {offer: ['approved-at', 'created-by']}
+        'possibly-outdated', { offer: ['approved-at', 'created-by'] }
       ],
       general_actions: [
         'index', 'export'
@@ -23,7 +23,7 @@ export default {
     'organization-translations': {
       fields: [
         'id', 'organization-id', 'locale', 'source', 'description',
-        'possibly-outdated', {organization: ['approved-at']}
+        'possibly-outdated', { organization: ['approved-at'] }
       ],
       general_actions: [
         'index', 'export'
@@ -161,7 +161,7 @@ export default {
 
     'solution-categories': {
       fields: [
-        'name', 'parent'
+        'id', 'name', { parent: ['name'] }
       ],
       general_actions: [
         'index', 'export', 'new'

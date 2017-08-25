@@ -49,6 +49,7 @@ function entityModelForAssociation(entity, newModel, entityModel){
   return entityModel
 }
 
+// TODO: refactor this so it is more generic
 const associationModelMapping = {
   'current-assignment': 'assignments',
   receiver: 'users',
@@ -56,4 +57,5 @@ const associationModelMapping = {
   creator: 'users',
   'presumed-categories': 'categories',
   'presumed-solution-categories': 'solution-categories',
+  parent: 'solution-categories',
 }

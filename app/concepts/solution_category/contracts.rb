@@ -6,4 +6,7 @@ module SolutionCategory::Contracts
 
     validates :name, presence: true
   end
+
+  class Update < Create
+  end
 end

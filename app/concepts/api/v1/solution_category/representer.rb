@@ -18,7 +18,7 @@ module API::V1
           type :solution_categories
 
           attributes do
-            property :label, getter: ->(o) { o[:represented].name }
+            property :label, getter: ->(s) { s[:represented].name }
             property :name
           end
         end
