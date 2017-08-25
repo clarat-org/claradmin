@@ -30,7 +30,7 @@ gem 'dynamic_sitemaps', github: 'efqdalton/dynamic_sitemaps',
 platforms :ruby do
   gem 'sqlite3', group: :test # sqlite3 for inmemory testing db
   gem 'therubyracer' # js runtime
-  gem 'pg', group: [:production, :staging, :development] # postgres
+  gem 'pg', group: %i[production staging development] # postgres
 end
 
 # Templating with slim

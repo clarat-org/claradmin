@@ -10,7 +10,7 @@ class GengoCommunicator
       sandbox: !Rails.env.production?
     )
     # do not send :de, :en (inhouse) and :fa (not supported) to gengo
-    @translatable_locales = I18n.available_locales - [:de, :en, :fa]
+    @translatable_locales = I18n.available_locales - %i[de en fa]
   end
 
   def create_translation_jobs model, field

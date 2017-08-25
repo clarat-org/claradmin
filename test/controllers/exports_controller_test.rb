@@ -20,7 +20,8 @@ describe ExportsController do
     it 'should render an error when an invalid request is issued' do
       sign_in user
       post :create, params: { object_name: 'cities', export: {
-        model_fields: [:doesntexist] } }
+        model_fields: [:doesntexist]
+      } }
       assert_response 403
       response.body.must_equal 'error'
     end

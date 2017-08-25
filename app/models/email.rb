@@ -14,7 +14,7 @@ class Email < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [:id, :address],
+                  against: %i[id address],
                   using: {
                     tsearch: { only: [:id], prefix: true },
                     trigram: { only: [:address], threshold: 0.3 }

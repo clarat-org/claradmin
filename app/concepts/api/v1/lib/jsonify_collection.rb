@@ -30,8 +30,8 @@ module API::V1
       end
 
       def self.nonstandard_params(params)
-        new_params = params.select do |key, _value|
-          !%w[controller action format].include? key
+        new_params = params.reject do |key, _value|
+          %w[controller action format].include? key
         end
         sanitize_params(new_params)
       end

@@ -7,7 +7,7 @@ class Division < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [:id, :addition, :size],
+                  against: %i[id addition size],
                   using: { tsearch: { prefix: true } }
 
   # Methods

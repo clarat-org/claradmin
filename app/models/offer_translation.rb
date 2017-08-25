@@ -7,8 +7,8 @@ class OfferTranslation < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [
-                    :id, :offer_id, :name, :locale, :source
+                  against: %i[
+                    id offer_id name locale source
                   ],
                   using: { tsearch: { prefix: true } }
 end

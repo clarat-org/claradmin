@@ -22,6 +22,6 @@ class City < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [:id, :name],
+                  against: %i[id name],
                   using: { tsearch: { prefix: true } }
 end

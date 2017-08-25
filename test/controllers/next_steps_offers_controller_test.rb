@@ -15,7 +15,7 @@ describe NextStepsOffersController do
     it 'should respond to json requests for an offer' do
       sign_in FactoryGirl.create :researcher
       put :update, format: :json, params: { id: '1', locale: 'de',
-                   next_steps_offer: { sort_value: 1 } }
+                                            next_steps_offer: { sort_value: 1 } }
       assert_response :success
     end
   end

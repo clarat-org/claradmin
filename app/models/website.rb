@@ -13,9 +13,9 @@ class Website < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [:id, :host, :url],
+                  against: %i[id host url],
                   using: {
-                    tsearch: { only: [:id, :host], prefix: true },
+                    tsearch: { only: %i[id host], prefix: true },
                     trigram: { only: [:url], threshold: 0.3 }
                   }
 

@@ -8,8 +8,8 @@ require_relative 'organization'
 class StatisticChart < ApplicationRecord
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [
-                    :id, :title
+                  against: %i[
+                    id title
                   ],
                   using: { tsearch: { prefix: true } }
 

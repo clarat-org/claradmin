@@ -5,9 +5,9 @@ require ClaratBase::Engine.root.join('app', 'models', 'assignment')
 class Assignment < ApplicationRecord
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [
-                    :id, :message, :assignable_type, :assignable_field_type,
-                    :message
+                  against: %i[
+                    id message assignable_type assignable_field_type
+                    message
                   ],
                   using: { tsearch: { prefix: true } }
   # Only used by NewAssignment Form - can be removed when the form is obsolete

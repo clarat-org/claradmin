@@ -10,11 +10,13 @@ class Offer < ApplicationRecord
     %(initialized approved expired checkup_process approval_process edit)
 
   # Modules
-  include SearchAlgolia, StateMachine
+  include StateMachine
+  include SearchAlgolia
   include ReformedValidationHack
 
   # Concerns
-  include Translations, RailsAdminParamHack
+  include RailsAdminParamHack
+  include Translations
 
   # Callbacks
   after_initialize :after_initialize
@@ -48,9 +50,9 @@ class Offer < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [
-                    :name, :description, :aasm_state, :encounter,
-                    :old_next_steps, :code_word
+                  against: %i[
+                    name description aasm_state encounter
+                    old_next_steps code_word
                   ],
                   # NOTE: this does not work with our filtered search queries
                   # associated_against: {

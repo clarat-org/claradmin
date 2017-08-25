@@ -10,7 +10,8 @@ class Organization < ApplicationRecord
   include StateMachine
 
   # Concerns
-  include Translations, RailsAdminParamHack
+  include RailsAdminParamHack
+  include Translations
 
   # Validation Hack
   include ReformedValidationHack
@@ -18,8 +19,8 @@ class Organization < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [
-                    :id, :offers_count, :name, :aasm_state, :locations_count
+                  against: %i[
+                    id offers_count name aasm_state locations_count
                   ],
                   using: { tsearch: { prefix: true } }
 

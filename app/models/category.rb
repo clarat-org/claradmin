@@ -10,7 +10,7 @@ class Category < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [:id, :name_de],
+                  against: %i[id name_de],
                   using: { tsearch: { prefix: true } }
 
   # Methods

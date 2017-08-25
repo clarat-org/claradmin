@@ -9,10 +9,10 @@ module Opening::Contracts
     property :name
 
     validates :day, presence: true
-    validates_uniqueness_of :day, scope: [:open, :close]
-    validates_uniqueness_of :open, scope: [:day, :close]
+    validates_uniqueness_of :day, scope: %i[open close]
+    validates_uniqueness_of :open, scope: %i[day close]
     validates :open, presence: true, if: :close
-    validates_uniqueness_of :close, scope: [:day, :open]
+    validates_uniqueness_of :close, scope: %i[day open]
     validates :close, presence: true, if: :open
 
     validates :sort_value, presence: true

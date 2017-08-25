@@ -5,11 +5,12 @@ require ClaratBase::Engine.root.join('app', 'models', 'location')
 
 class Location < ApplicationRecord
   # Admin specific methods
-  include PgSearch, ReformedValidationHack
+  include ReformedValidationHack
+  include PgSearch
 
   # Search
   pg_search_scope :search_pg,
-                  against: [:id, :display_name],
+                  against: %i[id display_name],
                   using: { tsearch: { prefix: true } }
 
   # Customize duplication.

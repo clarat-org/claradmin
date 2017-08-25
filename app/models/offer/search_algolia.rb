@@ -14,11 +14,11 @@ module Offer::SearchAlgolia
           name description code_word next_steps category_keywords definitions
           organization_names category_names stamps_string tags category_explanations
         ]
-        attributes = [:organization_count, :location_address, :location_name,
-                      :slug, :encounter, :organization_names,
-                      :location_visible, :code_word]
-        facets = [:_age_filters, :_language_filters, :_target_audience_filters,
-                  :_exclusive_gender_filters, :section_identifier]
+        attributes = %i[organization_count location_address location_name
+                        slug encounter organization_names
+                        location_visible code_word]
+        facets = %i[_age_filters _language_filters _target_audience_filters
+                    _exclusive_gender_filters section_identifier]
 
         add_index Offer.personal_index_name(locale),
                   disable_indexing: Rails.env.test?,
@@ -63,7 +63,7 @@ module Offer::SearchAlgolia
           add_attribute :area_minlat, :area_maxlat, :area_minlong,
                         :area_maxlong
           add_attribute(*facets)
-          attributesForFaceting facets + [:_tags, :encounter]
+          attributesForFaceting facets + %i[_tags encounter]
           optionalWords STOPWORDS
 
           # no geo necessary

@@ -7,14 +7,15 @@ class ContactPerson < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [
-                    :id, :position, :operational_name, :first_name, :last_name
+                  against: %i[
+                    id position operational_name first_name last_name
                   ],
                   using: { tsearch: { prefix: true } }
 
   # Admin specific methods
 
-  include Translations, ReformedValidationHack
+  include ReformedValidationHack
+  include Translations
 
   # Customize duplication.
   def partial_dup

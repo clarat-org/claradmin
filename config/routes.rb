@@ -93,28 +93,28 @@ Rails.application.routes.draw do
       def api_resources name, options = {}
         resources name, options.merge(path: name.to_s.dasherize)
       end
-      api_resources :solution_categories, only: [:show, :index]
-      api_resources :offers, only: [:index, :show]
-      api_resources :split_bases, only: [:index, :show]
+      api_resources :solution_categories, only: %i[show index]
+      api_resources :offers, only: %i[index show]
+      api_resources :split_bases, only: %i[index show]
       api_resources :locations
       api_resources :organizations
-      api_resources :divisions, only: [:show, :index, :create, :update]
+      api_resources :divisions, only: %i[show index create update]
       api_resources :statistics, only: [:index]
-      api_resources :users, only: [:index, :show, :update]
-      api_resources :websites, only: [:index, :show, :create]
-      api_resources :offer_translations, only: [:index, :show, :update]
-      api_resources :organization_translations, only: [:index, :show, :update]
+      api_resources :users, only: %i[index show update]
+      api_resources :websites, only: %i[index show create]
+      api_resources :offer_translations, only: %i[index show update]
+      api_resources :organization_translations, only: %i[index show update]
       api_resources :statistic_charts, except: [:destroy]
-      api_resources :time_allocations, only: [:create, :update]
+      api_resources :time_allocations, only: %i[create update]
       api_resources :user_teams
-      api_resources :sections, only: [:index, :show]
-      api_resources :cities, only: [:index, :show]
-      api_resources :areas, only: [:index, :show]
-      api_resources :federal_states, only: [:index, :show]
+      api_resources :sections, only: %i[index show]
+      api_resources :cities, only: %i[index show]
+      api_resources :areas, only: %i[index show]
+      api_resources :federal_states, only: %i[index show]
       api_resources :contact_people
-      api_resources :emails, only: [:index, :show]
-      api_resources :filters, only: [:index, :show]
-      api_resources :assignments, only: [:index, :show, :create, :update]
+      api_resources :emails, only: %i[index show]
+      api_resources :filters, only: %i[index show]
+      api_resources :assignments, only: %i[index show create update]
       post 'time_allocations/:year/:week_number',  controller: :time_allocations,
                                                    action: :report_actual
       # get '/statistics/:topic/:user_id(/:start/:end)' => 'statistics#index'
