@@ -31,8 +31,12 @@ const mapStateToProps = (state, ownProps) => {
   const lockedParams = lockedParamsFor(scope, itemId, systemUser.id)
   const optionalParams =
     { 'sort_field': 'updated-at', 'sort_direction': 'DESC' }
-  merge(ownProps.params, merge(clone(optionalParams), clone(lockedParams), ownProps.params))
-  const defaultParams = merge(defaultParams, merge(clone(optionalParams), clone(lockedParams)))
+  merge(
+    ownProps.params,
+    merge(clone(optionalParams), clone(lockedParams), ownProps.params)
+  )
+  const defaultParams =
+    merge(defaultParams, merge(clone(optionalParams), clone(lockedParams)))
   const heading = headingFor(scope)
 
   return {
@@ -46,7 +50,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({ 
+const mapDispatchToProps = (dispatch, ownProps) => ({
   dispatch
 })
 
@@ -92,7 +96,8 @@ function lockedParamsFor(scope, id, systemId) {
     }
   case 'receiverClosed':
     return {
-      'filters[receiver-id]': id, 'per_page': 10, 'filters[aasm-state]': 'closed'
+      'filters[receiver-id]': id, 'per_page': 10,
+      'filters[aasm-state]': 'closed'
     }
   case 'receiverTeam':
     return {
@@ -105,4 +110,6 @@ function lockedParamsFor(scope, id, systemId) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(AssignmentsContainer)
+export default connect(
+  mapStateToProps, mapDispatchToProps, mergeProps
+)(AssignmentsContainer)

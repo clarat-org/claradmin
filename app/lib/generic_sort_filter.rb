@@ -100,13 +100,16 @@ module GenericSortFilter
       value_or_values = filter[1]
       next if value_or_values.empty?
 
-      query =
-        range_or_singular_filter_query!(params, query, value_or_values, filter[0], index)
+      query = range_or_singular_filter_query!(
+        params, query, value_or_values, filter[0], index
+      )
     end
     query
   end
 
-  def self.range_or_singular_filter_query!(params, query, value_or_values, key, index)
+  def self.range_or_singular_filter_query!(
+    params, query, value_or_values, key, index
+  )
     value =
       value_or_values.is_a?(Hash) ? value_or_values.values : value_or_values
     # convert value_or_values to array for streamlined processing
@@ -135,7 +138,8 @@ module GenericSortFilter
   end
 
   def self.range_filter_query?(params, values)
-    !params[:operators].nil? && params[:operators].value?('...') && values.count > 1
+    !params[:operators].nil? && params[:operators].value?('...') &&
+      values.count > 1
   end
 
   def self.join_operator(params, filter)

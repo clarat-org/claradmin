@@ -10,7 +10,6 @@ import { setUi } from '../../../Backend/actions/setUi'
 import { analyzeFields } from '../../../lib/settingUtils'
 import IndexHeaderFilter from '../components/IndexHeaderFilter'
 
-
 const mapStateToProps = (state, ownProps) => {
   const model = ownProps.model
   const filterName =

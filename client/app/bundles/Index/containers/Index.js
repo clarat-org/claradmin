@@ -9,7 +9,7 @@ import forIn from 'lodash/forIn'
 const mapStateToProps = (state, ownProps) => {
   const pathname = window.location.pathname
   let model = ownProps.model
-  let query = ownProps.params // TO DO: write method to clean up params 
+  let query = ownProps.params // TO DO: write method to clean up params
   let optional =
     ownProps.identifierAddition ? '_' + ownProps.identifierAddition : ''
   const identifier = 'indexResults_' + model + optional
@@ -42,7 +42,11 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
   loadData(query, nextModel = stateProps.model) {
     // Ugly hack but we don't want to render all assignments in the dashboard
-    if (!(nextModel == 'assignments' && query == undefined && this.defaultParams !== undefined)) {
+    if (
+        !(nextModel == 'assignments' && query == undefined &&
+          this.defaultParams !== undefined)
+       )
+    {
       dispatchProps.dispatch(
         loadAjaxData(nextModel, query, 'indexResults')
       )

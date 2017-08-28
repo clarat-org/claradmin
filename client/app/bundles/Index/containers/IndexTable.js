@@ -10,7 +10,6 @@ const mapStateToProps = (state, ownProps) => {
   if (!settings.index[model])
     throw new Error(`Add settings for ${model}`)
 
-
   const fields = analyzeFields(settings.index[model].fields, model)
   const rows = compact(state.ajax.indexResults.data.map(datum =>
     denormalizeStateEntity(state.entities, model, datum.id)

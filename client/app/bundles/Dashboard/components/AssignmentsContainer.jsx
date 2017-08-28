@@ -19,19 +19,20 @@ export default class AssignmentsContainer extends Component {
         <b>{heading}</b>
         <Index
           model={model} identifierAddition={scope} params={params}
-          lockedParams={lockedParams} optionalParams={optionalParams} defaultParams={defaultParams}
+          lockedParams={lockedParams} optionalParams={optionalParams}
+          defaultParams={defaultParams}
         />
       </div>
     )
   }
 
-  teamSelectOrNull(team_data, params) {
-    if (team_data && team_data.length != 0) {
+  teamSelectOrNull(teamData, params) {
+    if (teamData && teamData.length != 0) {
       return (
         <div className="select-set">
           <span className="select-set__label">Zeige Zuweisungen für:</span>
           <ControlledSelectView identifier={'team-assignments'} params={params}>
-            {team_data}
+            {teamData}
           </ControlledSelectView>
         </div>
       )

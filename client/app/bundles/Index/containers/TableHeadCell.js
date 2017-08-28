@@ -21,7 +21,6 @@ const mapStateToProps = (state, ownProps) => {
   if (isCurrentSortField) {
     linkParams.sort_direction = currentDirection == 'ASC' ? 'DESC' : 'ASC'
   }
-
   let href = buildLink(pickBy(linkParams), ownProps.model)
   const displayName = field.name.split('-').join(' ')
 
@@ -36,7 +35,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => ({})
 
 function buildLink(params, model) {
-  if(window.location.pathname.length > 1) {
+  if (window.location.pathname.length > 1) {
     return `/${model}?${jQuery.param(params)}`
   } else {
     return `/?${jQuery.param(params)}`
