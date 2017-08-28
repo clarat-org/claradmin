@@ -9,7 +9,7 @@ import forIn from 'lodash/forIn'
 const mapStateToProps = (state, ownProps) => {
   const pathname = window.location.pathname
   let model = ownProps.model
-  let query = ownProps.params // TO DO: write method to clean up params
+  let query = ownProps.params
   let optional =
     ownProps.identifierAddition ? '_' + ownProps.identifierAddition : ''
   const identifier = 'indexResults_' + model + optional
