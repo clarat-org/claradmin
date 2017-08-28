@@ -52,10 +52,8 @@ function entityModelForAssociation(entity, newModel, entityModel, model){
 function associationModelMapping(newModel, settings, model){
   let associationModel = null
   let associationMapping = settings.index[model].association_model_mapping
-  if (associationMapping) {
-    if (associationMapping[newModel]) {
-      associationModel = associationMapping[newModel]
-    }
+  if (associationMapping && associationMapping[newModel]) {
+    associationModel = associationMapping[newModel]
   }
   return associationModel
 }
