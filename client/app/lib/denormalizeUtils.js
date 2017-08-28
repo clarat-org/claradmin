@@ -51,10 +51,11 @@ function entityModelForAssociation(entity, newModel, entityModel, model){
 
 function associationModelMapping(newModel, settings, model){
   let associationModel = null
-  if (settings.index[model].association_model_mapping) {
-    settings.index[model].association_model_mapping.map(rawField => {
-      if (rawField[newModel]) {associationModel = rawField[newModel]}
-    })
+  let associationMapping = settings.index[model].association_model_mapping
+  if (associationMapping) {
+    if (associationMapping[newModel]) {
+      associationModel = associationMapping[newModel]
+    }
   }
   return associationModel
 }

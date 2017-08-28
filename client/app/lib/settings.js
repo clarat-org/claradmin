@@ -160,9 +160,7 @@ export default {
     },
 
     'solution-categories': {
-      association_model_mapping: [
-        { parent: 'solution-categories' }
-      ],
+      association_model_mapping: { parent: 'solution-categories' },
       fields: [
         'id', 'name', { parent: ['name'] }
       ],
@@ -188,10 +186,10 @@ export default {
     },
 
     organizations: {
-      association_model_mapping: [
-        {'current-assignment': 'assignments'}, {receiver: 'users'},
-        {'receiver-team': 'user-teams'}
-      ],
+      association_model_mapping: {
+        'current-assignment': 'assignments', receiver: 'users',
+        'receiver-team': 'user-teams'
+      },
       fields: [
         'id', {
           'current-assignment': {
@@ -209,11 +207,11 @@ export default {
     },
 
     divisions: {
-      association_model_mapping: [
-        {'current-assignment': 'assignments'}, {receiver: 'users'},
-        {'receiver-team': 'user-teams'}, {'presumed-categories': 'categories'},
-        {'presumed-solution-categories': 'solution-categories'}
-      ],
+      association_model_mapping: {
+        'current-assignment': 'assignments', receiver: 'users',
+        'receiver-team': 'user-teams', 'presumed-categories': 'categories',
+        'presumed-solution-categories': 'solution-categories'
+      },
       fields: [
         'id', {
           'current-assignment': {
@@ -244,10 +242,10 @@ export default {
     },
 
     assignments: {
-      association_model_mapping: [
-        {creator: 'users'}, {receiver: 'users'},
-        {'receiver-team': 'user-teams'}, {'creator-team': 'user-teams'}
-      ],
+      association_model_mapping: {
+        creator: 'users', receiver: 'users',
+        'receiver-team': 'user-teams', 'creator-team': 'user-teams'
+      },
       fields: [
         'id', 'assignable-id', 'assignable-type', {assignable: ['label']},
         {creator: ['name']}, {'creator-team': ['name']}, {receiver: ['name']},
