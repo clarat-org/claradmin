@@ -148,21 +148,18 @@ module GenericSortFilter
   end
 
   def self.build_range_filter_query(query, params, filter, value)
-    range = self.sort_range(value)
+    range = sort_range(value)
     filter_key = joined_or_own_table_name_for(query, filter, params)
     filter_string = filter_key.to_s
     query.where("#{filter_string} BETWEEN '#{range[0]}' AND '#{range[1]}'")
   end
 
-  def self.sort_range(value)
-    begin
-      if value.first.to_date
-        sorted_values = value.sort
-      end
-    rescue
-      sorted_values = value.sort_by(&:to_i)
+  def self.sort_range(values)
+    if values.first.respond_to?(:to_date)
+      values.sort
+    else
+      values.sort_by(&:to_i)
     end
-    sorted_values
   end
 
   def self.build_singular_filter_query(query, params, filter, value)
