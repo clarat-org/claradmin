@@ -34,6 +34,15 @@ function headingFor(model, id) {
   case 'cities':
     heading = 'Stadt'
     break
+  case 'openings':
+    heading = 'Öffnungszeiten'
+    break
+  case 'definitions':
+    heading = 'Definitions'
+    break
+  case 'tags':
+    heading = 'Tags'
+    break
   case 'federal-states':
     heading = 'Bundesland'
     break
@@ -42,6 +51,9 @@ function headingFor(model, id) {
     break
   case 'emails':
     heading = 'Email'
+    break
+  case 'offers':
+    heading = 'Angebote'
     break
   default:
     throw new Error(`Please provide a GenericForm heading for ${model}`)
