@@ -10,8 +10,8 @@ import IndexHeader from '../components/IndexHeader'
 
 const mapStateToProps = (state, ownProps) => {
   const filterArray = toPairs(
-    pickBy(ownProps.params, (value, key) => 
-      key.substr(0, 7) == 'filters' && 
+    pickBy(ownProps.params, (value, key) =>
+      key.substr(0, 7) == 'filters' &&
         lockedParamsHaveKey(key, ownProps.lockedParams) == false)
   )
   const filters = toObject(filterArray)
@@ -35,7 +35,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onQueryChange(event) {
     const params = merge(clone(ownProps.params), { query: event.target.value })
-    if(window.location.pathname.length > 1) {
+    if (window.location.pathname.length > 1) {
       browserHistory.replace(`/${ownProps.model}?${encode(params)}`)
     } else {
       browserHistory.replace(`/?${encode(params)}`)
