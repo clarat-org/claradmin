@@ -10,14 +10,37 @@ module API::V1
           property :label, getter: ->(split_base) {
             split_base[:represented].title
           }
+          property :division_ids
+          property :solution_category_id
           property :clarat_addition
           property :comments
           property :created_at
           property :updated_at
         end
+
+        has_one :solution_category, class: ::SolutionCategory do
+          type :solution_categories
+
+          attributes do
+            property :label, getter: ->(o) { o[:represented].name }
+            property :name
+          end
+        end
+
+        has_many :divisions, class: ::Division do
+          type :divisions
+
+          attributes do
+            property :label, getter: ->(o) { o[:represented].display_name }
+            property :display_name
+          end
+        end
       end
 
       class Index < Show
+      end
+
+      class Create < Show
       end
     end
   end

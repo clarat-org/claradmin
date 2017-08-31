@@ -110,7 +110,12 @@ const routes = [
     pathname: '/solution-categories',
     anchor: 'Lösungskategorien',
     access: all,
-    }/*,
+  }, {
+    id: 19,
+    pathname: '/split-bases',
+    anchor: 'Split Base',
+    access: all,
+  }/*,
   {
     id: 10,
     pathname: '/statistic-charts',
