@@ -14,7 +14,7 @@ module SplitBase::Contracts
     def unique_with_divisions
       same_split_bases = SplitBase.where(
         title: title, clarat_addition: clarat_addition,
-        solution_category_id: solution_category.id
+        solution_category_id: solution_category ? solution_category.id : nil
       )
       if same_split_bases.count.positive?
         own_divisions = []
