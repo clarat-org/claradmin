@@ -3,23 +3,21 @@ module SplitBase::Contracts
   class Create < Reform::Form
     property :title
     property :clarat_addition
-    property :solution_category_id
+    property :solution_category
     property :divisions
+    property :comments
 
     validates :title, presence: true
     validate :unique_with_divisions
-    validates :solution_category_id, presence: true
+    validates :solution_category, presence: true
 
     def unique_with_divisions
       same_split_bases = SplitBase.where(
         title: title, clarat_addition: clarat_addition,
-        solution_category_id: solution_category_id
+        solution_category_id: solution_category&.id
       )
-      if same_split_bases.count.positive?
-        own_divisions = []
-        divisions.each do |div|
-          own_divisions << div.id
-        end
+      if same_split_bases.any?
+        own_divisions = divisions.map(&:id)
         check_for_divisions same_split_bases, own_divisions
       end
     end
@@ -31,8 +29,11 @@ module SplitBase::Contracts
         next unless own_divisions.sort == same_sb_divisions.sort
         errors.add :title, message
         errors.add :clarat_addition, message
-        errors.add :solution_category_id, message
+        errors.add :solution_category, message
       end
     end
+  end
+
+  class Update < Create
   end
 end

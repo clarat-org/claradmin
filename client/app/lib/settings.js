@@ -92,7 +92,7 @@ export default {
         'index', 'export', 'new'
       ],
       member_actions: [
-        'show'
+        'show', 'edit'
       ]
     },
 
@@ -104,7 +104,7 @@ export default {
         'index', 'export', 'new'
       ],
       member_actions: [
-        'show'
+        'show', 'edit'
       ]
     },
 
@@ -117,7 +117,7 @@ export default {
         'index', 'export', 'new'
       ],
       member_actions: [
-        'show'
+        'show', 'edit'
       ]
     },
 
@@ -309,13 +309,39 @@ export default {
 
     'split-bases': {
       fields: [
-        'id', 'title', 'clarat-addition', 'comments'
+        'id', 'title', 'clarat-addition', 'comments',
+        { divisions: ['display-name'] }, { 'solution-category': ['name'] }
+      ],
+      general_actions: [
+        'index', 'export', 'new'
+      ],
+      member_actions: [
+        'show', 'edit'
+      ]
+    },
+
+
+    subscriptions: {
+      fields: [
+        'id', 'email', 'created-at', 'updated-at'
       ],
       general_actions: [
         'index'
       ],
       member_actions: [
-        'show', 'old-backend-edit'
+        'show'
+      ]
+    },
+
+    'update-requests': {
+      fields: [
+        'id', 'search-location', 'email', 'created-at', 'updated-at'
+      ],
+      general_actions: [
+        'index'
+      ],
+      member_actions: [
+        'show'
       ]
     },
 
