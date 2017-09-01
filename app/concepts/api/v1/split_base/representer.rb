@@ -17,7 +17,9 @@ module API::V1
           property :created_at
           property :updated_at
         end
+      end
 
+      class Index < Show
         has_one :solution_category, class: ::SolutionCategory do
           type :solution_categories
 
@@ -37,10 +39,7 @@ module API::V1
         end
       end
 
-      class Index < Show
-      end
-
-      class Create < Show
+      class Create < Index
       end
     end
   end
