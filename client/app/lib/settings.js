@@ -92,7 +92,7 @@ export default {
         'index', 'export', 'new'
       ],
       member_actions: [
-        'show'
+        'show', 'edit'
       ]
     },
 
@@ -104,7 +104,7 @@ export default {
         'index', 'export', 'new'
       ],
       member_actions: [
-        'show'
+        'show', 'edit'
       ]
     },
 
@@ -117,7 +117,7 @@ export default {
         'index', 'export', 'new'
       ],
       member_actions: [
-        'show'
+        'show', 'edit'
       ]
     },
 
@@ -173,6 +173,9 @@ export default {
     },
 
     users: {
+      association_model_mapping: {
+        'observed-user-teams': 'user-teams'
+      },
       fields: [
         'id', 'name', 'email', { 'user-teams': ['name'] },
         { 'observed-user-teams': ['name'] }
@@ -229,6 +232,9 @@ export default {
     },
 
     'user-teams': {
+      association_model_mapping: {
+        'observing-users': 'users', parent: 'users', lead: 'users'
+      },
       fields: [
         'id', 'name', 'classification', { users: ['name'] },
         { 'observing-users': ['name'] }
@@ -303,13 +309,39 @@ export default {
 
     'split-bases': {
       fields: [
-        'id', 'title', 'clarat-addition', 'comments'
+        'id', 'title', 'clarat-addition', 'comments',
+        { divisions: ['display-name'] }, { 'solution-category': ['name'] }
+      ],
+      general_actions: [
+        'index', 'export', 'new'
+      ],
+      member_actions: [
+        'show', 'edit'
+      ]
+    },
+
+
+    subscriptions: {
+      fields: [
+        'id', 'email', 'created-at', 'updated-at'
       ],
       general_actions: [
         'index'
       ],
       member_actions: [
-        'show', 'old-backend-edit'
+        'show'
+      ]
+    },
+
+    'update-requests': {
+      fields: [
+        'id', 'search-location', 'email', 'created-at', 'updated-at'
+      ],
+      general_actions: [
+        'index'
+      ],
+      member_actions: [
+        'show'
       ]
     },
 
