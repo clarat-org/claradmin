@@ -101,8 +101,14 @@ function headingFor(model) {
     return 'Kontaktpersonen'
   case 'solution-categories':
     return 'Lösungskategorien'
+  case 'split-bases':
+    return 'Split Base'
   case 'emails':
     return 'Emails'
+  case 'subscriptions':
+    return 'Newsletter Abos'
+  case 'update-requests':
+    return 'Update Requests'
   default:
     throw new Error(`Please provide a heading for ${model}`)
   }
