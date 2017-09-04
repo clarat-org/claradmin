@@ -36,6 +36,7 @@ export default class GenericFormForm extends React.Component {
           <FormInputs
             model={model} formObjectClass={formObjectClass} formId={formId}
             nestingModel={nestingModel} submodelPath={submodelPath}
+            id={instance.id}
           />
           <ReadOnlyProperties
             instance={instance} formObjectClass={formObjectClass}
