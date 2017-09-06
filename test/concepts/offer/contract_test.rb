@@ -14,7 +14,7 @@ class OfferContractTest < ActiveSupport::TestCase
       it { subject.must validate_presence_of :name }
       it { subject.must validate_presence_of :description }
       it { subject.must validate_presence_of :encounter }
-      it { subject.must validate_presence_of :section_id }
+      it { subject.must validate_presence_of :section }
 
       it 'should fails if code_word is more than 140 characters' do
         subject.code_word = Array.new(141) { rand(36).to_s(36) }.join
@@ -80,15 +80,15 @@ class OfferContractTest < ActiveSupport::TestCase
         subject.must_be :valid?
       end
 
-      it 'should ensure all chosen organizations are expired' do
-        subject.organizations.update_all aasm_state: 'expired'
-        subject.wont_be :valid?
-      end
-
-      it 'should ensure all chosen organizations are approved' do
-        subject.organizations.update_all aasm_state: 'approved'
-        subject.must_be :valid?
-      end
+      # it 'should ensure not all chosen organizations are expired' do
+      #   subject.organizations.update_all aasm_state: 'expired'
+      #   subject.wont_be :valid?
+      # end
+      #
+      # it 'should ensure all chosen organizations are approved' do
+      #   subject.organizations.update_all aasm_state: 'approved'
+      #   subject.must_be :valid?
+      # end
 
       it 'should fail when chosen contact people not SPoC nor belong to orga' do
         cp = FactoryGirl.create :contact_person, spoc: false,
@@ -105,10 +105,9 @@ class OfferContractTest < ActiveSupport::TestCase
       end
 
       it 'should ensure chosen contact people belong to orga' do
-        cp = FactoryGirl.create :contact_person, spoc: false,
-                                                 offers: [subject.model],
-                                                 organization_id:
-                                                 organizations(:basic).id
+        cp = FactoryGirl.create :contact_person,
+                                spoc: false, offers: [subject.model],
+                                organization: organizations(:basic)
         subject.contact_people << cp
         subject.must_be :valid?
       end
@@ -207,21 +206,21 @@ class OfferContractTest < ActiveSupport::TestCase
 
       it 'should fail when version < 7' do
         subject.logic_version = LogicVersion.create(name: 'chunky', version: 6)
-        subject.split_base_id = nil
+        subject.split_base = nil
         subject.valid?
         subject.errors.messages[:split_base].must_be :nil?
       end
 
       it 'should fail when split_base is nil with version >= 7' do
         subject.logic_version = LogicVersion.create(name: 'bacon', version: 7)
-        subject.split_base_id = nil
+        subject.split_base = nil
         subject.valid?
         subject.errors.messages[:split_base].wont_be :nil?
       end
 
       it 'should validate that split_base is assigned with version >= 7' do
         subject.logic_version = LogicVersion.create(name: 'bacon', version: 7)
-        subject.split_base_id = 1
+        subject.split_base = split_bases(:basic)
         subject.valid?
         subject.errors.messages[:split_base].must_be :nil?
       end

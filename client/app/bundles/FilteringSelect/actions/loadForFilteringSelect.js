@@ -21,7 +21,7 @@ export const addForFilteringSelect = (key, options) => ({
 })
 
 export function loadForFilteringSelect(
-  input, associatedModel, model = null, inverseRelationship = null,
+  input, associatedModel, key, model = null, inverseRelationship = null,
   filters = {}, ids = ''
 ) {
   let path = `/api/v1/${associatedModel}`
@@ -39,7 +39,7 @@ export function loadForFilteringSelect(
   if (keys(paramHash).length) path += '?' + $.param(paramHash)
 
   return function(dispatch) {
-    dispatch(loadForFilteringSelectRequest(associatedModel, `${input},${ids}`))
+    dispatch(loadForFilteringSelectRequest(key, `${input},${ids}`))
 
     return fetch(path, {
       method: 'GET',
@@ -48,7 +48,7 @@ export function loadForFilteringSelect(
       function(response) {
         const { status, statusText } = response
         if (status >= 400) {
-          dispatch(loadForFilteringSelectFailure(response, associatedModel))
+          dispatch(loadForFilteringSelectFailure(response, key))
           throw new Error(
             `Load for FilteringSelect Error ${status}: ${statusText}`
           )
@@ -57,7 +57,7 @@ export function loadForFilteringSelect(
       }
     ).then(json => {
       dispatch(
-        addForFilteringSelect(associatedModel, json.data.map(datum => (
+        addForFilteringSelect(key, json.data.map(datum => (
           { value: datum.id, label: datum.attributes.label }
         )))
       )

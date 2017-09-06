@@ -312,14 +312,13 @@ feature 'Admin Backend' do
       )
       offer.valid?.must_equal false
 
-      click_link 'Bearbeiten', match: :first
-      page.must_have_link 'Approval starten'
-
       # transition to other state than 'checkup_process' is not allowed
-      click_link 'Approval starten', match: :first
-      page.must_have_content 'Zustandsänderung konnte nicht erfolgen'
-      page.must_have_content 'nicht valide'
-      offer.reload.must_be :completed?
+      click_link 'Bearbeiten', match: :first
+      page.wont_have_link 'Approval starten'
+      # click_link 'Approval starten', match: :first
+      # page.must_have_content 'Zustandsänderung konnte nicht erfolgen'
+      # page.must_have_content 'nicht valide'
+      # offer.reload.must_be :completed?
 
       # transition to other 'edit' works
       page.must_have_link 'Erneut bearbeiten'
@@ -330,8 +329,9 @@ feature 'Admin Backend' do
 
     scenario 'deactivate seasonal_pending offer and reactivate it afterwards' do
       split_base = split_bases(:basic)
-      offer = FactoryGirl.create :offer, :approved, split_base: split_base,
-                                                    starts_at: (Time.zone.now - 1.day)
+      offer = FactoryGirl.create :offer, :approved,
+                                 split_base: split_base,
+                                 starts_at: (Time.zone.now - 1.day)
 
       offer.aasm_state = 'paused'
       offer.must_be :paused?
@@ -535,8 +535,6 @@ feature 'Admin Backend' do
       # SplitBase given, needs an area and no location when remote
       select 'basicSplitBaseTitle', from: 'offer_split_base_id'
       click_button 'Speichern und bearbeiten'
-      page.wont_have_content 'Organizations benötigt mindestens eine'\
-                             ' Organisation'
       page.must_have_content 'Area muss ausgefüllt werden, wenn Encounter'\
                              ' nicht "personal" ist'
       page.must_have_content 'Location darf keinen Standort haben, wenn'\
@@ -574,14 +572,20 @@ feature 'Admin Backend' do
       page.must_have_content 'Zustandsänderung war erfolgreich'
       offer.reload.must_be :completed?
 
+      # Orga not yet done -> can't start approval
+      page.wont_have_link 'Approval starten'
+
+      # Finish orga -> start approval
+      orga.update_column :aasm_state, 'approved'
+      click_link 'Anzeigen' # force reload
+      click_link 'Bearbeiten'
       click_link 'Approval starten', match: :first
       page.must_have_content 'Zustandsänderung war erfolgreich'
       offer.reload.must_be :approval_process?
 
       # There is no approve link as same user
       # page.wont_have_link 'Freischalten'
-      # TODO: change this!
-      page.must_have_link 'Freischalten'
+      # TODO: reenable guard
 
       # Approval as different user
       login_as superuser
@@ -591,20 +595,20 @@ feature 'Admin Backend' do
       ## Test (after-)approval update validations
 
       # Try to approve, doesnt work
-      offer.reload.valid?.must_equal true
-      click_link 'Freischalten', match: :first
-      page.must_have_content 'Zustandsänderung konnte nicht erfolgen'
-      page.must_have_content 'nicht valide'
-      offer.reload.must_be :approval_process?
+      # offer.reload.valid?.must_equal true
+      # click_link 'Freischalten', match: :first
+      # page.must_have_content 'Zustandsänderung konnte nicht erfolgen'
+      # page.must_have_content 'nicht valide'
+      # offer.reload.must_be :approval_process?
 
       # Organization needs to be approved (only validated on approve)
-      page.must_have_content 'Organizations darf nur bestätigte Organisationen'\
-                             ' beinhalten.'
+      # page.must_have_content 'Organizations darf nur bestätigte Organisationen'\
+      #                        ' beinhalten.'
 
       # Organization gets approved (via all done), saves
-      orga.update_column :aasm_state, 'all_done'
-      click_button 'Speichern und bearbeiten'
-      page.must_have_content 'Angebot wurde erfolgreich aktualisiert'
+      # orga.update_column :aasm_state, 'all_done'
+      # click_button 'Speichern und bearbeiten'
+      # page.must_have_content 'Angebot wurde erfolgreich aktualisiert'
 
       # Approval works
       click_link 'Freischalten', match: :first

@@ -1,8 +1,9 @@
 import { connect } from 'react-redux'
+import parseLocation from '../lib/parseLocation'
 import Standalone from '../components/Standalone'
 
 const mapStateToProps = (state, ownProps) => {
-  const [ model, idOrNew, edit ] = getBaseData(ownProps)
+  const [ model, idOrNew, edit ] = parseLocation(ownProps)
   const editId = edit ? idOrNew : null
   const heading = headingFor(model, editId)
 
@@ -59,16 +60,6 @@ function headingFor(model, id) {
     throw new Error(`Please provide a GenericForm heading for ${model}`)
   }
   return heading + ( id ? ` #${id} bearbeiten` : ' anlegen' )
-}
-
-function getBaseData(ownProps) {
-  if (ownProps.location && ownProps.location.pathname) {
-    const pathname = ownProps.location.pathname
-    const [_, model, idOrNew, edit] = pathname.split('/')
-    return [model, idOrNew, edit]
-  } else {
-    return [ownProps.model, ownProps.idOrNew, ownProps.edit]
-  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Standalone)

@@ -7,11 +7,14 @@ import { resetFilteringSelectData } from '../actions/resetFilteringSelectData'
 import FilteringSelect from '../components/FilteringSelect'
 
 const mapStateToProps = (state, ownProps) => {
-  const { attribute, submodelPath } = ownProps
+  const { attribute, submodelPath, filters } = ownProps
   // remove last "-id(s)" from attribute
   let resource = ownProps.resource || attribute.replace(/(-id|-ids)$/, '')
   // pluralize
   resource = pluralize(resource)
+  const filterString =
+    filters && Object.keys(filters).length && JSON.stringify(filters) || ''
+  const resourceKey = resource + filterString
 
   const formState = state.rform[ownProps.formId]
   const statePath = navigateThroughSubmodels(formState, submodelPath)
@@ -21,10 +24,10 @@ const mapStateToProps = (state, ownProps) => {
   // Server gives array elements as list of ids. Transform it to simpleValue
   if (isArray(value)) value = value.join(',')
 
-  const options = state.filteringSelect.options[resource] || []
-  const isLoading = state.filteringSelect.isLoading[resource] || false
+  const options = state.filteringSelect.options[resourceKey] || []
+  const isLoading = state.filteringSelect.isLoading[resourceKey] || false
   const alreadyLoadedInputs =
-    state.filteringSelect.alreadyLoadedInputs[resource] || []
+    state.filteringSelect.alreadyLoadedInputs[resourceKey] || []
 
   const errors =
     (statePath && statePath._errors && statePath._errors[attribute]) || []
@@ -35,6 +38,7 @@ const mapStateToProps = (state, ownProps) => {
     options,
     isLoading,
     resource,
+    resourceKey,
     alreadyLoadedInputs,
     showSelect: ownProps.showSelect || true,
   }
@@ -44,7 +48,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({ dispatch })
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { dispatch } = dispatchProps
-  const { alreadyLoadedInputs, resource } = stateProps
+  const { alreadyLoadedInputs, resource, resourceKey } = stateProps
   const { filters, inverseRelationship, model } = ownProps
 
   return {
@@ -67,7 +71,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 
     onMount() {
       dispatch(loadForFilteringSelect(
-        '', resource, model, inverseRelationship, filters
+        '', resource, resourceKey, model, inverseRelationship, filters
       ))
     },
 
@@ -75,7 +79,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       if (inverseRelationship != 'belongsTo') return
       // only filtered FilteringSelect need to be cleaned up
 
-      dispatch(resetFilteringSelectData(resource))
+      dispatch(resetFilteringSelectData(resourceKey))
     },
 
     onFirstValue(value) {
@@ -83,14 +87,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
         value => alreadyLoadedInputs.includes(value) == false
       ).join(',')
       dispatch(loadForFilteringSelect(
-        '', resource, model, inverseRelationship, filters, filter_ids
+        '', resource, resourceKey, model, inverseRelationship, filters, filter_ids
       ))
     },
 
     onInputChange(input) {
       if (alreadyLoadedInputs.includes(input)) return
       dispatch(loadForFilteringSelect(
-        input, resource, model, inverseRelationship, filters
+        input, resource, resourceKey, model, inverseRelationship, filters
       ))
     },
   }

@@ -4,6 +4,8 @@ import merge from 'lodash/merge'
 import ContactPersonFormObject from './ContactPersonFormObject'
 import WebsiteFormObject from './WebsiteFormObject'
 import LocationFormObject from './LocationFormObject'
+import TargetAudienceFiltersOfferFormObject
+  from './TargetAudienceFiltersOfferFormObject'
 
 class OfferCreateFormObject extends GenericFormObject {
   static get model() {
@@ -20,8 +22,8 @@ class OfferCreateFormObject extends GenericFormObject {
       'comment', 'next-steps', 'code-word', 'contact-people',
       'hide-contact-people', 'encounter', 'location', 'area', 'categories',
       'tags', 'solution-category', 'trait-filters', 'language-filters',
-      'openings', 'opening-specification', 'websites', 'starts-at',
-      'expires-at', 'logic-version'
+      'target-audience-filters-offers', 'openings', 'opening-specification',
+      'websites', 'starts-at', 'expires-at', 'logic-version'
     ]
   }
 
@@ -29,7 +31,8 @@ class OfferCreateFormObject extends GenericFormObject {
     return [
       'section', 'split-base', 'next-steps', 'contact-people', 'location',
       'area', 'categories', 'tags', 'solution-category', 'trait-filters',
-      'language-filters', 'openings', 'websites', 'logic-version'
+      'language-filters', 'target-audience-filters-offers', 'openings',
+      'websites', 'logic-version'
     ]
   }
 
@@ -55,7 +58,7 @@ class OfferCreateFormObject extends GenericFormObject {
       area: {
         relationship: 'oneToOne',
       },
-      cateories: {
+      categories: {
         relationship: 'oneToMany',
       },
       tags: {
@@ -69,6 +72,11 @@ class OfferCreateFormObject extends GenericFormObject {
       },
       'language-filters': {
         relationship: 'oneToMany',
+      },
+      'target-audience-filters-offers': {
+        object: TargetAudienceFiltersOfferFormObject,
+        relationship: 'oneToMany',
+        inverseRelationship: 'belongsTo'
       },
       openings: {
         relationship: 'oneToMany',
@@ -114,6 +122,9 @@ class OfferCreateFormObject extends GenericFormObject {
         type: 'filtering-multiselect',
         resource: 'filters', filters: { type: 'LanguageFilter' }
       },
+      'target-audience-filters-offers': {
+        type: 'creating-multiselect'
+      },
       openings: { type: 'filtering-multiselect' },
       'opening-specification': { type: 'textarea' },
       'starts-at': { type: 'date' },
@@ -124,7 +135,7 @@ class OfferCreateFormObject extends GenericFormObject {
   }
 
   static get requiredInputs() {
-    return ['name']
+    return ['name', 'target-audience-filters-offers']
   }
 
   validation() {
@@ -135,14 +146,14 @@ class OfferCreateFormObject extends GenericFormObject {
 class OfferUpdateFormObject extends OfferCreateFormObject {
   static get properties() {
     return concat(
-      OrgaCreateFormObject.properties,
+      OfferCreateFormObject.properties,
       ['old-next-steps']
     )
   }
 
   static get formConfig() {
     return merge(
-      OrgaCreateFormObject.formConfig, {
+      OfferCreateFormObject.formConfig, {
         'old-next-steps': { type: 'textarea' },
       }
     )

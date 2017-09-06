@@ -52,16 +52,14 @@ module API::V1
       end
 
       class Create < Show
-        attributes do
-          property :responsibility
-        end
-
         has_one :email, decorator: API::V1::Email::Representer::Show,
                         populator: API::V1::Lib::Populators::FindOrInstantiate,
                         class: ::Email
 
-        has_one :organization, class: ::Organization, decorator:
-                               API::V1::Organization::Representer::Show
+        has_one :organization,
+                decorator: API::V1::Organization::Representer::Show,
+                populator: API::V1::Lib::Populators::FindOrInstantiate,
+                class: ::Organization
       end
     end
   end

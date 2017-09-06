@@ -36,7 +36,7 @@ const mapStateToProps = (state, ownProps) => {
     buildActionButtonData(state, model, editId, instance, formObjectClass)
 
   // Changes in case the form updates instead of creating
-  if (editId) {
+  if (editId && !ownProps.forceCreate) {
     action += '/' + editId
     method = 'PUT'
   }

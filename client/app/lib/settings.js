@@ -54,7 +54,7 @@ export default {
         'index', 'export'
       ],
       member_actions: [
-        'show', 'old-backend-edit'
+        'show', 'edit', 'delete', 'duplicate'
       ]
     },
 
@@ -296,18 +296,6 @@ export default {
       ],
       member_actions: [
         'show', 'old-backend-edit'
-      ]
-    },
-
-    offers: {
-      fields: [
-        'id', 'title'
-      ],
-      general_actions: [
-        'index', 'export', 'new'
-      ],
-      member_actions: [
-        'show', 'edit'
       ]
     },
   },

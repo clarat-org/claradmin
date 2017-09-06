@@ -13,6 +13,8 @@ import { OfferCreateFormObject, OfferUpdateFormObject }
 import OpeningFormObject from '../forms/OpeningFormObject'
 import DefinitionFormObject from '../forms/DefinitionFormObject'
 import TagFormObject from '../forms/TagFormObject'
+import TargetAudienceFiltersOfferFormObject
+  from '../forms/TargetAudienceFiltersOfferFormObject'
 
 export default function formObjectSelect(model, editing) {
   switch(model) {
@@ -42,6 +44,8 @@ export default function formObjectSelect(model, editing) {
     return TagFormObject
   case 'definitions':
     return DefinitionFormObject
+  case 'target-audience-filters-offers':
+    return TargetAudienceFiltersOfferFormObject
   default:
     throw new Error(
       `Please provide a configuring FormObject for ${model} if you want to

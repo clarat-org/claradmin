@@ -39,6 +39,12 @@ module API::V1
           property :solution_category_id
           property :location_id
           property :area_id
+          property :contact_person_ids
+          property :target_audience_filters_offer_ids
+          property :language_filter_ids
+          property :trait_filter_ids
+          property :tag_ids
+          property :opening_ids
         end
 
         has_one :section do
@@ -56,21 +62,69 @@ module API::V1
       end
 
       class Create < Show
-        has_many :organizations do
-          type :organizations
+        has_many :contact_people,
+                 decorator: API::V1::ContactPerson::Representer::Create,
+                 populator: API::V1::Lib::Populators::FindOrInstantiate,
+                 class: ::ContactPerson
 
-          attributes do
-            property :name, as: :label
-          end
-        end
+        has_many :target_audience_filters_offers,
+                 decorator:
+                   API::V1::TargetAudienceFiltersOffer::Representer::Create,
+                 populator: API::V1::Lib::Populators::FindOrInstantiate,
+                 class: ::TargetAudienceFiltersOffer
 
-        has_many :target_audience_filters do
-          type :filters
+        has_many :language_filters,
+                 decorator: API::V1::Filter::Representer::Show,
+                 populator: API::V1::Lib::Populators::FindOrInstantiate,
+                 class: ::LanguageFilter
 
-          attributes do
-            property :name, as: :label
-          end
-        end
+        has_many :trait_filters,
+                 decorator: API::V1::Filter::Representer::Show,
+                 populator: API::V1::Lib::Populators::FindOrInstantiate,
+                 class: ::TraitFilter
+
+        has_one :location,
+                decorator: API::V1::Location::Representer::Show,
+                populator: API::V1::Lib::Populators::FindOrInstantiate,
+                class: ::Location
+
+        has_one :area,
+                decorator: API::V1::Area::Representer::Show,
+                populator: API::V1::Lib::Populators::FindOrInstantiate,
+                class: ::Area
+
+        has_one :split_base,
+                decorator: API::V1::SplitBase::Representer::Show,
+                populator: API::V1::Lib::Populators::FindOrInstantiate,
+                class: ::SplitBase
+
+        has_one :solution_category,
+                decorator: API::V1::SolutionCategory::Representer::Show,
+                populator: API::V1::Lib::Populators::FindOrInstantiate,
+                class: ::SolutionCategory
+
+        has_many :tags,
+                 decorator: API::V1::Tag::Representer::Show,
+                 populator: API::V1::Lib::Populators::FindOrInstantiate,
+                 class: ::Tag
+
+        has_one :section,
+                decorator: API::V1::Section::Representer::Show,
+                populator: API::V1::Lib::Populators::FindOrInstantiate,
+                class: ::Section
+
+        has_many :openings,
+                 decorator: API::V1::Opening::Representer::Show,
+                 populator: API::V1::Lib::Populators::FindOrInstantiate,
+                 class: ::Opening
+
+        has_many :websites,
+                 decorator: API::V1::Website::Representer::Show,
+                 populator: API::V1::Lib::Populators::FindOrInstantiate,
+                 class: ::Website
+      end
+
+      class Update < Create
       end
     end
   end
