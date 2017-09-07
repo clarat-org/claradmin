@@ -55,6 +55,7 @@ const mapStateToProps = (state, ownProps) => {
     buttonData,
     afterSaveActions,
     afterSaveActiveKey,
+    editId
   }
 }
 
