@@ -8,16 +8,25 @@ import { browserHistory } from 'react-router'
 import settings from '../../../lib/settings'
 import { setUi } from '../../../Backend/actions/setUi'
 import { analyzeFields } from '../../../lib/settingUtils'
+import { singularize } from '../../../lib/inflection'
+import loadAjaxData from '../../../Backend/actions/loadAjaxData'
 import IndexHeaderFilter from '../components/IndexHeaderFilter'
+
 
 const mapStateToProps = (state, ownProps) => {
   const model = ownProps.model
   const filterName =
     ownProps.filter[0].split('][first]').join('').split('][second]').join('').
       substring(8, ownProps.filter[0].length -1)
-  const filterType = setFilterType(filterName)
+  const filterAttributes = state.entities['field-sets'] && state.entities['field-sets'][model] ?
+    state.entities['field-sets'][model]['columns'].find(field =>
+      field.name == filterName) : undefined
+  const filterOptions =
+    filterAttributes ? filterAttributes.options : []
+  const filterType =
+    filterAttributes ? setFilterType(filterAttributes.type) : ''
   const filterValue = getValue(ownProps.filter[1], 0)
-  console.log(filterValue)
+
   const secondFilterValue = getValue(ownProps.filter[1], 1)
   const nilChecked = ownProps.filter[1] == 'nil'
   // only show filters that are not locked (currently InlineIndex only)
@@ -29,14 +38,7 @@ const mapStateToProps = (state, ownProps) => {
   const operatorName = ownProps.params[`operators[${filterName}]`] || '='
   const range =
     (operatorName == "..." && filterType != 'text') ? 'visible' : 'hidden'
-  const operators = settings.OPERATORS.filter(operator =>
-    operator != '...' || filterType != 'text'
-  ).map(operator => {
-    return {
-      value: operator,
-      displayName: textForOperator(operator)
-    }
-  })
+  const operators = filterOpperators(settings, filterType)
 
   return {
     filterName,
@@ -47,7 +49,36 @@ const mapStateToProps = (state, ownProps) => {
     operatorName,
     range,
     filterValue,
-    secondFilterValue
+    secondFilterValue,
+    filterOptions
+  }
+}
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  // This response does not follow JSON API format, we need to transform it
+  // manually
+  const transformResponse = function(apiResponse, nextModel) {
+    let object = { 'field-sets': {} }
+    object['field-sets'][nextModel] = apiResponse
+    return object
+  }
+
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    ...ownProps,
+
+    loadData(nextModel = ownProps.model) {
+      const singularModel = singularize(nextModel)
+
+      // load field_set (all fields and associations of current model)
+      dispatchProps.dispatch(
+        loadAjaxData(
+          'field_set/' + singularModel, {}, 'field-set', transformResponse,
+          nextModel
+        )
+      )
+    }
   }
 }
 
@@ -116,15 +147,15 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     let query = searchString(ownProps.model, params)
     browserHistory.replace(`/${query}`)
   },
+
+  dispatch
 })
 
-function setFilterType (filterName) {
-  let splitArray = filterName.split('-')
-  switch(splitArray[splitArray.length - 1]) {
-    case 'at':
+function setFilterType (filterType) {
+  switch(filterType) {
+    case 'datetime':
       return 'date'
-    case 'id':
-    case 'count':
+    case 'integer':
       return 'number'
     default:
       return 'text'
@@ -161,6 +192,26 @@ function textForOperator(operator) {
   }
 }
 
+function filterOpperators(settings, filterType) {
+  if (filterType == 'text') {
+    return settings.OPERATORS.filter(operator =>
+      operator == '=' || operator == '!='
+    ).map(operator => {
+      return {
+        value: operator,
+        displayName: textForOperator(operator)
+      }
+    })
+  } else {
+    return settings.OPERATORS.map(operator => {
+      return {
+        value: operator,
+        displayName: textForOperator(operator)
+      }
+    })
+  }
+}
+
 function searchString(model, params) {
   if(window.location.href.includes(model)) {
     return `${model}?${jQuery.param(params)}`
@@ -169,4 +220,4 @@ function searchString(model, params) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(IndexHeaderFilter)
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(IndexHeaderFilter)
