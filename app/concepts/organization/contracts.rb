@@ -34,6 +34,7 @@ module Organization::Contracts
     property :charitable
     property :umbrella_filters
     property :mailings
+    property :accredited_institution
   end
 
   # validates :slug, uniqueness: true

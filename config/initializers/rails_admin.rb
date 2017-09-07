@@ -44,7 +44,10 @@ RailsAdmin.config do |config|
     dashboard                     # mandatory
     index                         # mandatory
     new do
-      except ['User', 'FederalState', 'Section', 'Division', 'Organization']
+      except [
+        'User', 'FederalState', 'Section', 'Division', 'Organization',
+        'Opening', 'Tag', 'Definition'
+      ]
     end
     export
     bulk_delete do
@@ -52,19 +55,21 @@ RailsAdmin.config do |config|
     end
     show
     edit do
-      except ['Section', 'Division', 'Organization']
+      except [
+        'Section', 'Division', 'Organization', 'Opening', 'Tag', 'Definition'
+      ]
     end
     delete do
       except ['User', 'FederalState', 'Section']
     end
     show_in_app do
-      only ['Offer', 'Organization']
+      only ['Offer']
     end
 
     clone do
       except [
         'Section', 'City', 'TargetAudienceFiltersOffer', 'Division',
-        'Organization'
+        'Organization', 'Opening', 'Tag', 'Definition'
       ]
     end
     # nested_set do
@@ -300,7 +305,10 @@ RailsAdmin.config do |config|
     field :clarat_addition do
       help { 'Optional. Auszufüllen bei überschneidenden Titeln.' }
     end
-    field :divisions
+    field :divisions do
+      queryable true
+      searchable [:id, :addition]
+    end
     field :solution_category do
       help { 'Erforderlich ab Version 8.'}
     end
@@ -342,6 +350,8 @@ RailsAdmin.config do |config|
     field :section
     field :split_base do
       help { 'Erforderlich ab Version 7.'}
+      queryable true
+      searchable [:id, :clarat_addition, :title]
     end
     field :all_inclusive
     field :name do
@@ -600,37 +610,6 @@ RailsAdmin.config do |config|
     end
   end
 
-  config.model 'Opening' do
-    field :day do
-      help do
-        'Required. Wenn weder "Open" noch "Close" angegeben werden, bedeutet
-        das an diesem Tag "nach Absprache".'
-      end
-    end
-    field :open do
-      help do
-        'Required if "Close" given.'
-      end
-    end
-    field :close do
-      help do
-        'Required if "Open" given.'
-      end
-    end
-
-    field :name do
-      visible false
-    end
-
-    list do
-      sort_by :sort_value
-      field :sort_value do
-        sort_reverse false
-        visible false
-      end
-    end
-  end
-
   config.model 'Category' do
     weight(-3)
     field :name_de
@@ -699,14 +678,6 @@ RailsAdmin.config do |config|
     end
 
     nestable_tree(max_depth: 5)
-  end
-
-  config.model 'Definition' do
-    weight(-4)
-    field :key
-    field :explanation
-
-    object_label_method :key
   end
 
   config.model 'Email' do
@@ -852,27 +823,6 @@ RailsAdmin.config do |config|
     end
   end
 
-  config.model 'Tag' do
-    weight 1
-    field :name_de
-    field :keywords_de
-    field :explanations_de
-    field :name_en
-    field :keywords_en
-    field :explanations_en
-    field :name_ar
-    field :keywords_ar
-    field :explanations_ar
-    field :name_fa
-    field :keywords_fa
-    field :explanations_fa
-    field :name_tr
-    field :name_pl
-    field :name_ru
-
-    object_label_method :name_de
-  end
-
   config.model 'Area' do
     weight 1
     field :id
@@ -922,8 +872,21 @@ RailsAdmin.config do |config|
     list do
       field :id
       field :addition
-      field :organization
+      field :organization do
+        queryable true
+        searchable [{Organization => :name}]
+      end
+      field :city do
+        queryable true
+        searchable [{City => :name}]
+      end
+      field :area do
+        queryable true
+        searchable [{Area => :name}]
+      end
     end
+
+    object_label_method :display_name
   end
 
   config.model 'LogicVersion' do
@@ -936,5 +899,65 @@ RailsAdmin.config do |config|
       read_only true
     end
     field :description
+  end
+
+  config.model 'Opening' do
+    field :day do
+      help do
+        'Required. Wenn weder "Open" noch "Close" angegeben werden, bedeutet
+        das an diesem Tag "nach Absprache".'
+      end
+    end
+    field :open do
+      help do
+        'Required if "Close" given.'
+      end
+    end
+    field :close do
+      help do
+        'Required if "Open" given.'
+      end
+    end
+
+    field :name do
+      visible false
+    end
+
+    list do
+      sort_by :sort_value
+      field :sort_value do
+        sort_reverse false
+        visible false
+      end
+    end
+  end
+
+  config.model 'Definition' do
+    weight(-4)
+    field :key
+    field :explanation
+
+    object_label_method :key
+  end
+
+  config.model 'Tag' do
+    weight 1
+    field :name_de
+    field :keywords_de
+    field :explanations_de
+    field :name_en
+    field :keywords_en
+    field :explanations_en
+    field :name_ar
+    field :keywords_ar
+    field :explanations_ar
+    field :name_fa
+    field :keywords_fa
+    field :explanations_fa
+    field :name_tr
+    field :name_pl
+    field :name_ru
+
+    object_label_method :name_de
   end
 end

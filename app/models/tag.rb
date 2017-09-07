@@ -7,6 +7,14 @@ class Tag < ApplicationRecord
   after_save :translate_if_name_en_changed
   # Methods
 
+  include ReformedValidationHack
+
+  # Search
+  include PgSearch
+  pg_search_scope :search_pg,
+                  against: %i[id name_de name_en],
+                  using: { tsearch: { prefix: true } }
+
   private
 
   def translate_if_name_en_changed
