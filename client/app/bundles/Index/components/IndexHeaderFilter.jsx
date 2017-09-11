@@ -60,7 +60,7 @@ export default class IndexHeaderFilter extends Component {
   }
 
   renderFields(props) {
-    if (props.filterOptions) {
+    if (props.filterOptions && props.filterOptions.length > 0) {
       return(
         <div className='input-group'>
           <select
