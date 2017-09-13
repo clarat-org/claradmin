@@ -21,13 +21,13 @@ export default class Index extends Component {
   render() {
     const {
       location, model, heading, query, lockedParams, optionalParams, identifier,
-      uiKey, count
+      uiKey, metaText
     } = this.props
 
     return (
       <div className='content Index table-header'>
-        <p className="index-title">Gefundene Daten: {count}</p>
         <p className="page-title">{heading}</p>
+        <p className="index-title">{metaText}</p>
         <IndexHeader model={model} params={query} lockedParams={lockedParams} />
         <IndexTable
           model={model} params={query} identifier={identifier} uiKey={uiKey}
