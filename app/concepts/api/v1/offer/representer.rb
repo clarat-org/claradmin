@@ -62,6 +62,11 @@ module API::V1
       end
 
       class Create < Show
+        has_many :next_steps,
+                 decorator: API::V1::NextStep::Representer::Show,
+                 populator: API::V1::Lib::Populators::FindOrInstantiate,
+                 class: ::NextStep
+
         has_many :contact_people,
                  decorator: API::V1::ContactPerson::Representer::Create,
                  populator: API::V1::Lib::Populators::FindOrInstantiate,

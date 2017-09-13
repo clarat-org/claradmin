@@ -4,6 +4,7 @@ module Offer::Contracts
     # fill me!
     property :name
     property :description
+    property :comment
     property :encounter
     property :expires_at
     property :code_word
