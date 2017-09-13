@@ -131,7 +131,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       dispatch(
         addFlashMessage('error', 'Es ist ein Serverfehler aufgetreten.')
       )
-      response.text().then((errorMessage) => console.error(errorMessage))
+      response.text().then((errorMessage) =>
+        console.error(errorMessage.split("\n").splice(0, 30).join("\n"))
+      )
     },
 
     afterRequireValid(result) {

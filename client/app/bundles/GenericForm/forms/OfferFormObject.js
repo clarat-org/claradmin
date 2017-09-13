@@ -135,7 +135,10 @@ class OfferCreateFormObject extends GenericFormObject {
   }
 
   static get requiredInputs() {
-    return ['name', 'target-audience-filters-offers']
+    return [
+      'name', 'target-audience-filters-offers', 'solution-category',
+      'language-filters'
+    ]
   }
 
   validation() {

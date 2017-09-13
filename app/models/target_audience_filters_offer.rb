@@ -12,14 +12,13 @@ class TargetAudienceFiltersOffer < ActiveRecord::Base
   enumerize :residency_status, in: RESIDENCY_STATUSES
 
   # Callbacks
-  before_save :generate_stamps!
+  before_update :generate_stamps!
 
-  require_relative '../objects/value/target_audience_filters_offer_stamp.rb'
   def generate_stamps!
     I18n.available_locales.each do |locale|
       self.send(
         "stamp_#{locale}=",
-        TargetAudienceFiltersOfferStamp.generate_stamp(
+        ::TargetAudienceFiltersOfferStamp.generate_stamp(
           self, offer.section.identifier, locale
         )
       )
@@ -28,7 +27,7 @@ class TargetAudienceFiltersOffer < ActiveRecord::Base
 
   # For rails_admin display
   def name
-    if stamp_de.blank? == false
+    if !stamp_de.blank?
       stamp_de
     elsif target_audience_filter && offer
       "#{target_audience_filter.name} (Offer##{offer.id})"

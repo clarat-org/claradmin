@@ -1,13 +1,17 @@
 # frozen_string_literal: true
+require 'reform/form/coercion'
+
 module TargetAudienceFiltersOffer::Contracts
   class Create < Reform::Form
+    feature Coercion
+
     property :target_audience_filter
     property :offer
     property :residency_status
     property :gender_first_part_of_stamp
     property :gender_second_part_of_stamp
-    property :age_from
-    property :age_to
+    property :age_from, type: Types::Form::Int
+    property :age_to, type: Types::Form::Int
     property :age_visible
 
     validate ::Lib::Validators::UnnestedPresence :offer

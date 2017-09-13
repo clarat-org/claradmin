@@ -51,7 +51,7 @@ export default {
         'logic-version-id', { section: ['name'] }
       ],
       general_actions: [
-        'index', 'export'
+        'index', 'export', 'new'
       ],
       member_actions: [
         'show', 'edit', 'delete', 'duplicate'

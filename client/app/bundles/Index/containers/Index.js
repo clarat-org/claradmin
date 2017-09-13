@@ -64,6 +64,8 @@ function headingFor(model) {
     return 'Kontaktpersonen'
   case 'emails':
     return 'Emails'
+  case 'websites':
+    return 'Webseiten'
   default:
     throw new Error(`Please provide a heading for ${model}`)
   }

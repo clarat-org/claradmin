@@ -105,6 +105,11 @@ const routes = [
     pathname: '/tags',
     anchor: 'Tags',
     access: all,
+  }, {
+    id: 18,
+    pathname: '/websites',
+    anchor: 'Webseiten',
+    access: all,
   }/*,
   {
     id: 10,

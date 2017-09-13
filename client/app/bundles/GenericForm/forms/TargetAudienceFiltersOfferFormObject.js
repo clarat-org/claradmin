@@ -17,13 +17,17 @@ export default class TagFormObject extends GenericFormObject {
     ]
   }
 
+  static get submodels() {
+    return ['target-audience-filter', 'offer']
+  }
+
   static get formConfig() {
     return {
       'target-audience-filter': {
         type: 'filtering-select',
         resource: 'filters', filters: { type: 'TargetAudienceFilter' }
       },
-      'offer': { type: 'filtering-select' },
+      offer: { type: 'filtering-select' },
       'residency-status': {
         type: 'select', options: [
           '', 'before_the_asylum_decision', 'with_a_residence_permit',
@@ -40,6 +44,17 @@ export default class TagFormObject extends GenericFormObject {
       'age-from': { type: 'number' },
       'age-to': { type: 'number' },
       'age-visible': { type: 'checkbox' }
+    }
+  }
+
+  static get submodelConfig() {
+    return {
+      'target-audience-filter': {
+        relationship: 'oneToOne'
+      },
+      offer: {
+        relationship: 'oneToOne'
+      }
     }
   }
 

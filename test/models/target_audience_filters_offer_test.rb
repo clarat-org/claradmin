@@ -8,6 +8,11 @@ describe TargetAudienceFiltersOffer do
   end
 
   describe 'name' do
+    it 'should mirror the saved german stamp if one is present' do
+      subject.stamp_de = 'foobar'
+      subject.name.must_equal 'foobar'
+    end
+
     it 'should generate the name correctly' do
       subject.target_audience_filter_id =
         TargetAudienceFilter.first.id
