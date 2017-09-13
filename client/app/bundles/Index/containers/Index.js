@@ -20,6 +20,8 @@ const mapStateToProps = (state, ownProps) => {
     model = pathname.substr(1, pathname.length)
     query = ownProps.location.query
   }
+  const count =
+    state.ajax[identifier] ? state.ajax[identifier].meta.total_entries : 0
 
   return {
     model,
@@ -27,7 +29,8 @@ const mapStateToProps = (state, ownProps) => {
     query,
     identifier,
     uiKey,
-    defaultParams
+    defaultParams,
+    count
   }
 }
 
