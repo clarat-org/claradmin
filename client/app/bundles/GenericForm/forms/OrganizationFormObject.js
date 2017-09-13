@@ -102,7 +102,8 @@ class OrgaUpdateFormObject extends OrgaCreateFormObject {
           filters: { 'type': 'UmbrellaFilter' }
         },
         'accredited-institution': { type: 'checkbox' },
-        mailings: { type: 'textarea' },
+        mailings: { type: 'select',
+                    options: ['disabled', 'enabled', 'force_disabled'] },
       },
     )
   }
