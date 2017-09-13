@@ -26,11 +26,13 @@ module API::V1
           property :legal_form
           property :charitable
           property :website_id
+          property :accredited_institution
           # NOTE: do we need this here? or only for create/update or not at all?
           property :location_ids
           property :contact_person_ids
           property :division_ids
           property :umbrella_filter_ids
+          property :topic_ids
         end
 
         # has_one :website do
@@ -39,12 +41,28 @@ module API::V1
         #     property :url
         #   end
         # end
+
+        link(:preview) do
+          section = represented.sections.first
+          identifier = section.nil? ? 'refugees' : section.identifier
+          ::RemoteShow.build_preview_link(
+            :organisationen, identifier, represented
+          )
+        end
       end
 
       class Index < Show
+        has_many :topics, class: ::Topic do
+          type :topics
+
+          attributes do
+            property :label, getter: ->(o) { o[:represented].name }
+            property :name
+          end
+        end
       end
 
-      class Create < Show
+      class Create < Index
         has_one :website,
                 decorator: API::V1::Website::Representer::Show,
                 populator: API::V1::Lib::Populators::FindOrInstantiate,

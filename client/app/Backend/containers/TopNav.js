@@ -107,6 +107,26 @@ const routes = [
     access: all,
   }, {
     id: 18,
+    pathname: '/solution-categories',
+    anchor: 'Lösungskategorien',
+    access: all,
+  }, {
+    id: 19,
+    pathname: '/subscriptions',
+    anchor: 'Newsletter Abos',
+    access: all,
+  }, {
+    id: 20,
+    pathname: '/update-requests',
+    anchor: 'Update Requests',
+    access: all,
+  }, {
+    id: 21,
+    pathname: '/split-bases',
+    anchor: 'Split Base',
+    access: all,
+  }, {
+    id: 22,
     pathname: '/websites',
     anchor: 'Webseiten',
     access: all,

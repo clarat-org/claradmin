@@ -10,7 +10,7 @@ export default {
     'offer-translations': {
       fields: [
         'id', 'offer-id', 'locale', 'source', 'name', 'offer_stamp',
-        'possibly-outdated', {offer: ['approved-at', 'created-by']}
+        'possibly-outdated', { offer: ['approved-at', 'created-by'] }
       ],
       general_actions: [
         'index', 'export'
@@ -23,7 +23,7 @@ export default {
     'organization-translations': {
       fields: [
         'id', 'organization-id', 'locale', 'source', 'description',
-        'possibly-outdated', {organization: ['approved-at']}
+        'possibly-outdated', { organization: ['approved-at'] }
       ],
       general_actions: [
         'index', 'export'
@@ -92,7 +92,7 @@ export default {
         'index', 'export', 'new'
       ],
       member_actions: [
-        'show'
+        'show', 'edit'
       ]
     },
 
@@ -104,7 +104,7 @@ export default {
         'index', 'export', 'new'
       ],
       member_actions: [
-        'show'
+        'show', 'edit'
       ]
     },
 
@@ -117,7 +117,7 @@ export default {
         'index', 'export', 'new'
       ],
       member_actions: [
-        'show'
+        'show', 'edit'
       ]
     },
 
@@ -159,7 +159,23 @@ export default {
       ]
     },
 
+    'solution-categories': {
+      association_model_mapping: { parent: 'solution-categories' },
+      fields: [
+        'id', 'name', { parent: ['name'] }
+      ],
+      general_actions: [
+        'index', 'export', 'new'
+      ],
+      member_actions: [
+        'show', 'edit'
+      ]
+    },
+
     users: {
+      association_model_mapping: {
+        'observed-user-teams': 'user-teams'
+      },
       fields: [
         'id', 'name', 'email', { 'user-teams': ['name'] },
         { 'observed-user-teams': ['name'] }
@@ -173,23 +189,32 @@ export default {
     },
 
     organizations: {
+      association_model_mapping: {
+        'current-assignment': 'assignments', receiver: 'users',
+        'receiver-team': 'user-teams'
+      },
       fields: [
         'id', {
           'current-assignment': {
             receiver: ['name'], 'receiver-team': ['name']
           }
         }, 'offers-count', 'name', 'aasm-state', 'pending-reason',
-        'locations-count'
+        'locations-count', { topics: ['name'] }
       ],
       general_actions: [
         'index', 'export', 'new'
       ],
       member_actions: [
-        'show', 'edit'
+        'show', 'edit', 'preview'
       ]
     },
 
     divisions: {
+      association_model_mapping: {
+        'current-assignment': 'assignments', receiver: 'users',
+        'receiver-team': 'user-teams', 'presumed-categories': 'categories',
+        'presumed-solution-categories': 'solution-categories'
+      },
       fields: [
         'id', {
           'current-assignment': {
@@ -207,6 +232,9 @@ export default {
     },
 
     'user-teams': {
+      association_model_mapping: {
+        'observing-users': 'users', parent: 'users', lead: 'users'
+      },
       fields: [
         'id', 'name', 'classification', { users: ['name'] },
         { 'observing-users': ['name'] }
@@ -220,6 +248,10 @@ export default {
     },
 
     assignments: {
+      association_model_mapping: {
+        creator: 'users', receiver: 'users',
+        'receiver-team': 'user-teams', 'creator-team': 'user-teams'
+      },
       fields: [
         'id', 'assignable-id', 'assignable-type', {assignable: ['label']},
         {creator: ['name']}, {'creator-team': ['name']}, {receiver: ['name']},
@@ -263,18 +295,6 @@ export default {
       ]
     },
 
-    'solution-categories': {
-      fields: [
-        'id', 'name', 'parent-id'
-      ],
-      general_actions: [
-        'index'
-      ],
-      member_actions: [
-        'show'
-      ]
-    },
-
     websites: {
       fields: [
         'id', 'host', 'url'
@@ -289,18 +309,44 @@ export default {
 
     'split-bases': {
       fields: [
-        'id', 'title', 'clarat-addition', 'comments'
+        'id', 'title', 'clarat-addition', 'comments',
+        { divisions: ['display-name'] }, { 'solution-category': ['name'] }
+      ],
+      general_actions: [
+        'index', 'export', 'new'
+      ],
+      member_actions: [
+        'show', 'edit'
+      ]
+    },
+
+
+    subscriptions: {
+      fields: [
+        'id', 'email', 'created-at', 'updated-at'
       ],
       general_actions: [
         'index'
       ],
       member_actions: [
-        'show', 'old-backend-edit'
+        'show'
+      ]
+    },
+
+    'update-requests': {
+      fields: [
+        'id', 'search-location', 'email', 'created-at', 'updated-at'
+      ],
+      general_actions: [
+        'index'
+      ],
+      member_actions: [
+        'show'
       ]
     },
   },
 
-  OPERATORS: ['=', '!=', '<', '>'],
+  OPERATORS: ['=', '!=', '<', '>', '...'],
   SECTIONS: ['family', 'refugees'],
   AFTER_SAVE_ACTIONS: {
     'to_edit': 'Bei dieser Instanz bleiben',

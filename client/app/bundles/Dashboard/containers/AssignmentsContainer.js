@@ -2,10 +2,16 @@ import { connect } from 'react-redux'
 import filter from 'lodash/filter'
 import valuesIn from 'lodash/valuesIn'
 import AssignmentsContainer from '../components/AssignmentsContainer'
+import { browserHistory } from 'react-router'
+import { encode } from 'querystring'
+import merge from 'lodash/merge'
+import clone from 'lodash/clone'
+import loadAjaxData from '../../../Backend/actions/loadAjaxData'
 
 const mapStateToProps = (state, ownProps) => {
   const scope = ownProps.scope
   const model = 'assignments'
+  let newParams = clone(ownProps.params)
   const user = state.entities.users[state.entities['current-user-id']]
   let systemUser =
     filter(state.entities.users, {'name': 'System'} )[0]
@@ -22,22 +28,41 @@ const mapStateToProps = (state, ownProps) => {
              state.ui[selectIdentifier] :
              selectableData[0][0]
   }
+
   const lockedParams = lockedParamsFor(scope, itemId, systemUser.id)
   const optionalParams =
     { 'sort_field': 'updated-at', 'sort_direction': 'DESC' }
+  merge(newParams, merge(clone(optionalParams), newParams, lockedParams))
+  const defaultParams = merge({}, merge(clone(optionalParams), lockedParams))
   const heading = headingFor(scope)
-
   return {
     heading,
     model,
     lockedParams,
     optionalParams,
     scope,
-    selectableData
+    selectableData,
+    defaultParams,
+    newParams
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({ })
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  dispatch
+})
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  ...stateProps,
+  ...dispatchProps,
+  ...ownProps,
+
+  setParams() {
+    dispatchProps.dispatch(
+      loadAjaxData('assignments', this.defaultParams, 'indexResults')
+    )
+    browserHistory.replace(`/?${jQuery.param(this.defaultParams)}`)
+  }
+})
 
 function headingFor(scope) {
   switch(scope) {
@@ -68,7 +93,8 @@ function lockedParamsFor(scope, id, systemId) {
     }
   case 'receiverClosed':
     return {
-      'filters[receiver-id]': id, 'per_page': 10, 'filters[aasm-state]': 'closed'
+      'filters[receiver-id]': id, 'per_page': 10,
+      'filters[aasm-state]': 'closed'
     }
   case 'receiverTeam':
     return {
@@ -81,4 +107,6 @@ function lockedParamsFor(scope, id, systemId) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AssignmentsContainer)
+export default connect(
+  mapStateToProps, mapDispatchToProps, mergeProps
+)(AssignmentsContainer)

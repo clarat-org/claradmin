@@ -18,12 +18,12 @@ class OrgaCreateFormObject extends GenericFormObject {
   static get properties() {
     return [
       'name', 'website', 'locations', 'contact-people',
-      'comment', 'priority', 'pending-reason', 'divisions'
+      'comment', 'priority', 'pending-reason', 'divisions', 'topics'
     ]
   }
 
   static get submodels() {
-    return ['website', 'divisions', 'locations', 'contact-people']
+    return ['website', 'divisions', 'locations', 'contact-people', 'topics']
   }
 
   static get submodelConfig() {
@@ -46,6 +46,9 @@ class OrgaCreateFormObject extends GenericFormObject {
         object: ContactPersonFormObject,
         relationship: 'oneToMany',
         inverseRelationship: 'belongsTo'
+      },
+      topics: {
+        relationship: 'oneToMany'
       }
     }
   }
@@ -62,6 +65,7 @@ class OrgaCreateFormObject extends GenericFormObject {
       'pending-reason': {
         type: 'select', options: ['', 'unstable', 'on_hold', 'foreign']
       },
+      topics: { type: 'filtering-multiselect' },
     }
   }
 
@@ -78,7 +82,8 @@ class OrgaUpdateFormObject extends OrgaCreateFormObject {
   static get properties() {
     return concat(
       OrgaCreateFormObject.properties,
-      [ 'description', 'legal-form', 'charitable', 'umbrella-filters' ]
+      [ 'description', 'legal-form', 'charitable', 'umbrella-filters',
+        'accredited-institution' ]
     )
   }
 
@@ -100,6 +105,7 @@ class OrgaUpdateFormObject extends OrgaCreateFormObject {
           resource: 'filters',
           filters: { 'type': 'UmbrellaFilter' }
         },
+        'accredited-institution': { type: 'checkbox' },
       }
     )
   }

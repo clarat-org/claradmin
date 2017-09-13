@@ -1,33 +1,37 @@
 import React, { PropTypes, Component } from 'react'
-import InlineIndex from '../../InlineIndex/containers/InlineIndex'
+import Index from '../../Index/containers/Index'
 import ControlledSelectView from '../../ControlledSelectView/containers/ControlledSelectView'
 
 export default class AssignmentsContainer extends Component {
+  componentDidMount() {
+    this.props.setParams()
+  }
 
   render() {
     const {
-      heading, model, lockedParams, optionalParams, scope
+      heading, model, lockedParams, optionalParams, scope, newParams, defaultParams
     } = this.props
 
     return (
       <div className="panel-group">
-        {this.teamSelectOrNull(this.props.selectableData)}
+        {this.teamSelectOrNull(this.props.selectableData, newParams)}
         <b>{heading}</b>
-        <InlineIndex
-          model={model} identifierAddition={scope}
+        <Index
+          model={model} identifierAddition={scope} params={newParams}
           lockedParams={lockedParams} optionalParams={optionalParams}
+          defaultParams={defaultParams}
         />
       </div>
     )
   }
 
-  teamSelectOrNull(team_data) {
-    if (team_data && team_data.length != 0) {
+  teamSelectOrNull(teamData, params) {
+    if (teamData && teamData.length != 0) {
       return (
         <div className="select-set">
           <span className="select-set__label">Zeige Zuweisungen für:</span>
-          <ControlledSelectView identifier={'team-assignments'}>
-            {team_data}
+          <ControlledSelectView identifier={'team-assignments'} params={params}>
+            {teamData}
           </ControlledSelectView>
         </div>
       )

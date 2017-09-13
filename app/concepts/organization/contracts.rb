@@ -9,6 +9,7 @@ module Organization::Contracts
     property :locations
     property :contact_people
     property :pending_reason
+    property :topics
 
     validates :name, length: { maximum: 100 }, presence: true
     validates_uniqueness_of :name
@@ -33,6 +34,7 @@ module Organization::Contracts
     property :charitable
     property :umbrella_filters
     property :mailings
+    property :accredited_institution
   end
 
   # validates :slug, uniqueness: true

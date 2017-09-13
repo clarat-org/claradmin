@@ -1,14 +1,33 @@
 import { connect } from 'react-redux'
 import loadAjaxData from '../../../Backend/actions/loadAjaxData'
 import Index from '../components/Index'
+import merge from 'lodash/merge'
+import clone from 'lodash/clone'
+import size from 'lodash/size'
+import forIn from 'lodash/forIn'
 
 const mapStateToProps = (state, ownProps) => {
-  const pathname = ownProps.location.pathname
-  const model = pathname.substr(1, pathname.length)
+  const pathname = window.location.pathname
+  let model = ownProps.model
+  let query = ownProps.params
+  let optional =
+    ownProps.identifierAddition ? '_' + ownProps.identifierAddition : ''
+  const identifier = 'indexResults_' + model + optional
+  const defaultParams = ownProps.defaultParams
+  const uiKey = 'index_' + model + optional
+
+  if(pathname.length > 1 && ownProps.location) {
+    model = pathname.substr(1, pathname.length)
+    query = ownProps.location.query
+  }
 
   return {
     model,
     heading: headingFor(model),
+    query,
+    identifier,
+    uiKey,
+    defaultParams
   }
 }
 
@@ -21,10 +40,17 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
 
-  loadData(query = ownProps.location.query, nextModel = stateProps.model) {
-    dispatchProps.dispatch(
-      loadAjaxData(nextModel, query, 'indexResults')
-    )
+  loadData(query, nextModel = stateProps.model) {
+    // Ugly hack but we don't want to render all assignments in the dashboard
+    if (
+        !(nextModel == 'assignments' && query == undefined &&
+          this.defaultParams !== undefined)
+       )
+    {
+      dispatchProps.dispatch(
+        loadAjaxData(nextModel, query, 'indexResults')
+      )
+    }
   }
 })
 
@@ -62,8 +88,16 @@ function headingFor(model) {
     return 'Bundesländer'
   case 'contact-people':
     return 'Kontaktpersonen'
+  case 'solution-categories':
+    return 'Lösungskategorien'
+  case 'split-bases':
+    return 'Split Base'
   case 'emails':
     return 'Emails'
+  case 'subscriptions':
+    return 'Newsletter Abos'
+  case 'update-requests':
+    return 'Update Requests'
   case 'websites':
     return 'Webseiten'
   default:

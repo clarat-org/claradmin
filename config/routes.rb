@@ -17,7 +17,6 @@ Rails.application.routes.draw do
 
   # shouldn't consider "new" to be a slug
   get 'organizations/new', controller: :pages, action: :react
-  resources :organizations, only: :show
   get 'offers/new', controller: :pages, action: :react
   resources :offers, only: :show
 
@@ -93,9 +92,8 @@ Rails.application.routes.draw do
       def api_resources name, options = {}
         resources name, options.merge(path: name.to_s.dasherize)
       end
-      api_resources :solution_categories, only: [:show, :index]
       api_resources :offers
-      api_resources :split_bases, only: [:index, :show]
+      api_resources :split_bases
       api_resources :locations
       api_resources :organizations
       api_resources :divisions
@@ -110,9 +108,13 @@ Rails.application.routes.draw do
       api_resources :openings
       api_resources :tags
       api_resources :definitions
+      api_resources :solution_categories
       api_resources :sections, only: [:index, :show]
+      api_resources :subscriptions, only: [:index, :show]
+      api_resources :update_requests, only: [:index, :show]
       api_resources :cities, only: [:index, :show]
       api_resources :areas, only: [:index, :show]
+      api_resources :topics, only: [:index, :show]
       api_resources :federal_states, only: [:index, :show]
       api_resources :contact_people
       api_resources :emails, only: [:index, :show]

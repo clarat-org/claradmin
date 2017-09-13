@@ -4,7 +4,6 @@ import ControlledSelectView from '../components/ControlledSelectView'
 
 const mapStateToProps = (state, ownProps) => {
   const uniqIdentifier = 'controlled-select-view-' + ownProps.identifier
-  // selectedTab priority: ui-state > optional default > 0
   let selectedValue = state.ui[uniqIdentifier]
   if (selectedValue === undefined) selectedValue = ownProps.startIndex;
   if (selectedValue === undefined) selectedValue = 0;
@@ -24,10 +23,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
 
-  handleSelect(e){
-    if (stateProps.selectedValue != e.target.value) {
+  handleSelect(event){
+    if (stateProps.selectedValue != event.target.value) {
       dispatchProps.dispatch(
-        setUi(stateProps.uniqIdentifier, e.target.value)
+        setUi(stateProps.uniqIdentifier, event.target.value)
       )
     }
   }
