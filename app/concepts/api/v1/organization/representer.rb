@@ -52,7 +52,7 @@ module API::V1
       end
 
       class Index < Show
-        has_many :topics, class: ::Category do
+        has_many :topics, class: ::Topic do
           type :topics
 
           attributes do

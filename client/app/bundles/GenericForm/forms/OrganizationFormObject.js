@@ -65,9 +65,7 @@ class OrgaCreateFormObject extends GenericFormObject {
       'pending-reason': {
         type: 'select', options: ['', 'unstable', 'on_hold', 'foreign']
       },
-      topics: {
-        type: 'filtering-multiselect', resource: 'topics'
-      },
+      topics: { type: 'filtering-multiselect' },
     }
   }
 
