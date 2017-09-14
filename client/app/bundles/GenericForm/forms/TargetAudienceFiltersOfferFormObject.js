@@ -65,4 +65,11 @@ export default class TagFormObject extends GenericFormObject {
   validation() {
     this.applyRequiredInputs()
   }
+
+  static get genericFormDefaults() {
+    return {
+      'age-from': 0,
+      'age-to': 99
+    }
+  }
 }

@@ -42,7 +42,6 @@ module Offer::Contracts
     validates :expires_at, presence: true
     validates :code_word, length: { maximum: 140 }
     validates :section, presence: true
-    validates_uniqueness_of :slug, scope: :section
 
     # Needs to be true before approval possible. Called in custom validation.
     # def before_approve

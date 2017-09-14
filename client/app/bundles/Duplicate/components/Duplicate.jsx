@@ -5,13 +5,16 @@ import LoadingForm from '../../GenericForm/containers/LoadingForm'
 export default class Duplicate extends Component {
   render() {
     const {
-      model, id, heading
+      model, id, heading, modifySeedData, formStateDidMount
     } = this.props
 
     return(
       <div className='content Duplicate'>
         <h3 className="page-title">{heading}</h3>
-        <LoadingForm forceCreate model={model} editId={id} />
+        <LoadingForm forceCreate
+          modifySeedData={modifySeedData} model={model} editId={id}
+          formStateDidMount={formStateDidMount}
+        />
       </div>
     )
   }

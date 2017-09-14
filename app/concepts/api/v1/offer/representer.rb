@@ -32,6 +32,7 @@ module API::V1
           property :starts_at
           property :completed_at
           property :completed_by
+          property :comment
 
           property :section_id
           property :logic_version_id
@@ -57,6 +58,12 @@ module API::V1
           end
         end
 
+        has_many :target_audience_filters_offers, # sent in show for duplication
+                 decorator:
+                   API::V1::TargetAudienceFiltersOffer::Representer::Show,
+                 populator: API::V1::Lib::Populators::FindOrInstantiate,
+                 class: ::TargetAudienceFiltersOffer
+
         link(:preview) do
           ::RemoteShow.build_preview_link(
             :angebote, represented.section.identifier, represented
@@ -77,12 +84,6 @@ module API::V1
                  decorator: API::V1::ContactPerson::Representer::Create,
                  populator: API::V1::Lib::Populators::FindOrInstantiate,
                  class: ::ContactPerson
-
-        has_many :target_audience_filters_offers,
-                 decorator:
-                   API::V1::TargetAudienceFiltersOffer::Representer::Create,
-                 populator: API::V1::Lib::Populators::FindOrInstantiate,
-                 class: ::TargetAudienceFiltersOffer
 
         has_many :language_filters,
                  decorator: API::V1::Filter::Representer::Show,

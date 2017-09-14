@@ -8,3 +8,7 @@ export default function generateFormId(
     ['GenericForm'], submodelPath, model, submodelKey, editId || 'new'
   )).join('-')
 }
+
+export function uid() {
+  return Math.random().toString(36).substring(2)
+}

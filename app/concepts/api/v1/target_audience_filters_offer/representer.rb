@@ -3,7 +3,7 @@ module API::V1
   module TargetAudienceFiltersOffer
     module Representer
       class Show < Roar::Decorator
-        include Roar::JSON::JSONAPI.resource :split_bases
+        include Roar::JSON::JSONAPI.resource :target_audience_filters_offers
 
         attributes do
           property :label, getter: ->(split_base) {
@@ -28,12 +28,12 @@ module API::V1
       class Create < Show
         has_one :target_audience_filter,
                 decorator: API::V1::Filter::Representer::Show,
-                populator: API::V1::Lib::Populators::FindOrInstantiate,
+                populator: API::V1::Lib::Populators::Find,
                 class: ::TargetAudienceFilter
 
         has_one :offer,
-                decorator: API::V1::Offer::Representer::Create,
-                populator: API::V1::Lib::Populators::FindOrInstantiate,
+                decorator: API::V1::Offer::Representer::Show,
+                populator: API::V1::Lib::Populators::Find,
                 class: ::Offer
       end
     end

@@ -342,7 +342,14 @@ export default {
       ],
       member_actions: [
         'show'
-      ]
+      ],
+    },
+
+    'target-audience-filters-offers': {
+      association_model_mapping: { 'target-audience-filter': 'filter' },
+      fields: ['id', 'target-audience-filter-id', 'offer-id', 'stamp_de'],
+      general_actions: [],
+      member_actions: []
     },
   },
 
