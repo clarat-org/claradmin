@@ -29,6 +29,8 @@ function headingFor(model, id, action) {
     return  `${singularModelName}#${id} löschen`
   case 'duplicate':
     return  `${singularModelName}#${id} duplizieren`
+  case 'new':
+    return  `Neue ${singularModelName} anlegen`
   default:
     return `Details für ${singularModelName}#${id}`
   }
