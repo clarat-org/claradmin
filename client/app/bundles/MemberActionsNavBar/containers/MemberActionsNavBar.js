@@ -22,11 +22,14 @@ const mapDispatchToProps = (dispatch, ownProps) => ({})
 
 function headingFor(model, id, action) {
   let singularModelName = singularize(model)
-  if (action == 'edit'){
+  switch(action) {
+  case 'edit':
     return `${singularModelName}#${id} bearbeiten`
-  } else if ( action == 'delete') {
+  case 'delete':
     return  `${singularModelName}#${id} löschen`
-  } else {
+  case 'duplicate':
+    return  `${singularModelName}#${id} duplizieren`
+  default:
     return `Details für ${singularModelName}#${id}`
   }
 }

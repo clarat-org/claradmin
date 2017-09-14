@@ -15,9 +15,13 @@ import settings from '../../../lib/settings'
 import { denormalizeStateEntity } from '../../../lib/denormalizeUtils'
 
 const mapStateToProps = (state, ownProps) => {
-  const { model, editId, submodelKey, modifySeedData } = ownProps
+  const {
+    model, editId, submodelKey, modifySeedData, formIdSpecification
+  } = ownProps
   const submodelPath = ownProps.submodelPath || []
-  const formId = generateFormId(model, submodelPath, submodelKey, editId)
+  const formId = generateFormId(
+    model, submodelPath, submodelKey, editId, formIdSpecification
+  )
   const formSettings = state.settings[model]
   const formData = state.rform[formId] || {}
   const instance = denormalizeStateEntity(state.entities, model, editId)
