@@ -30,7 +30,6 @@ module Offer::Contracts
     property :opening_specification
     property :websites
     property :hide_contact_people
-    property :all_inclusive
 
     validates :name, presence: true
     # TODO: replace with complicated custom validation OR save stamp text in model

@@ -28,7 +28,6 @@ module API::V1
           property :aasm_state
           property :hide_contact_people
           property :code_word
-          property :all_inclusive
           property :starts_at
           property :completed_at
           property :completed_by

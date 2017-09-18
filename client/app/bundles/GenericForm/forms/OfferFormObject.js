@@ -18,7 +18,7 @@ class OfferCreateFormObject extends GenericFormObject {
 
   static get properties() {
     return [
-      'section', 'split-base', 'all-inclusive', 'name', 'description',
+      'section', 'split-base', 'name', 'description',
       'comment', 'next-steps', 'code-word', 'contact-people',
       'hide-contact-people', 'encounter', 'location', 'area', 'categories',
       'tags', 'solution-category', 'trait-filters', 'language-filters',
@@ -95,7 +95,6 @@ class OfferCreateFormObject extends GenericFormObject {
     return {
       section: { type: 'filtering-select' },
       'split-base': { type: 'filtering-select' },
-      'all-inclusive': { type: 'checkbox' },
       name: { type: 'string' },
       description: { type: 'textarea' },
       comment: { type: 'textarea' },

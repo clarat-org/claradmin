@@ -11,6 +11,12 @@ class TargetAudienceFiltersOffer < ActiveRecord::Base
   enumerize :gender_second_part_of_stamp, in: STAMP_SECOND_PART_GENDERS
   enumerize :residency_status, in: RESIDENCY_STATUSES
 
+  # Search
+  include PgSearch
+  pg_search_scope :search_pg,
+                  against: [:id, :stamp_de],
+                  using: { tsearch: { prefix: true } }
+
   # Callbacks
   before_update :generate_stamps!
 

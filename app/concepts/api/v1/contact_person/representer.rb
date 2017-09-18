@@ -19,8 +19,8 @@ module API::V1
           property :academic_title
           property :gender
           property :position
-          property :street
-          property :zip_and_city
+          # property :street
+          # property :zip_and_city
           property :spoc
 
           property :label, getter: ->(contact_person) do

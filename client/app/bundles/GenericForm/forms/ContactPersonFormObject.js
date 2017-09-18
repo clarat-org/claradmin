@@ -12,11 +12,10 @@ export default class CityFormObject extends GenericFormObject {
 
   static get properties() {
     return [
-      'area-code-1', 'local-number-1', 'area-code-2',
-      'local-number-2', 'fax-area-code', 'fax-number', 'first-name',
-      'last-name', 'operational-name', 'academic-title', 'gender',
-      'responsibility', 'position', 'street', 'zip-and-city', 'spoc',
-      'organization', 'email'
+      'gender', 'academic-title', 'position', 'first-name', 'last-name',
+      'operational-name', 'responsibility', 'area-code-1', 'local-number-1',
+      'area-code-2', 'local-number-2', 'fax-area-code', 'fax-number',
+      'email', 'organization', 'spoc',
     ]
   }
 
@@ -37,8 +36,8 @@ export default class CityFormObject extends GenericFormObject {
       position: {
         type: 'select', options: ['', 'superior', 'public_relations', 'other']
       },
-      street: { type: 'string' },
-      'zip-and-city': { type: 'string' },
+      // street: { type: 'string' },
+      // 'zip-and-city': { type: 'string' },
       spoc: { type: 'checkbox' },
       organization: { type: 'filtering-select' },
       email: { type: 'creating-select' }
