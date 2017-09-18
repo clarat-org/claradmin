@@ -20,7 +20,7 @@ class Offer::Create < Trailblazer::Operation
     step ::Lib::Macros::Nested::Create :target_audience_filters_offers,
                                        ::TargetAudienceFiltersOffer::Create
     step ::Lib::Macros::Nested::Find :openings, ::Opening
-    step ::Lib::Macros::Nested::Create :websites, Website::Create
+    step ::Lib::Macros::Nested::Create :websites, ::Website::Create
     step ::Lib::Macros::Nested::Find :logic_version, ::LogicVersion
   }
   step :set_creating_user

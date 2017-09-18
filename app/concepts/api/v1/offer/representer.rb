@@ -37,6 +37,7 @@ module API::V1
           property :logic_version_id
           property :split_base_id
           property :solution_category_id
+          property :category_ids
           property :location_id
           property :area_id
           property :contact_person_ids
@@ -45,6 +46,8 @@ module API::V1
           property :trait_filter_ids
           property :tag_ids
           property :opening_ids
+          property :next_step_ids
+          property :website_ids
         end
 
         has_one :section do
@@ -108,6 +111,11 @@ module API::V1
                 decorator: API::V1::SplitBase::Representer::Show,
                 populator: API::V1::Lib::Populators::FindOrInstantiate,
                 class: ::SplitBase
+
+        has_many :categories,
+                 decorator: API::V1::Category::Representer::Show,
+                 # populator: API::V1::Lib::Populators::FindOrInstantiate,
+                 class: ::Category
 
         has_one :solution_category,
                 decorator: API::V1::SolutionCategory::Representer::Show,

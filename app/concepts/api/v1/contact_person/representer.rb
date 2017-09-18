@@ -58,7 +58,7 @@ module API::V1
 
         has_one :organization,
                 decorator: API::V1::Organization::Representer::Show,
-                populator: API::V1::Lib::Populators::FindOrInstantiate,
+                populator: API::V1::Lib::Populators::Find,
                 class: ::Organization
       end
     end

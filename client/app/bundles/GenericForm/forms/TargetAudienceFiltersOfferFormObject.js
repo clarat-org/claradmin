@@ -68,8 +68,8 @@ export default class TagFormObject extends GenericFormObject {
 
   static get genericFormDefaults() {
     return {
-      'age-from': 0,
-      'age-to': 99
+      'age-from': '0',
+      'age-to': '99'
     }
   }
 }

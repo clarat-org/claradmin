@@ -45,14 +45,19 @@ export default class CityFormObject extends GenericFormObject {
   }
 
   static get submodels() {
-    return ['email']
+    return ['email', 'organization']
   }
 
   static get submodelConfig() {
     return {
-      email: { relationship: 'oneToOne', object: EmailFormObject }
+      email: { relationship: 'oneToOne', object: EmailFormObject },
+      organization: { relationship: 'oneToOne' }
     }
   }
+
+  // static get requiredFields() {
+  //   return ['organization']
+  // }
 
   validation() {
     // this.required('address').filled()

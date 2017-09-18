@@ -34,8 +34,10 @@ const mapStateToProps = (state, ownProps) => {
 
   let changed =
     (statePath._changes && statePath._changes.includes(attribute)) || false
+  const wrapperClassNameWithChanged =
+    (ownProps.wrapperClassName || '') + (changed ? ' changed' : '')
   const classNameWithChanged =
-    ownProps.wrapperClassName + (changed ? ' changed' : '')
+    (ownProps.className || '') + (changed ? ' changed' : '')
 
   return {
     value,
@@ -46,7 +48,8 @@ const mapStateToProps = (state, ownProps) => {
     resourceKey,
     alreadyLoadedInputs,
     showSelect: ownProps.showSelect || true,
-    classNameWithChanged
+    classNameWithChanged,
+    wrapperClassNameWithChanged,
   }
 }
 

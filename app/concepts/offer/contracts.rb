@@ -183,7 +183,7 @@ module Offer::Contracts
     def sections_must_match_categories_sections
       if categories.any?
         categories.each do |category|
-          next if category.sections.include?(section)
+          next if category.reload.sections.include?(section)
           errors.add(:categories,
                      I18n.t('offer.validations.category_for_section_needed',
                             world: section.name))
@@ -194,7 +194,7 @@ module Offer::Contracts
     def at_least_one_section_of_each_category_must_be_present
       if categories.any?
         categories.each do |offer_category|
-          next if offer_category.sections.include?(section)
+          next if offer_category.reload.sections.include?(section)
           errors.add(:categories,
                      I18n.t('offer.validations.section_for_category_needed',
                             category: offer_category.name))
