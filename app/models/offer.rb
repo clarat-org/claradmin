@@ -127,6 +127,6 @@ class Offer < ActiveRecord::Base
   end
 
   def _residency_status_filters
-    target_audience_filters_offers.pluck(:residency_status).uniq
+    target_audience_filters_offers.pluck(:residency_status).uniq.compact
   end
 end
