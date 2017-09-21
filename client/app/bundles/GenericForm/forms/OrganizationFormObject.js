@@ -83,7 +83,7 @@ class OrgaUpdateFormObject extends OrgaCreateFormObject {
     return concat(
       OrgaCreateFormObject.properties,
       [ 'description', 'legal-form', 'charitable', 'umbrella-filters',
-        'accredited-institution' ]
+        'accredited-institution', 'mailings' ]
     )
   }
 
@@ -96,17 +96,25 @@ class OrgaUpdateFormObject extends OrgaCreateFormObject {
         'legal-form': {
           type: 'select',
           options: [
-            'ev', 'ggmbh', 'gag', 'foundation', 'gug', 'gmbh', 'ag', 'ug',
+            '', 'ev', 'ggmbh', 'gag', 'foundation', 'gug', 'gmbh', 'ag', 'ug',
             'kfm', 'gbr', 'ohg', 'kg', 'eg', 'sonstige', 'state_entity'
           ]
         },
         'umbrella-filters': {
-          type: 'filtering-select',
+          type: 'filtering-multiselect',
           resource: 'filters',
           filters: { 'type': 'UmbrellaFilter' }
         },
         'accredited-institution': { type: 'checkbox' },
-      }
+        mailings: { type: 'select',
+                    options: ['disabled', 'enabled', 'force_disabled'] },
+      },
+    )
+  }
+
+  static get requiredInputs() {
+    return concat(
+      OrgaCreateFormObject.requiredInputs, ['description', 'legal-form']
     )
   }
 
