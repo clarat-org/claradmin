@@ -42,20 +42,23 @@ describe OfferMailer do
     end
 
     it 'only informs about offers by mailings=enabled organizations' do
+      orga2 = FactoryGirl.create :organization, :approved
       offer2 = FactoryGirl.create :offer, :approved,
+                                  organizations: [orga2],
                                   name: 'By mailings=enabled organization'
       offer2.contact_people.first.update_column :email_id, email.id
 
+      orga3 =
+        FactoryGirl.create :organization, :approved, mailings: 'force_disabled'
       offer3 = FactoryGirl.create :offer, :approved,
+                                  organizations: [orga3],
                                   name: 'By mailings=disabled organization'
       offer3.contact_people.first.update_column :email_id, email.id
-      offer3.organizations.update_all mailings: 'force_disabled'
-      # binding.pry
 
       assert_difference 'OfferMailing.count', 2 do # lists offer and offer2
-        subject.must have_body_text offer.name
         subject.must have_body_text 'By mailings=enabled organization'
         subject.wont have_body_text 'By mailings=disabled organization'
+        subject.must have_body_text offer.name
       end
     end
 

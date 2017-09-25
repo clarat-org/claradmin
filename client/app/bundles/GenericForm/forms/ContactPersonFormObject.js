@@ -21,12 +21,12 @@ export default class CityFormObject extends GenericFormObject {
 
   static get formConfig() {
     return {
-      'area-code-1': { type: 'string' },
-      'local-number-1': { type: 'string' },
-      'area-code-2': { type: 'string' },
-      'local-number-2': { type: 'string' },
-      'fax-area-code': { type: 'string' },
-      'fax-number': { type: 'string' },
+      'area-code-1': { type: 'number' },
+      'local-number-1': { type: 'number' },
+      'area-code-2': { type: 'number' },
+      'local-number-2': { type: 'number' },
+      'fax-area-code': { type: 'number' },
+      'fax-number': { type: 'number' },
       'first-name': { type: 'string' },
       'last-name': { type: 'string' },
       'operational-name': { type: 'string' },

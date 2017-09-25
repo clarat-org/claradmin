@@ -16,16 +16,6 @@ class OfferContractTest < ActiveSupport::TestCase
       it { subject.must validate_presence_of :encounter }
       it { subject.must validate_presence_of :section }
 
-      it 'should fails if code_word is more than 140 characters' do
-        subject.code_word = Array.new(141) { rand(36).to_s(36) }.join
-        subject.wont_be :valid?
-      end
-
-      it 'should ensure that code_word < 141 characters' do
-        subject.code_word = Array.new(140) { rand(36).to_s(36) }.join
-        subject.must_be :valid?
-      end
-
       it 'should fails if personal offer has no location' do
         subject.encounter = 'personal'
         subject.location = nil
@@ -126,27 +116,27 @@ class OfferContractTest < ActiveSupport::TestCase
         subject.must_be :valid?
       end
 
-      it 'should validate presence of expiration date' do
-        subject.expires_at = nil
-        subject.valid?.must_equal false
-      end
-
-      it 'should validate if expires_at is in future and starts_at not set' do
-        subject.expires_at = Time.zone.now + 1.day
-        subject.valid?.must_equal true
-      end
-
-      it 'should fail if start_date > expires_at' do
-        subject.expires_at = Time.zone.now + 1.day
-        subject.starts_at = Time.zone.now + 2.days
-        subject.valid?.must_equal false
-      end
-
-      it 'should validate start date is before expires_at' do
-        subject.expires_at = Time.zone.now + 1.day
-        subject.starts_at = Time.zone.now
-        subject.valid?.must_equal true
-      end
+      # it 'should validate presence of expiration date' do
+      #   subject.expires_at = nil
+      #   subject.valid?.must_equal false
+      # end
+      #
+      # it 'should validate if expires_at is in future and starts_at not set' do
+      #   subject.expires_at = Time.zone.now + 1.day
+      #   subject.valid?.must_equal true
+      # end
+      #
+      # it 'should fail if start_date > expires_at' do
+      #   subject.expires_at = Time.zone.now + 1.day
+      #   subject.starts_at = Time.zone.now + 2.days
+      #   subject.valid?.must_equal false
+      # end
+      #
+      # it 'should validate start date is before expires_at' do
+      #   subject.expires_at = Time.zone.now + 1.day
+      #   subject.starts_at = Time.zone.now
+      #   subject.valid?.must_equal true
+      # end
 
       it 'should fail if sections of offer and both categories dont match' do
         subject = Offer::Contracts::Update.new(offers(:basic))

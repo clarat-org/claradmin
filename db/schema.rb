@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170908124329) do
+ActiveRecord::Schema.define(version: 20170921090532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,12 @@ ActiveRecord::Schema.define(version: 20170908124329) do
   end
 
   add_index "absences", ["user_id"], name: "index_absences_on_user_id", using: :btree
+
+  create_table "ar_internal_metadata", primary_key: "key", force: :cascade do |t|
+    t.string   "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "areas", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -407,7 +413,6 @@ ActiveRecord::Schema.define(version: 20170908124329) do
     t.datetime "approved_at"
     t.integer  "created_by"
     t.integer  "approved_by"
-    t.date     "expires_at",                                             null: false
     t.integer  "area_id"
     t.text     "description_html"
     t.text     "next_steps_html"
@@ -425,6 +430,7 @@ ActiveRecord::Schema.define(version: 20170908124329) do
     t.integer  "completed_by"
     t.integer  "section_id"
     t.string   "comment"
+    t.date     "ends_at"
   end
 
   add_index "offers", ["aasm_state"], name: "index_offers_on_aasm_state", using: :btree
@@ -561,13 +567,14 @@ ActiveRecord::Schema.define(version: 20170908124329) do
   add_index "split_base_divisions", ["split_base_id"], name: "index_split_base_divisions_on_split_base_id", using: :btree
 
   create_table "split_bases", force: :cascade do |t|
-    t.string   "title",                null: false
+    t.string   "title",                            null: false
     t.string   "clarat_addition"
     t.text     "comments"
     t.integer  "organization_id"
-    t.integer  "solution_category_id", null: false
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.integer  "solution_category_id",             null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "code_word",            limit: 140
   end
 
   add_index "split_bases", ["organization_id"], name: "index_split_bases_on_organization_id", using: :btree

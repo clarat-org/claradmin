@@ -316,7 +316,7 @@ export default {
         'index', 'export', 'new'
       ],
       member_actions: [
-        'show', 'old-backend-edit'
+        'show', 'edit'
       ]
     },
 

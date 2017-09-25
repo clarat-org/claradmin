@@ -40,9 +40,9 @@ describe Offer do
 
       describe 'seasonal' do
         it 'should correctly retrieve only seasonal offers with seasonal scope' do
-          seasonal_offer = FactoryGirl.create :offer,
-                                              starts_at: Time.zone.now - 30.days,
-                                              expires_at: Time.zone.now + 30.days
+          seasonal_offer =
+            FactoryGirl.create :offer, starts_at: Time.zone.now - 30.days,
+                                       ends_at: Time.zone.now + 30.days
           FactoryGirl.create :offer # additional normal offer
           Offer.seasonal.must_equal [seasonal_offer]
         end
@@ -143,7 +143,7 @@ describe Offer do
         it 'should transition to seasonal_pending for a future start_date' do
           basicOffer.update_columns aasm_state: 'approval_process',
                                     starts_at: Time.zone.now + 1.day,
-                                    expires_at: Time.zone.now + 30.days
+                                    ends_at: Time.zone.now + 30.days
           basicOffer.must_be :valid?
           basicOffer.send(:approve)
           basicOffer.must_be :seasonal_pending?
@@ -152,7 +152,7 @@ describe Offer do
         it 'should transition to approved for a past start_date' do
           basicOffer.update_columns aasm_state: 'approval_process',
                                     starts_at: Time.zone.now - 1.day,
-                                    expires_at: Time.zone.now + 30.days
+                                    ends_at: Time.zone.now + 30.days
           basicOffer.must_be :valid?
           basicOffer.send(:approve)
           basicOffer.must_be :approved?
@@ -261,7 +261,7 @@ describe Offer do
           new_offer.reload.name_ar.must_equal 'GET READY FOR CANADA'
           new_offer.description_ar.must_equal 'GET READY FOR CANADA'
           # changing untranslated field => translations must stay the same
-          new_offer.expires_at = Date.tomorrow
+          new_offer.comment = 'foobar'
           new_offer.save!
           new_offer.run_callbacks(:commit) # Hotfix: force commit callback
           new_offer.reload.name_ar.must_equal 'GET READY FOR CANADA'

@@ -19,18 +19,18 @@ class OfferCreateFormObject extends GenericFormObject {
   static get properties() {
     return [
       'section', 'split-base', 'name', 'description',
-      'comment', 'next-steps', 'code-word', 'contact-people',
+      'comment', 'next-steps', 'contact-people',
       'hide-contact-people', 'encounter', 'location', 'area', 'categories',
-      'tags', 'solution-category', 'trait-filters', 'language-filters',
+      'tags', 'trait-filters', 'language-filters',
       'target-audience-filters-offers', 'openings', 'opening-specification',
-      'websites', 'starts-at', 'expires-at', 'logic-version'
+      'websites', 'starts-at', 'logic-version'
     ]
   }
 
   static get submodels() {
     return [
       'section', 'split-base', 'next-steps', 'contact-people', 'location',
-      'area', 'categories', 'tags', 'solution-category', 'trait-filters',
+      'area', 'categories', 'tags', 'trait-filters',
       'language-filters', 'target-audience-filters-offers', 'openings',
       'websites', 'logic-version'
     ]
@@ -64,9 +64,6 @@ class OfferCreateFormObject extends GenericFormObject {
       tags: {
         relationship: 'oneToMany',
       },
-      'solution-category': {
-        relationship: 'oneToOne',
-      },
       'trait-filters': {
         relationship: 'oneToMany',
       },
@@ -99,7 +96,6 @@ class OfferCreateFormObject extends GenericFormObject {
       description: { type: 'textarea' },
       comment: { type: 'textarea' },
       'next-steps': { type: 'filtering-multiselect' },
-      'code-word': { type: 'string' },
       'contact-people': { type: 'creating-multiselect' },
       'hide-contact-people': { type: 'checkbox' },
       encounter: {
@@ -112,7 +108,6 @@ class OfferCreateFormObject extends GenericFormObject {
       area: { type: 'filtering-select' },
       categories: { type: 'filtering-multiselect' },
       tags: { type: 'filtering-multiselect' },
-      'solution-category': { type: 'filtering-select' },
       'trait-filters': {
         type: 'filtering-multiselect',
         resource: 'filters', filters: { type: 'TraitFilter' }
@@ -127,7 +122,6 @@ class OfferCreateFormObject extends GenericFormObject {
       openings: { type: 'filtering-multiselect' },
       'opening-specification': { type: 'textarea' },
       'starts-at': { type: 'date' },
-      'expires-at': { type: 'date' },
       websites: { type: 'creating-multiselect' },
       'logic-version': { type: 'filtering-select' },
     }
@@ -136,7 +130,7 @@ class OfferCreateFormObject extends GenericFormObject {
   static get requiredInputs() {
     return [
       'section', 'split-base', 'name', 'target-audience-filters-offers',
-      'solution-category', 'language-filters', 'description', 'expires-at'
+      'language-filters', 'description'
     ]
   }
 
@@ -146,20 +140,20 @@ class OfferCreateFormObject extends GenericFormObject {
 }
 
 class OfferUpdateFormObject extends OfferCreateFormObject {
-  static get properties() {
-    return concat(
-      OfferCreateFormObject.properties,
-      ['old-next-steps']
-    )
-  }
-
-  static get formConfig() {
-    return merge(
-      OfferCreateFormObject.formConfig, {
-        'old-next-steps': { type: 'textarea' },
-      }
-    )
-  }
+  // static get properties() {
+  //   return concat(
+  //     OfferCreateFormObject.properties,
+  //     ['old-next-steps']
+  //   )
+  // }
+  //
+  // static get formConfig() {
+  //   return merge(
+  //     OfferCreateFormObject.formConfig, {
+  //       'old-next-steps': { type: 'textarea' },
+  //     }
+  //   )
+  // }
 
   static get readOnlyProperties() {
     return ['aasm-state']

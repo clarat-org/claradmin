@@ -50,7 +50,7 @@ function visibleFor(action, model, id, entity) {
     case 'open_url':
       return !!entity
     default:
-      return true
+      return !!id
   }
 }
 

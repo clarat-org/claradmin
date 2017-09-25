@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class Offer::Update < Trailblazer::Operation
+  include Offer::CommonSideEffects
+
   step Model(::Offer, :find_by)
   step Policy::Pundit(PermissivePolicy, :update?)
 
@@ -14,7 +16,6 @@ class Offer::Update < Trailblazer::Operation
     step ::Lib::Macros::Nested::Find :area, ::Area
     step ::Lib::Macros::Nested::Find :categories, ::Category
     step ::Lib::Macros::Nested::Find :tags, ::Tag
-    step ::Lib::Macros::Nested::Find :solution_category, ::SolutionCategory
     step ::Lib::Macros::Nested::Find :trait_filters, ::TraitFilter
     step ::Lib::Macros::Nested::Find :language_filters, ::LanguageFilter
     step ::Lib::Macros::Nested::Create :target_audience_filters_offers,
@@ -24,4 +25,5 @@ class Offer::Update < Trailblazer::Operation
     step ::Lib::Macros::Nested::Find :logic_version, ::LogicVersion
   }
   step Contract::Persist()
+  step :set_next_steps_sort_value
 end

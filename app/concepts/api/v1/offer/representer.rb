@@ -20,7 +20,6 @@ module API::V1
           property :approved_at
           property :created_by
           property :approved_by
-          property :expires_at
           property :description_html
           property :next_steps_html
           property :opening_specification_html
@@ -116,11 +115,6 @@ module API::V1
                  decorator: API::V1::Category::Representer::Show,
                  # populator: API::V1::Lib::Populators::FindOrInstantiate,
                  class: ::Category
-
-        has_one :solution_category,
-                decorator: API::V1::SolutionCategory::Representer::Show,
-                populator: API::V1::Lib::Populators::FindOrInstantiate,
-                class: ::SolutionCategory
 
         has_many :tags,
                  decorator: API::V1::Tag::Representer::Show,

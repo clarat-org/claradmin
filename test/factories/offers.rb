@@ -14,7 +14,6 @@ FactoryGirl.define do
     area { Area.first unless encounter == 'personal' }
     approved_at nil
     split_base nil
-    solution_category
     # every offer should have a creator!
     created_by { User.all.sample.id || FactoryGirl.create(:researcher).id }
 
@@ -28,7 +27,7 @@ FactoryGirl.define do
       opening_count { rand(1..5) }
       fake_address false
       section nil
-      organizations []
+      organizations [Organization.all.sample]
     end
 
     after :build do |offer, evaluator|

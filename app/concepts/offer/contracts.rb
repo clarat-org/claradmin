@@ -6,8 +6,6 @@ module Offer::Contracts
     property :description
     property :comment
     property :encounter
-    property :expires_at
-    property :code_word
     property :section
     property :slug
     property :language_filters
@@ -18,10 +16,8 @@ module Offer::Contracts
     property :aasm_state
     property :contact_people
     property :next_steps
-    property :old_next_steps
     property :logic_version
     property :split_base
-    property :solution_category
     property :starts_at
     property :categories
     property :section
@@ -38,8 +34,6 @@ module Offer::Contracts
     #           unless: ->(offer) { offer.location.nil? }
     validates :description, presence: true
     validates :encounter, presence: true
-    validates :expires_at, presence: true
-    validates :code_word, length: { maximum: 140 }
     validates :section, presence: true
 
     # Needs to be true before approval possible. Called in custom validation.
@@ -55,8 +49,6 @@ module Offer::Contracts
     validate :contact_people_are_choosable
     validate :no_more_than_10_next_steps
     validate :split_base_if_version_greater_7
-    validate :start_date_must_be_before_expiry_date
-    validate :categories_is_not_empty_if_version_greater_8
 
     # association getter
     def organizations
@@ -132,17 +124,6 @@ module Offer::Contracts
     def split_base_if_version_greater_7
       return if !logic_version || logic_version.version < 7 || split_base
       errors.add :split_base, I18n.t('offer.validations.is_needed')
-    end
-
-    def categories_is_not_empty_if_version_greater_8
-      return if !logic_version || logic_version.version < 8 || solution_category
-      errors.add :solution_category,
-                 I18n.t('offer.validations.needs_solution_category')
-    end
-
-    def start_date_must_be_before_expiry_date
-      return if !starts_at || !expires_at || expires_at > starts_at
-      custom_error :starts_at, 'must_be_smaller_than_expiry_date'
     end
 
     def personal?
