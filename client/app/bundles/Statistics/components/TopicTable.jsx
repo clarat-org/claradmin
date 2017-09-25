@@ -21,7 +21,9 @@ export default class TopicTable extends React.Component {
   }
 
   render() {
-    const { data, teams, teamKey, onCityChange, columnElements, columnName } = this.props
+    const {
+      data, teams, teamKey, onCityChange, columnElements, columnName
+    } = this.props
 
     return (
       <div>
@@ -47,9 +49,7 @@ export default class TopicTable extends React.Component {
   }
 
   renderColumns(topic) {
-    return(
-        <th key={topic}> {topic} </th>
-    )
+    return( <th key={topic}> {topic} </th> )
   }
 
   renderCell(topic, numbers) {
@@ -67,7 +67,7 @@ export default class TopicTable extends React.Component {
       return(
         <tr key={team}>
           <td>{team}</td>
-          {this.props.columnElements.map(topic => this.renderCell(topic, numbers))}
+          {this.props.columnElements.map(t => this.renderCell(t, numbers))}
           <td>
             {typeof numbers.total == 'number' ? numbers.total : 'Lade…'}
           </td>

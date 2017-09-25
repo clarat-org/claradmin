@@ -15,17 +15,18 @@ const mapStateToProps = (state, ownProps) => {
   const teamKey = `statisticsOverview_${ownProps.model}_${columnName}`
   const teams = ['Screening', 'Not-Screening']
   const selectedCity = state.rform[teamKey] && state.rform[teamKey].city
-  const data = (state.entities.count && state.entities.count[ownProps.model] &&
-                state.entities.count[ownProps.model][columnName] &&
-                state.entities.count[ownProps.model][columnName][selectedCity || ALL]
-               ) || {}
+  const data =
+    (state.entities.count && state.entities.count[ownProps.model] &&
+      state.entities.count[ownProps.model][columnName] &&
+      state.entities.count[ownProps.model][columnName][selectedCity || ALL]
+    ) || {}
   const columnElements = (state.ajax[columnName] &&
                           state.ajax[columnName].data.map(datum =>
                           datum.attributes.name)
                          ) || []
   const loadedCities =
     (state.entities.count && state.entities.count[ownProps.model] &&
-      keys(state.entities.count[ownProps.model][teamKey])
+      keys(state.entities.count[ownProps.model][columnName])
     ) || []
 
   return {
@@ -47,7 +48,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { model } = ownProps
   const { dispatch } = dispatchProps
 
-  const entryCountGrabberTransformer = function(columnName, team, element, cityId) {
+  const entryCountGrabberTransformer = function(
+    columnName, team, element, cityId
+  ) {
     return function(json) {
       const elementKey = element
       const teamKey = team || 'total'
@@ -68,22 +71,23 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 
   const entryCountGrabberParams = function(columnName, team, element, cityId) {
     let params = { per_page: 1 }
+    // set city.id filter
     if (cityId && cityId != 'all')
       params[`filters[division-cities.id]`] = cityId
+    // set receiver-team.name filter
     if (team == 'Screening') {
       params[`filters[current-assignment.receiver-team.name]`] = 'Screening'
-    } else {
-      if (team == 'Not-Screening') {
-        params[`filters[current-assignment.receiver-team.name]`] = 'Screening'
-        params[`operators[current-assignment.receiver-team.name]`] = '!='
-      }
     }
+    else if (team == 'Not-Screening') {
+      params[`filters[current-assignment.receiver-team.name]`] = 'Screening'
+      params[`operators[current-assignment.receiver-team.name]`] = '!='
+    }
+    // set topic.name or section.name filter
     if (element != 'total' && columnName == 'topics') {
       params[`filters[topics.name]`] = element
-    } else {
-      if (element != 'total' && columnName == 'sections') {
-        params[`filters[sections.name]`] = element
-      }
+    }
+    else if (element != 'total' && columnName == 'sections') {
+      params[`filters[sections.name]`] = element
     }
     return params
   }
@@ -122,9 +126,13 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     },
 
     onCityChange(selected) {
-      const city = (selected && selected.value) || ALL
-      if (!stateProps.loadedCities.includes(city))
-        loadData(stateProps.columnName, stateProps.teams, stateProps.columnElements, city)
+      let city = (selected && selected.value) || ALL
+      if (!stateProps.loadedCities.includes(city)) {
+        loadData(
+          stateProps.columnName, stateProps.teams, stateProps.columnElements,
+          city
+        )
+      }
     }
   })
 }
