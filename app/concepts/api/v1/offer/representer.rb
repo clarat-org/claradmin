@@ -28,6 +28,7 @@ module API::V1
           property :hide_contact_people
           property :code_word
           property :starts_at
+          property :ends_at
           property :completed_at
           property :completed_by
           property :comment
@@ -97,7 +98,7 @@ module API::V1
                  class: ::TraitFilter
 
         has_one :location,
-                decorator: API::V1::Location::Representer::Show,
+                decorator: API::V1::Location::Representer::Create,
                 populator: API::V1::Lib::Populators::FindOrInstantiate,
                 class: ::Location
 

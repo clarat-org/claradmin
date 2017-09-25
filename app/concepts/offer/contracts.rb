@@ -19,6 +19,7 @@ module Offer::Contracts
     property :logic_version
     property :split_base
     property :starts_at
+    property :ends_at
     property :categories
     property :section
     property :tags
@@ -150,12 +151,10 @@ module Offer::Contracts
     # organization
     def location_fits_organization
       ids = organizations.pluck(:id)
-      if personal? && location && !ids.include?(location.organization_id)
-        errors.add :location_id, I18n.t(
-          'offer.validations.location_fits_organization.location_error'
-        )
-        errors.add :organizations, I18n.t(
-          'offer.validations.location_fits_organization.organization_error'
+      if personal? && location && location.organization &&
+         !ids.include?(location.organization.id)
+        errors.add :location, I18n.t(
+          'offer.validations.location_fits_organization'
         )
       end
     end

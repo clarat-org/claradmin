@@ -14,6 +14,7 @@ class SplitBaseContractsTest < ActiveSupport::TestCase
       describe 'always' do
         it { must_validate_presence_of :title }
         it { must_validate_presence_of :solution_category }
+        it { must_validate_length_of :code_word, maximum: 140 }
       end
 
       it 'uniqueness if divison same' do
@@ -40,16 +41,6 @@ class SplitBaseContractsTest < ActiveSupport::TestCase
         sb_contract = SplitBase::Contracts::Create.new(sub_sb)
         sb_contract.valid?
         assert_nil sb_contract.errors.messages[:title]
-      end
-
-      it 'fails if code_word is more than 140 characters' do
-        subject.code_word = Array.new(141) { rand(36).to_s(36) }.join
-        subject.wont_be :valid?
-      end
-
-      it 'should ensure that code_word < 141 characters' do
-        subject.code_word = Array.new(140) { rand(36).to_s(36) }.join
-        subject.must_be :valid?
       end
     end
   end
