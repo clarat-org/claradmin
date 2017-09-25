@@ -27,6 +27,10 @@ import OfferOverviewPage
   from '../../bundles/Statistics/components/OfferOverviewPage'
 import OrgaOverviewPage
   from '../../bundles/Statistics/components/OrgaOverviewPage'
+import OrgaTopicOverviewPage
+  from '../../bundles/Statistics/components/OrgaTopicOverviewPage'
+import OrgaScreeningOverviewPage
+  from '../../bundles/Statistics/components/OrgaScreeningOverviewPage'
 import OrgaOfferCitiesOverview
   from '../../bundles/Statistics/components/OrgaOfferCitiesOverviewPage'
 import RatioOverviewPage
@@ -188,6 +192,8 @@ export default class Routes extends React.Component {
             <IndexRoute component={Overview}/>
             <Route path='offer-overview' component={OfferOverviewPage} />
             <Route path='organization-overview' component={OrgaOverviewPage} />
+            <Route path='screening-overview' component={OrgaScreeningOverviewPage} />
+            <Route path='topic-overview' component={OrgaTopicOverviewPage} />
             <Route path='orga-offer-cities-overview'
               component={OrgaOfferCitiesOverview}
             />

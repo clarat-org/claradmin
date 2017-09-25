@@ -135,4 +135,8 @@ class Offer < ActiveRecord::Base
   def editable?
     EDITABLE_IN_STATES.include?(aasm_state)
   end
+
+  def _residency_status_filters
+    target_audience_filters_offers.pluck(:residency_status).uniq.compact
+  end
 end

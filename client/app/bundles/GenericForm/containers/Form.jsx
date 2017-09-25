@@ -156,7 +156,8 @@ const errorFlashMessage =
 function buildActionButtonData(
   state, model, editId, instance, formObject, formData
 ) {
-  let changes = formData && formData._changes && formData._changes.length
+  let changes = formData && formData._changes &&
+    formData._changes.length || hasAtLeastOneSubmodelForm(formData)
   // start with default save button (might be extended)
   let buttonData = changes ? [{
     className: 'default',
@@ -188,6 +189,20 @@ function buildActionButtonData(
   }
 
   return buttonData
+}
+
+function hasAtLeastOneSubmodelForm(formData){
+  if (formData && formData._registeredSubmodelForms) {
+    for (var key in formData._registeredSubmodelForms) {
+        if (
+          formData._registeredSubmodelForms.hasOwnProperty(key) &&
+          formData._registeredSubmodelForms[key].length
+        ) {
+          return true
+        }
+    }
+  }
+  return false
 }
 
 // TODO: use translations
