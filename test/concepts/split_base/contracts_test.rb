@@ -6,8 +6,8 @@ class SplitBaseContractsTest < ActiveSupport::TestCase
   include ContractTestUtils
 
   describe 'Create' do
-    let sub_sb = SplitBase.new
-    let solution_category = SolutionCategory.create!(name: 'name')
+    let(:sub_sb) { SplitBase.new }
+    let(:solution_category) { SolutionCategory.create!(name: 'name') }
     subject { SplitBase::Contracts::Create.new(sub_sb) }
 
     describe 'validations' do

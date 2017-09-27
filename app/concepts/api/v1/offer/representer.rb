@@ -26,7 +26,6 @@ module API::V1
           property :target_audience
           property :aasm_state
           property :hide_contact_people
-          property :code_word
           property :starts_at
           property :ends_at
           property :completed_at
@@ -36,7 +35,6 @@ module API::V1
           property :section_id
           property :logic_version_id
           property :split_base_id
-          property :solution_category_id
           property :category_ids
           property :location_id
           property :area_id
