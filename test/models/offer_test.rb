@@ -137,6 +137,16 @@ describe Offer do
       end
     end
 
+    describe '#editable?' do
+      it 'must return true for EDITABLE_IN_STATES states' do
+        states = Offer.aasm.states.map(&:name)
+        states_returning_true = states.select do |state|
+          Offer.new(aasm_state: state).editable?
+        end.map(&:to_s).sort
+        Offer::EDITABLE_IN_STATES.sort.must_equal states_returning_true
+      end
+    end
+
     describe 'State Machine' do
       describe '#different_actor?' do
         it 'should return true when created_by differs from current_actor' do

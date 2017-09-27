@@ -54,7 +54,7 @@ export default {
         'index', 'export', 'new'
       ],
       member_actions: [
-        'show', 'edit', 'delete', 'duplicate'
+        'show', 'edit', 'delete', 'duplicate', 'preview'
       ]
     },
 

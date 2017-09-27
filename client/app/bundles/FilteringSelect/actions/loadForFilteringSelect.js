@@ -22,14 +22,17 @@ export const addForFilteringSelect = (key, options) => ({
 
 export function loadForFilteringSelect(
   input, associatedModel, key, model = null, inverseRelationship = null,
-  filters = {}, ids = ''
+  paramHash = {}, ids = ''
 ) {
   let path = `/api/v1/${associatedModel}`
-  let paramHash = {}
 
-  if (ids) filters.id = ids.split(',')
+  if (ids) {
+    paramHash.filters = paramHash.filters || {}
+    paramHash.filters.id = ids.split(',')
+  }
+
   if (input) paramHash.query = input
-  if (keys(filters).length) paramHash.filters = filters
+  // if (keys(filters).length) paramHash.filters = filters
   if (inverseRelationship == 'belongsTo') {
     paramHash.filters = paramHash.filters || {}
     paramHash.filters[singularize(model) + '_id'] = 'nil'

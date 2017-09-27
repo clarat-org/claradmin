@@ -220,6 +220,11 @@ class OfferContractTest < ActiveSupport::TestCase
       #   subject.reload.must_be :valid?
       # end
     end
+
+    describe 'on update' do
+      subject { offers(:basic) }
+      it { subject.must validate_presence_of :target_audience_filters_offers }
+    end
   end
 end
 # rubocop:enable ClassLength

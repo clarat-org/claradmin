@@ -228,4 +228,22 @@ describe OfferMailer do
       end
     end
   end
+
+  describe 'support functions' do
+    describe '#get_section_names_sorted_by_offer_count' do
+      it 'should list family first if it has fewer offers' do
+        OfferMailer.send(:new).send(
+          :get_section_names_sorted_by_offer_count,
+          'family' => [1], 'refugees' => [2, 2]
+        ).must_equal %w(family refugees)
+      end
+
+      it 'should list refugees first if it has fewer offers' do
+        OfferMailer.send(:new).send(
+          :get_section_names_sorted_by_offer_count,
+          'family' => [2, 2], 'refugees' => [1]
+        ).must_equal %w(refugees family)
+      end
+    end
+  end
 end

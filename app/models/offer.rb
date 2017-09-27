@@ -5,8 +5,9 @@ require ClaratBase::Engine.root.join('app', 'models', 'offer')
 class Offer < ActiveRecord::Base
   has_paper_trail
 
-  EDITABLE_IN_STATES =
-    %(initialized approved expired checkup_process approval_process edit)
+  EDITABLE_IN_STATES = %w(
+    initialized approved expired checkup_process approval_process edit
+  ).freeze
 
   # Modules
   include SearchAlgolia, StateMachine

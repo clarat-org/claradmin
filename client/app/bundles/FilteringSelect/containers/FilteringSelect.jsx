@@ -7,13 +7,13 @@ import { resetFilteringSelectData } from '../actions/resetFilteringSelectData'
 import FilteringSelect from '../components/FilteringSelect'
 
 const mapStateToProps = (state, ownProps) => {
-  const { attribute, submodelPath, filters } = ownProps
+  const { attribute, submodelPath, params } = ownProps
   // remove last "-id(s)" from attribute
   let resource = ownProps.resource || attribute.replace(/(-id|-ids)$/, '')
   // pluralize
   resource = pluralize(resource)
   const filterString =
-    filters && Object.keys(filters).length && JSON.stringify(filters) || ''
+    params && Object.keys(params).length && JSON.stringify(params) || ''
   const resourceKey = resource + filterString
 
   const formState = state.rform[ownProps.formId]
@@ -58,7 +58,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({ dispatch })
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { dispatch } = dispatchProps
   const { alreadyLoadedInputs, resource, resourceKey } = stateProps
-  const { filters, inverseRelationship, model } = ownProps
+  const { params, inverseRelationship, model } = ownProps
 
   return {
     ...ownProps,
@@ -80,7 +80,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 
     onMount() {
       dispatch(loadForFilteringSelect(
-        '', resource, resourceKey, model, inverseRelationship, filters
+        '', resource, resourceKey, model, inverseRelationship, params
       ))
     },
 
@@ -96,14 +96,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
         value => alreadyLoadedInputs.includes(value) == false
       ).join(',')
       dispatch(loadForFilteringSelect(
-        '', resource, resourceKey, model, inverseRelationship, filters, filter_ids
+        '', resource, resourceKey, model, inverseRelationship, params, filter_ids
       ))
     },
 
     onInputChange(input) {
       if (alreadyLoadedInputs.includes(input)) return
       dispatch(loadForFilteringSelect(
-        input, resource, resourceKey, model, inverseRelationship, filters
+        input, resource, resourceKey, model, inverseRelationship, params
       ))
     },
   }

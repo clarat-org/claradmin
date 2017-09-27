@@ -110,16 +110,21 @@ class OfferCreateFormObject extends GenericFormObject {
       tags: { type: 'filtering-multiselect' },
       'trait-filters': {
         type: 'filtering-multiselect',
-        resource: 'filters', filters: { type: 'TraitFilter' }
+        resource: 'filters',
+        params: { filters: { type: 'TraitFilter' } }
       },
       'language-filters': {
         type: 'filtering-multiselect',
-        resource: 'filters', filters: { type: 'LanguageFilter' }
+        resource: 'filters',
+        params: { filters: { type: 'LanguageFilter' } }
       },
       'target-audience-filters-offers': {
         type: 'creating-multiselect'
       },
-      openings: { type: 'filtering-multiselect' },
+      openings: {
+        type: 'filtering-multiselect',
+        params: { sort_field: 'sort_value', sort_direction: 'ASC' }
+      },
       'opening-specification': { type: 'textarea' },
       'starts-at': { type: 'date' },
       'ends-at': { type: 'date' },

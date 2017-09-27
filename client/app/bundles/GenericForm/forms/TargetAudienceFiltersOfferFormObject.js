@@ -25,7 +25,8 @@ export default class TagFormObject extends GenericFormObject {
     return {
       'target-audience-filter': {
         type: 'filtering-select',
-        resource: 'filters', filters: { type: 'TargetAudienceFilter' }
+        resource: 'filters',
+        params: { filters: { type: 'TargetAudienceFilter' } }
       },
       offer: { type: 'filtering-select' },
       'residency-status': {

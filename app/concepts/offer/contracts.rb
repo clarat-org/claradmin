@@ -145,7 +145,8 @@ module Offer::Contracts
     validate :sections_must_match_categories_sections
     validate :at_least_one_section_of_each_category_must_be_present
     validate :location_fits_organization
-    validate :validate_target_audience_filters_offers
+    validates :target_audience_filters_offers, presence: true
+    # validate :validate_target_audience_filters_offers
 
     # Ensure selected organization is the same as the selected location's
     # organization
@@ -181,15 +182,15 @@ module Offer::Contracts
         end
       end
     end
-
-    def validate_target_audience_filters_offers
-      unless target_audience_filters_offers.any?
-        errors.add(
-          :target_audience_filters_offers,
-          I18n.t('offer.validations.needs_target_audience_filters')
-        )
-      end
-    end
+    #
+    # def validate_target_audience_filters_offers
+    #   unless target_audience_filters_offers.any?
+    #     errors.add(
+    #       :target_audience_filters_offers,
+    #       I18n.t('offer.validations.needs_target_audience_filters')
+    #     )
+    #   end
+    # end
   end
 
   class ChangeState < Update # rails admin hack only
