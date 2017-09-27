@@ -8,8 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: 3b4bc0a2720ee942b6212057cace1622c7aa9151
-  branch: feature/1294-duplicate
+  revision: 1d3e424b9f6b3db6187d99cba22c8ead75009ae7
   specs:
     clarat_base (0.1.4)
       aasm
