@@ -23,7 +23,7 @@ class TargetAudienceFiltersOfferContractsTest < ActiveSupport::TestCase
           subject.age_from = 9
           subject.age_to = 10
           subject.valid?
-          assert_nil subject.errors.messages[:age_from]
+          assert_empty subject.errors.messages[:age_from]
 
           subject.age_to = 1
           subject.valid?
@@ -34,7 +34,7 @@ class TargetAudienceFiltersOfferContractsTest < ActiveSupport::TestCase
         it 'should validate age_from' do
           subject.age_from = 10
           subject.valid?
-          assert_nil subject.errors.messages[:age_from]
+          assert_empty subject.errors.messages[:age_from]
 
           subject.age_from = -1
           subject.valid?
@@ -56,7 +56,7 @@ class TargetAudienceFiltersOfferContractsTest < ActiveSupport::TestCase
         it 'should validate age_to' do
           subject.age_to = 10
           subject.valid?
-          assert_nil subject.errors.messages[:age_to]
+          assert_empty subject.errors.messages[:age_to]
 
           subject.age_to = -1
           subject.errors.delete :age_to
