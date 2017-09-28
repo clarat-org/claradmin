@@ -4,7 +4,7 @@ class Division::Update < Trailblazer::Operation
   include SyncOrganization
 
   step Model(::Division, :find_by)
-  step Policy::Pundit(DivisionPolicy, :update?)
+  step Policy::Pundit(PermissivePolicy, :update?)
 
   step Contract::Build(constant: Division::Contracts::Update)
   step Contract::Validate()

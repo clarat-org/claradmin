@@ -15,6 +15,7 @@ module API::V1
           property :solution_category_id
           property :clarat_addition
           property :comments
+          property :code_word
           property :created_at
           property :updated_at
         end
@@ -41,6 +42,10 @@ module API::V1
       end
 
       class Create < Index
+        has_one :solution_category,
+                decorator: API::V1::SolutionCategory::Representer::Show,
+                populator: API::V1::Lib::Populators::FindOrInstantiate,
+                class: ::SolutionCategory
       end
     end
   end

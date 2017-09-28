@@ -12,6 +12,13 @@ class ContactPerson < ApplicationRecord
                   ],
                   using: { tsearch: { prefix: true } }
 
+  # pg_search_scope :search_pg_index,
+  #                 against: [
+  #                   :id, :position, :operational_name, :first_name, :last_name
+  #                 ],
+  #                 associated_against: { organization: :name },
+  #                 using: { tsearch: { prefix: true } }
+
   # Admin specific methods
 
   include ReformedValidationHack

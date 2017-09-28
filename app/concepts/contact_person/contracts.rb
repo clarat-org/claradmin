@@ -9,7 +9,6 @@ module ContactPerson::Contracts
     property :gender
     property :responsibility
     property :position
-    property :street
     property :spoc
     property :area_code_1
     property :local_number_1
@@ -17,7 +16,8 @@ module ContactPerson::Contracts
     property :local_number_2
     property :fax_area_code
     property :fax_number
-    property :zip_and_city
+    # property :street
+    # property :zip_and_city
     property :email
     property :organization
 

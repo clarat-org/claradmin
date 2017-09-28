@@ -6,8 +6,9 @@ require ClaratBase::Engine.root.join('app', 'models', 'offer')
 class Offer < ApplicationRecord
   has_paper_trail
 
-  EDITABLE_IN_STATES =
-    %(initialized approved expired checkup_process approval_process edit)
+  EDITABLE_IN_STATES = %w(
+    initialized approved expired checkup_process approval_process edit
+  ).freeze
 
   # Modules
   include StateMachine
@@ -26,7 +27,6 @@ class Offer < ApplicationRecord
 
   def after_initialize
     if self.new_record?
-      self.expires_at ||= (Time.zone.now + 1.year)
       self.logic_version_id = LogicVersion.last.id
     end
   end
@@ -35,6 +35,7 @@ class Offer < ApplicationRecord
     self.generate_translations!
   end
 
+# NOTE remove this when offer creation in old backend is removed
   def after_commit
     fields = self.changed_translatable_fields
     return true if fields.empty?
@@ -83,10 +84,20 @@ class Offer < ApplicationRecord
                              inverse_of: :known_offers
 
   # Scopes
-  scope :seasonal, -> { where.not(starts_at: nil) }
+  scope :seasonal, -> { where.not(starts_at: nil, ends_at: nil) }
   scope :by_mailings_enabled_organization, lambda {
     joins(:organizations).where('organizations.mailings = ?', 'enabled')
   }
+  scope :should_be_expired, lambda {
+    where('updated_at <= ?', Time.zone.today - 1.year).where(starts_at: nil)
+  }
+  # .where('expires_at <= ? AND starts_at IS null', Time.zone.today)
+
+  # Getter Methods
+
+  def expires_at
+    (updated_at || created_at || Time.zone.today) + 1.year
+  end
 
   # Admin specific methods
   delegate :identifier, to: :section, prefix: true
@@ -97,7 +108,6 @@ class Offer < ApplicationRecord
   def partial_dup
     self.dup.tap do |offer|
       offer.created_by = nil
-      offer.expires_at = Time.zone.now + 1.year
       offer.location = self.location
       offer.split_base = self.split_base
       offer.openings = self.openings
@@ -127,5 +137,9 @@ class Offer < ApplicationRecord
 
   def editable?
     EDITABLE_IN_STATES.include?(aasm_state)
+  end
+
+  def _residency_status_filters
+    target_audience_filters_offers.pluck(:residency_status).uniq.compact
   end
 end

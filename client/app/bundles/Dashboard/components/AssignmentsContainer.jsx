@@ -3,7 +3,6 @@ import Index from '../../Index/containers/Index'
 import ControlledSelectView from '../../ControlledSelectView/containers/ControlledSelectView'
 
 export default class AssignmentsContainer extends Component {
-
   componentDidMount() {
     this.props.setParams()
   }

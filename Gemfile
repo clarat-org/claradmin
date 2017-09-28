@@ -66,6 +66,7 @@ gem 'will_paginate'
 
 gem 'simple_form'
 gem 'dry-validation'
+gem 'dry-types'
 
 # API auth
 gem 'hawk-auth'

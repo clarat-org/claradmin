@@ -8,7 +8,7 @@ module API::V1
 
         attributes do
           property :label, getter: ->(filter) do
-            filter[:represented].identifier
+            filter[:represented].name
           end
 
           property :identifier

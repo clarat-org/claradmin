@@ -30,10 +30,14 @@ class ReactCell < Cell::ViewModel
           assignable_models: Assignment::ASSIGNABLE_MODELS,
           topics: Assignment::TOPICS
         },
+        editable_states: {
+          organizations: Organization::EDITABLE_IN_STATES,
+          offers: Offer::EDITABLE_IN_STATES
+        },
         actions: {
           organizations: Organization.aasm.events.map(&:name),
-          offers: Organization.aasm.events.map(&:name),
-          divisions: %w[mark_as_done mark_as_not_done]
+          offers: Offer.aasm.events.map(&:name),
+          divisions: %w(mark_as_done mark_as_not_done)
         }
       }
     }

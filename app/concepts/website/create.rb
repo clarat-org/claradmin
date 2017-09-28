@@ -2,7 +2,7 @@
 
 class Website::Create < Trailblazer::Operation
   step :match_or_new
-  step Policy::Pundit(WebsitePolicy, :create?)
+  step Policy::Pundit(PermissivePolicy, :create?)
 
   step Contract::Build(constant: Website::Contracts::Create)
   step Contract::Validate()

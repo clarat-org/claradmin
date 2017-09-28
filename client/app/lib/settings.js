@@ -51,10 +51,10 @@ export default {
         'logic-version-id', { section: ['name'] }
       ],
       general_actions: [
-        'index', 'export'
+        'index', 'export', 'new'
       ],
       member_actions: [
-        'show', 'old-backend-edit'
+        'show', 'edit', 'delete', 'duplicate', 'preview'
       ]
     },
 
@@ -199,7 +199,7 @@ export default {
             receiver: ['name'], 'receiver-team': ['name']
           }
         }, 'offers-count', 'name', 'aasm-state', 'pending-reason',
-        'locations-count'
+        'locations-count', { topics: ['name'] }
       ],
       general_actions: [
         'index', 'export', 'new'
@@ -342,7 +342,14 @@ export default {
       ],
       member_actions: [
         'show'
-      ]
+      ],
+    },
+
+    'target-audience-filters-offers': {
+      association_model_mapping: { 'target-audience-filter': 'filter' },
+      fields: ['id', 'target-audience-filter-id', 'offer-id', 'stamp_de'],
+      general_actions: [],
+      member_actions: []
     },
   },
 

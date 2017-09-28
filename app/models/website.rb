@@ -6,18 +6,21 @@ require ClaratBase::Engine.root.join('app', 'models', 'website')
 class Website < ApplicationRecord
   # Scopes
   scope :unreachable, -> { where('unreachable_count > ?', 0) }
-  scope :unreachableAndNotIgnored, -> {
+  scope :unreachable_and_not_ignored, -> {
     unreachable.where('ignored_by_crawler != ?', true)
   }
 
   # Search
-  include PgSearch
-  pg_search_scope :search_pg,
-                  against: %i[id host url],
-                  using: {
-                    tsearch: { only: %i[id host], prefix: true },
-                    trigram: { only: [:url], threshold: 0.3 }
-                  }
+
+  # include PgSearch
+  # pg_search_scope :search_pg,
+  #                 against: [:id, :host, :url],
+  #                 using: {
+  #                   tsearch: { only: [:id, :host], prefix: true },
+  #                   trigram: { only: [:url], threshold: 0.3 }
+  #                 }
+  # NOTE Hack: use manual scope with LIKE query for containing search
+  scope :search_pg, ->(input) { where('url LIKE ?', "%#{input}%").limit(30) }
 
   # Validation Hack
   include ReformedValidationHack

@@ -8,6 +8,12 @@ class NextStep < ApplicationRecord
 
   include ReformedValidationHack
 
+  # Search
+  include PgSearch
+  pg_search_scope :search_pg,
+                  against: [:id, :text_de],
+                  using: { tsearch: { prefix: true } }
+
   private
 
   def translate_if_text_en_changed

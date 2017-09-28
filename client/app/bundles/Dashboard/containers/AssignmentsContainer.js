@@ -31,14 +31,9 @@ const mapStateToProps = (state, ownProps) => {
   const lockedParams = lockedParamsFor(scope, itemId, systemUser.id)
   const optionalParams =
     { 'sort_field': 'updated-at', 'sort_direction': 'DESC' }
-  merge(
-    ownProps.params,
-    merge(clone(optionalParams), clone(lockedParams), ownProps.params)
-  )
-  const defaultParams =
-    merge(defaultParams, merge(clone(optionalParams), clone(lockedParams)))
+  merge(ownProps.params, merge(clone(optionalParams), ownProps.params, lockedParams))
+  const defaultParams = merge({}, merge(clone(optionalParams), lockedParams))
   const heading = headingFor(scope)
-
   return {
     heading,
     model,
@@ -60,8 +55,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
 
   setParams() {
+    let identifier = 'indexResults_assignments_' + stateProps.scope
     dispatchProps.dispatch(
-      loadAjaxData('assignments', this.defaultParams, 'indexResults')
+      loadAjaxData('assignments', this.defaultParams, identifier)
     )
     browserHistory.replace(`/?${jQuery.param(this.defaultParams)}`)
   }

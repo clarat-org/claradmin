@@ -2,7 +2,7 @@
 
 class Opening::Create < Trailblazer::Operation
   step Model(::Opening, :new)
-  step Policy::Pundit(OpeningPolicy, :create?)
+  step Policy::Pundit(PermissivePolicy, :create?)
 
   step Contract::Build(constant: Opening::Contracts::Create)
   step Contract::Validate()
