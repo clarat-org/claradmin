@@ -11,7 +11,7 @@ class NextStep < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [:id, :text_de],
+                  against: %i[id text_de],
                   using: { tsearch: { prefix: true } }
 
   private

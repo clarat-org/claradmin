@@ -205,7 +205,7 @@ group :development, :test do
   # test suite additions
   gem 'rails_best_practices'
   gem 'brakeman' # security test: execute with 'brakeman'
-  gem 'rubocop' # style enforcement
+  gem 'rubocop', '0.49.1' # style enforcement
   gem 'colorize' # output coloring
 
   # Code Coverage

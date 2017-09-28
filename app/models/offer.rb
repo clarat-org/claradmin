@@ -6,9 +6,9 @@ require ClaratBase::Engine.root.join('app', 'models', 'offer')
 class Offer < ApplicationRecord
   has_paper_trail
 
-  EDITABLE_IN_STATES = %w(
+  EDITABLE_IN_STATES = %w[
     initialized approved expired checkup_process approval_process edit
-  ).freeze
+  ].freeze
 
   # Modules
   include StateMachine
@@ -35,7 +35,7 @@ class Offer < ApplicationRecord
     self.generate_translations!
   end
 
-# NOTE remove this when offer creation in old backend is removed
+  # NOTE remove this when offer creation in old backend is removed
   def after_commit
     fields = self.changed_translatable_fields
     return true if fields.empty?

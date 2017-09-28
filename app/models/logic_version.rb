@@ -9,6 +9,6 @@ class LogicVersion < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [:version, :name, :description],
+                  against: %i[version name description],
                   using: { tsearch: { prefix: true } }
 end

@@ -15,12 +15,12 @@ module Offer::SearchAlgolia
           organization_names category_names stamps_string tags
           category_explanations
         ]
-        attributes = [:organization_count, :location_address, :location_name,
-                      :slug, :encounter, :organization_names, :location_visible,
-                      :code_word]
-        facets = [:_age_filters, :_language_filters, :_target_audience_filters,
-                  :_exclusive_gender_filters, :section_identifier,
-                  :_residency_status_filters]
+        attributes = %i[organization_count location_address location_name
+                        slug encounter organization_names location_visible
+                        code_word]
+        facets = %i[_age_filters _language_filters _target_audience_filters
+                    _exclusive_gender_filters section_identifier
+                    _residency_status_filters]
 
         add_index Offer.personal_index_name(locale),
                   disable_indexing: Rails.env.test?,

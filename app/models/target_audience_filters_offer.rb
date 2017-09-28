@@ -15,7 +15,7 @@ class TargetAudienceFiltersOffer < ApplicationRecord
   # Search
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [:id, :stamp_de],
+                  against: %i[id stamp_de],
                   using: { tsearch: { prefix: true } }
 
   # Callbacks
@@ -34,7 +34,7 @@ class TargetAudienceFiltersOffer < ApplicationRecord
 
   # For rails_admin display
   def name
-    if !stamp_de.blank?
+    if stamp_de.present?
       stamp_de
     elsif target_audience_filter && offer
       "#{target_audience_filter.name} (Offer##{offer.id})"

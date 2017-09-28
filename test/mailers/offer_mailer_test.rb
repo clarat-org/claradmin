@@ -236,14 +236,14 @@ describe OfferMailer do
         OfferMailer.send(:new).send(
           :get_section_names_sorted_by_offer_count,
           'family' => [1], 'refugees' => [2, 2]
-        ).must_equal %w(family refugees)
+        ).must_equal %w[family refugees]
       end
 
       it 'should list refugees first if it has fewer offers' do
         OfferMailer.send(:new).send(
           :get_section_names_sorted_by_offer_count,
           'family' => [2, 2], 'refugees' => [1]
-        ).must_equal %w(refugees family)
+        ).must_equal %w[refugees family]
       end
     end
   end
