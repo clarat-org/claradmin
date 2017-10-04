@@ -103,7 +103,8 @@ class Export
 
   def self.snake_case_export_hash(value)
     if value.class.eql? ActionController::Parameters
-      value.to_unsafe_h.map { |k, v| [k.underscore, snake_case_export_hash(v)] }.to_h
+      value.to_unsafe_h
+           .map { |k, v| [k.underscore, snake_case_export_hash(v)] }.to_h
     else
       value.map(&:underscore) # our Export Hashes only include hashes & arrays
     end

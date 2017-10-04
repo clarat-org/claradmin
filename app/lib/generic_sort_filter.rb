@@ -14,8 +14,8 @@ module GenericSortFilter
   private_class_method
 
   UNDERSCORABLE_PARAMS = %i[sort_field sort_model filters operators].freeze
-  def self.snake_case_contents(original_params)
-    new_hash = original_params.is_a?(Hash) ? original_params : original_params.to_unsafe_h
+  def self.snake_case_contents(params)
+    new_hash = params.is_a?(Hash) ? params : params.to_unsafe_h
     new_hash.map do |string_key, value|
       key = string_key.to_sym
       if UNDERSCORABLE_PARAMS.include?(key)
