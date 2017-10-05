@@ -7,10 +7,11 @@ class Offer::ChangeState < Trailblazer::Operation
   step ::Lib::Macros::State::Contract(Offer::Contracts::Update)
   step Contract::Build()
   step Contract::Validate()
-  step :send_event!
-  # Attention: This does not translate!
+  step :send_event! # Attention: This does not translate!
+  step :save_statistic_for_transition
 
   def send_event!(options, model:, event:, **)
+    options['before_state'] = model.aasm_state
     if model.respond_to?("may_#{event}?") && model.send("may_#{event}?")
       model.send :"#{event}!"
     else
@@ -19,5 +20,14 @@ class Offer::ChangeState < Trailblazer::Operation
       )
       false
     end
+  end
+
+  def save_statistic_for_transition(
+    _, model:, current_user:, before_state:, **
+  )
+    Statistic::UserAndParentTeamsCountHandler.record(
+      current_user, model.class.name, 'aasm_state',
+      before_state, model.aasm_state
+    )
   end
 end

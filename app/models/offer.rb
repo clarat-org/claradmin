@@ -22,7 +22,6 @@ class Offer < ApplicationRecord
   # Callbacks
   after_initialize :after_initialize
   after_create :after_create
-  after_commit :after_commit
   before_create :before_create
 
   def after_initialize
@@ -33,13 +32,6 @@ class Offer < ApplicationRecord
 
   def after_create
     self.generate_translations!
-  end
-
-  # NOTE remove this when offer creation in old backend is removed
-  def after_commit
-    fields = self.changed_translatable_fields
-    return true if fields.empty?
-    self.generate_translations! fields
   end
 
   def before_create
