@@ -92,8 +92,8 @@ class OfferCreateFormObject extends GenericFormObject {
     return {
       section: { type: 'filtering-select' },
       'split-base': { type: 'filtering-select' },
-      name: { type: 'string' },
-      description: { type: 'textarea' },
+      name: { type: 'string', addons: ['counter'] },
+      description: { type: 'textarea', addons: ['counter'] },
       comment: { type: 'textarea' },
       'next-steps': { type: 'filtering-multiselect' },
       'contact-people': { type: 'creating-multiselect' },
@@ -138,6 +138,14 @@ class OfferCreateFormObject extends GenericFormObject {
       'section', 'split-base', 'name', 'target-audience-filters-offers',
       'language-filters', 'description'
     ]
+  }
+
+  static get inputMaxLengths() {
+    return {
+      // NOTE: title and description max vals are only recommendations
+      name: 80,
+      description: 450
+    }
   }
 
   validation() {
