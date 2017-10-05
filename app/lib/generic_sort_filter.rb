@@ -119,10 +119,17 @@ module GenericSortFilter
       build_range_filter_query(query, params, key, value)
     else
       # build query strings to every array entry (only one for simple filters)
-      filter_strings = value_array.map do |singular_value|
-        build_singular_filter_query(query, params, key, singular_value)
+      value_array.each do |single_value|
+        operator = process_operator(params[:operators], key, single_value)
+        filter_strings = build_singular_filter_query(query, params, key,
+                                                     single_value, operator)
+        if operator == 'LIKE' || operator == 'NOT LIKE'
+          query = query.where(filter_strings, "%#{single_value}%")
+        else
+          query = filter!(query, [filter_strings], params, key, index)
+        end
       end
-      filter!(query, filter_strings, params, key, index)
+      query
     end
   end
 
@@ -166,16 +173,18 @@ module GenericSortFilter
     end
   end
 
-  def self.build_singular_filter_query(query, params, filter, value)
+  def self.build_singular_filter_query(query, params, filter, value, operator)
     # transform table names (before a .) in case of association name mismatch
     filter_key = joined_or_own_table_name_for(query, filter, params)
     filter_string = filter_key.to_s
-    # append operator
-    operator = process_operator(params[:operators], filter, value)
     filter_string += ' ' + operator
     # append value
     new_value = transform_value(value, filter, query)
-    filter_string += ' ' + new_value
+    if operator == 'LIKE' || operator == 'NOT LIKE'
+      filter_string += ' ?'
+    else
+      filter_string += ' ' + new_value
+    end
     # append optional addition
     filter_string + optional_query_addition(operator, new_value, filter_key)
   end
