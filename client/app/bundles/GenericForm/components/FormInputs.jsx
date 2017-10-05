@@ -54,7 +54,11 @@ export default class FormInputs extends React.Component {
             <FilteringSelect multi key={index}
               formId={formId} model={model} formObjectClass={formObjectClass}
               wrapperClassName='form-group' disabled={disabled} {...input}
-            />
+            >
+              {input.addons.map(
+                this.renderAddon(input, formId, formObjectClass)
+              )}
+            </FilteringSelect>
           )
         case 'filtering-select':
           return(
@@ -69,7 +73,11 @@ export default class FormInputs extends React.Component {
               formId={formId} model={model} formObjectClass={formObjectClass}
               input={input} submodelPath={submodelPath} disabled={disabled}
               filters={input.filters}
-            />
+            >
+              {input.addons.map(
+                this.renderAddon(input, formId, formObjectClass)
+              )}
+            </CreatingSelect>
           )
         case 'creating-select':
           return(

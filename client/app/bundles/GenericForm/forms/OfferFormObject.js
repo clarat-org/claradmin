@@ -95,7 +95,7 @@ class OfferCreateFormObject extends GenericFormObject {
       name: { type: 'string', addons: ['counter'] },
       description: { type: 'textarea', addons: ['counter'] },
       comment: { type: 'textarea' },
-      'next-steps': { type: 'filtering-multiselect' },
+      'next-steps': { type: 'filtering-multiselect', addons: ['counter'] },
       'contact-people': { type: 'creating-multiselect' },
       'hide-contact-people': { type: 'checkbox' },
       encounter: {
@@ -142,14 +142,18 @@ class OfferCreateFormObject extends GenericFormObject {
 
   static get inputMaxLengths() {
     return {
-      // NOTE: title and description max vals are only recommendations
       name: 80,
-      description: 450
+      description: 450,
+      // NOTE: title and description max vals are only recommendations
+      'next-steps': 10
     }
   }
 
   validation() {
     this.applyRequiredInputs()
+    this.maybe('next-steps').filled({
+      'max_size?': this.constructor.inputMaxLengths['next-steps']
+    })
   }
 }
 
