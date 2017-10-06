@@ -10,7 +10,7 @@ module Offer::SearchAlgolia
     algoliasearch do
       I18n.available_locales.each do |locale|
         index = %w(
-          name code_word tags tag_keywords tag_explanations description definitions
+          name code_word tag_keywords tag_explanations description definitions
           organization_names solution_category trait_filter language_filter
         )
         attributes = [:organization_count, :location_address, :location_name,
@@ -29,12 +29,10 @@ module Offer::SearchAlgolia
           attribute(:description) { send("description_#{locale}") }
           attribute(:next_steps)  { _next_steps locale }
           attribute(:lang) { lang(locale) }
-          attribute(:tags) { tag_names(locale) }
           attribute(:definitions) { definitions_string(locale) }
-          attribute(:_tags) { _categories(locale) }
+          attribute(:_tags) { tag_names(locale) }
           attribute(:stamps_string) { stamps_string(locale) }
           attribute(:singular_stamp) { singular_stamp(locale) }
-          attribute(:category_names) { category_names(locale) }
           attribute(:tag_keywords) { tag_keywords(locale) }
           attribute(:tag_explanations) { tag_explanations(locale) }
           attribute(:solution_category) { solution_category.name }
@@ -55,12 +53,10 @@ module Offer::SearchAlgolia
           attribute(:description) { send("description_#{locale}") }
           attribute(:next_steps)  { _next_steps locale }
           attribute(:lang) { lang(locale) }
-          attribute(:tags) { tag_names(locale) }
           attribute(:definitions) { definitions_string(locale) }
-          attribute(:_tags) { _categories(locale) }
+          attribute(:_tags) { tag_names(locale) }
           attribute(:stamps_string) { stamps_string(locale) }
           attribute(:singular_stamp) { singular_stamp(locale) }
-          attribute(:category_names) { category_names(locale) }
           attribute(:tag_keywords) { tag_keywords(locale) }
           attribute(:tag_explanations) { tag_explanations(locale) }
           attribute(:solution_category) { solution_category.name }
