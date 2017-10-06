@@ -202,7 +202,7 @@ class GenericSortFilterTest < ActiveSupport::TestCase
     it 'includes NULL values for a "!=" string search' do
       params =
         { filters: { 'title' => 'smth' }, operators: { 'title' => 'LIKE' } }
-      query.expects(:where).with("title LIKE '%smth%'")
+      query.expects(:where).with("CAST(title AS TEXT) LIKE '%smth%'")
       subject.send(:transform_by_filtering, query, params)
     end
 

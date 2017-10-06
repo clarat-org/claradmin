@@ -177,17 +177,19 @@ module GenericSortFilter
     filter_key = joined_or_own_table_name_for(query, filter, params)
     filter_string = filter_key.to_s
     operator = process_operator(params[:operators], filter, value)
-    filter_string += ' ' + operator
     # append value
     new_value = transform_value(value, filter, query)
-    filter_string +=
-      if operator == 'LIKE' || operator == 'NOT LIKE'
-        " '%" + value + "%'"
-      else
-        ' ' + new_value
-      end
+    filter_string = cast_if_needed(filter_string, operator, value, new_value)
     # append optional addition
     filter_string + optional_query_addition(operator, new_value, filter_key)
+  end
+
+  def self.cast_if_needed(filter_string, operator, value, new_value)
+    if operator == 'LIKE' || operator == 'NOT LIKE'
+      'CAST(' + filter_string + ' AS TEXT) ' + operator + " '%" + value + "%'"
+    else
+      filter_string + ' ' + operator + ' ' + new_value
+    end
   end
 
   def self.joined_or_own_table_name_for(query, filter, params)
