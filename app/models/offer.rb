@@ -44,7 +44,7 @@ class Offer < ApplicationRecord
   include PgSearch
   pg_search_scope :search_pg,
                   against: %i[
-                    name description aasm_state encounter
+                    id name description aasm_state encounter
                     old_next_steps code_word
                   ],
                   # NOTE: this does not work with our filtered search queries
