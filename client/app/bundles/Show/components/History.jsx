@@ -13,7 +13,7 @@ export default class History extends React.Component {
 
     return(
       <CollapsiblePanel title='History' visible={false}>
-        <div key={name} className="panel-body show--panel">
+        <div key={name} className="panel-body show--panel History-wrapper">
           {historyItems.map(this.renderHistoryItem.bind(this))}
         </div>
       </CollapsiblePanel>
@@ -25,15 +25,24 @@ export default class History extends React.Component {
       <div
         key={item.id}
         className="History-Item panel panel-default container-fluid"
+        date-is="{item['created-at']}"
       >
-        <h6>{item.event}</h6>
-        <div className='History-Who col-sm-6'>
-          Von: {item.user.label}
-        </div>
-        <div className='History-When col-sm-6'>
-          Am: {item['created-at']}
-        </div>
+        <h6 className="History-Headline">
+          <span className="History-Eventtype">{item.event}</span> von {item.user.label} am {item['created-at']}</h6>
         <table className='table History-What'>
+          <thead>
+            <tr>
+              <td className="History_Tablehead--fieldname">
+                Feld-Name
+              </td>
+              <td className="History_Tablehead--valuebefore">
+                Wert vorher
+              </td>
+              <td className="History_Tablehead--valueafter">
+                Wert nachher
+              </td>
+            </tr>
+          </thead>
           <tbody>
             {item.changes.map(this.renderHistoryChange.bind(this))}
           </tbody>
