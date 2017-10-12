@@ -187,7 +187,7 @@ module GenericSortFilter
   end
 
   def self.cast_if_needed(filter_string, operator, value, new_value)
-    if operator == 'LIKE' || operator == 'NOT LIKE'
+    if ['LIKE', 'NOT LIKE'].include?(operator)
       'CAST(' + filter_string + ' AS TEXT) ' + operator + " '%" + value + "%'"
     else
       filter_string + ' ' + operator + ' ' + new_value
