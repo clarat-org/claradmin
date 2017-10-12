@@ -45,8 +45,8 @@ module API::V1
         end
 
         def polymorphic_inverse_assoc(assoc)
-          assoc.options[:as] && assoc.options[:class_name] &&
-            assoc.options[:class_name].constantize.reflect_on_all_associations
+          assoc.options[:as] &&
+            assoc.class_name.constantize.reflect_on_all_associations
                  .find { |a| a.name == assoc.options[:as] }
         end
 

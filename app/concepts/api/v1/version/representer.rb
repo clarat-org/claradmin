@@ -7,9 +7,7 @@ module API::V1
         include Roar::JSON::JSONAPI.resource :versions
 
         attributes do
-          property :label, getter: ->(object) do
-            "##{object[:represented].id}"
-          end
+          property :label, getter: ->(object) { "##{object[:represented].id}" }
 
           property :item_type
           property :item_id
