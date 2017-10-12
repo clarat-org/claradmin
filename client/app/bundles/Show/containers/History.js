@@ -38,6 +38,7 @@ function transformHistoryItem(entities) {
     const getChange =
       (_, field, before, after) => item.changes.push({field, before, after})
     item['object-changes'].replace(/\n(.+):\n- (.*)\n- (.*)/g, getChange)
+    item.date = new Date(item['created-at']).toLocaleString('de-de')
 
     return item
   }

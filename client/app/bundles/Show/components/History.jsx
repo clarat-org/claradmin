@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import CollapsiblePanel
   from '../../CollapsiblePanel/containers/CollapsiblePanel'
+import TableCell from '../../Index/containers/TableCell'
 
 export default class History extends React.Component {
   componentDidMount() {
@@ -28,7 +29,9 @@ export default class History extends React.Component {
         date-is="{item['created-at']}"
       >
         <h6 className="History-Headline">
-          <span className="History-Eventtype">{item.event}</span> von {item.user.label} am {item['created-at']}</h6>
+          <span className="History-Eventtype">{item.event}</span>
+          von {item.user.label} am {item.date}
+        </h6>
         <table className='table History-What'>
           <thead>
             <tr>
@@ -55,14 +58,9 @@ export default class History extends React.Component {
     return(
       <tr key={change.field}>
         <td>{change.field}</td>
-        <td>{this.textOrIcon(change.before)}</td>
-        <td>{this.textOrIcon(change.after)}</td>
+        <TableCell field={{field: 'before'}} row={change} />
+        <TableCell field={{field: 'after'}} row={change} />
       </tr>
     )
-  }
-
-  textOrIcon(text) {
-    if (text) return text
-    return <span className='fa fa-minus-circle' />
   }
 }

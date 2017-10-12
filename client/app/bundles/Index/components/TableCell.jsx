@@ -16,7 +16,7 @@ export default class TableCell extends Component {
 
   renderContent(content, contentType) {
     if (content == undefined) {
-      return <span className='fa fa-minus-circle' title='null' />
+      return <span className='fa fa-hand-spock-o' title='null' />
     } else {
       switch(contentType) {
         case 'object':
