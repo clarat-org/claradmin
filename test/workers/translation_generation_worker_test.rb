@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative '../test_helper'
 
 class TranslationGenerationWorkerTest < ActiveSupport::TestCase
@@ -29,7 +30,7 @@ class TranslationGenerationWorkerTest < ActiveSupport::TestCase
       translation.name.must_equal 'GET READY FOR CANADA'
       translation.description.must_equal 'GET READY FOR CANADA'
       translation.old_next_steps.must_equal 'GET READY FOR CANADA'
-      translation.opening_specification.must_equal 'GET READY FOR CANADA'
+      assert_nil translation.opening_specification
     end
 
     it 'should only translate for given set of fields if provided' do
