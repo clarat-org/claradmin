@@ -6,7 +6,7 @@ module API::V1
       def find_result_set(options, params:, **)
         query = ::PaperTrail::Version.where(
           item_id: params[:item_id], item_type: params[:item_type].classify
-        ).order(:created_at)
+        ).order(created_at: :desc)
         options['collection'] =
           query.paginate(page: params[:page], per_page: params[:per_page])
       end
