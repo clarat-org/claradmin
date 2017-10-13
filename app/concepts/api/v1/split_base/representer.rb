@@ -16,6 +16,7 @@ module API::V1
           property :code_word
           property :created_at
           property :updated_at
+          property :division_ids
         end
       end
 
