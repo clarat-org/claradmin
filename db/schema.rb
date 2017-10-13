@@ -84,23 +84,11 @@ ActiveRecord::Schema.define(version: 20171012135856) do
     t.index ["name_de"], name: "index_categories_on_name_de"
   end
 
-  create_table "categories_filters", id: false, force: :cascade do |t|
-    t.integer "filter_id", null: false
-    t.integer "category_id", null: false
-  end
-
   create_table "categories_offers", id: false, force: :cascade do |t|
     t.integer "offer_id", null: false
     t.integer "category_id", null: false
     t.index ["category_id"], name: "index_categories_offers_on_category_id"
     t.index ["offer_id"], name: "index_categories_offers_on_offer_id"
-  end
-
-  create_table "categories_section_filters",   force: :cascade do |t|
-    t.integer "category_id"
-    t.integer "section_filter_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "categories_sections", id: false, force: :cascade do |t|
