@@ -19,9 +19,19 @@ class Division::Update < Trailblazer::Operation
       :presumed_solution_categories, ::SolutionCategory
     )
   }
+  step :generate_label # TODO: write tests for this!!
   step Contract::Persist()
   step :meta_event_side_effects
   step :syncronize_organization_approve_or_done_state
+
+  def generate_label(options, model:, **)
+    contract = options['contract.default']
+    label = "#{contract.organization.name} (#{contract.section.identifier})"
+    label += ", City: #{contract.city.name}" if contract.city
+    label += ", Area: #{contract.area.name}" if contract.area
+    label += ", Addition: #{contract.addition}" if contract.addition.present?
+    model.label = label
+  end
 
   def meta_event_side_effects(_, model:, params:, current_user:, **)
     action_event = params['meta'] ? params['meta']['commit'] : nil
