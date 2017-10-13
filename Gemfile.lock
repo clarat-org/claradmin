@@ -8,8 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: f3ada65556de0e8fb64499ad0da6e03153e0fa55
-  branch: feature/1394-label-for-divisions-and-split-bases
+  revision: 13476483177acf62b30f9a78ca5d0c99d75de434
   specs:
     clarat_base (0.1.4)
       aasm

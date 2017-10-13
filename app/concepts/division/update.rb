@@ -26,11 +26,7 @@ class Division::Update < Trailblazer::Operation
 
   def generate_label(options, model:, **)
     contract = options['contract.default']
-    label = "#{contract.organization.name} (#{contract.section.identifier})"
-    label += ", City: #{contract.city.name}" if contract.city
-    label += ", Area: #{contract.area.name}" if contract.area
-    label += ", Addition: #{contract.addition}" if contract.addition.present?
-    model.label = label
+    model.label = build_label(contract)
   end
 
   def meta_event_side_effects(_, model:, params:, current_user:, **)
@@ -44,5 +40,14 @@ class Division::Update < Trailblazer::Operation
       model.update_columns done: false
     end
     true
+  end
+
+  private
+
+  def build_label(contract)
+    label = "#{contract.organization.name} (#{contract.section.identifier})"
+    label += ", City: #{contract.city.name}" if contract.city
+    label += ", Area: #{contract.area.name}" if contract.area
+    label + ", Addition: #{contract.addition}" if contract.addition.present?
   end
 end
