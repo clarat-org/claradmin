@@ -8,7 +8,6 @@ module Offer::Contracts
     property :comment
     property :encounter
     property :section
-    property :slug
     property :language_filters
     property :target_audience_filters_offers
     property :trait_filters
@@ -119,7 +118,7 @@ module Offer::Contracts
     end
 
     def no_more_than_10_next_steps
-      return if next_steps.to_a.size <= 10
+      return if next_steps.to_a.uniq.size <= 10
       custom_error :next_steps, 'no_more_than_10_next_steps'
     end
 
