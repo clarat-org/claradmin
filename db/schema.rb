@@ -91,9 +91,11 @@ ActiveRecord::Schema.define(version: 20171023093225) do
     t.index ["offer_id"], name: "index_categories_offers_on_offer_id"
   end
 
-  create_table "categories_sections", id: false, force: :cascade do |t|
-    t.integer "section_id", null: false
-    t.integer "category_id", null: false
+  create_table "categories_sections", id: :serial, force: :cascade do |t|
+    t.integer "category_id"
+    t.integer "section_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_categories_sections_on_category_id"
     t.index ["section_id"], name: "index_categories_sections_on_section_id"
   end
