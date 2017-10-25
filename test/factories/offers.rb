@@ -21,7 +21,7 @@ FactoryGirl.define do
     # associations
     transient do
       website_count { rand(0..3) }
-      category_count { rand(1..3) }
+      category_count { 0 }
       category nil # used to get a specific category, instead of category_count
       language_count { rand(1..2) }
       audience_count 1
