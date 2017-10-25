@@ -44,7 +44,7 @@ class Location < ApplicationRecord
     if self.previous_changes.key?(:street) || self.previous_changes.key?(:zip) ||
        self.previous_changes.key?(:city_id) ||
        self.previous_changes.key?(:federal_state_id)
-      GeocodingWorker.perform_async self.id
+      # GeocodingWorker.perform_async self.id
     end
 
     # update algolia indices of offers (for location_visible) if changed
