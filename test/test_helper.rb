@@ -46,12 +46,12 @@ Dir[Rails.root.join('test/objects/*.rb')].each { |f| require f }
 Dir[Rails.root.join('test/models/*.rb')].each { |f| require f }
 Dir[Rails.root.join('test/mailers/*.rb')].each { |f| require f }
 
-# For Sidekiq
-Sidekiq::Testing.inline!
-
 # Redis
 Redis.current = Redis.new
 Capybara.asset_host = 'http://localhost:3000'
+
+# For Sidekiq
+Sidekiq::Testing.inline!
 
 # JS Tests
 Capybara.javascript_driver = :selenium
