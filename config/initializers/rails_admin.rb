@@ -46,35 +46,31 @@ RailsAdmin.config do |config|
     new do
       except [
         'User', 'FederalState', 'Section', 'Division', 'Organization',
-        'Opening', 'Tag', 'Definition'
+        'Opening', 'Tag', 'Definition', 'Offer', 'SplitBase', 'Location'
       ]
     end
-    export
+    # export
     bulk_delete do
       except ['User', 'FederalState', 'Section', 'Division']
     end
     show
     edit do
       except [
-        'Section', 'Division', 'Organization', 'Opening', 'Tag', 'Definition'
+        'Section', 'Division', 'Organization', 'Opening', 'Tag', 'Definition',
+        'Offer', 'SplitBase', 'Location'
       ]
     end
     delete do
       except ['User', 'FederalState', 'Section']
     end
-    show_in_app do
-      only ['Offer']
-    end
 
     clone do
       except [
         'Section', 'City', 'TargetAudienceFiltersOffer', 'Division',
-        'Organization', 'Opening', 'Tag', 'Definition', 'SplitBase', 'Offer'
+        'Organization', 'Opening', 'Tag', 'Definition', 'SplitBase', 'Offer',
+        'Location'
       ]
     end
-    # nested_set do
-    #   only ['Category']
-    # end
     nestable do
       only ['Category', 'SolutionCategory']
     end
@@ -180,9 +176,9 @@ RailsAdmin.config do |config|
       custom_method :partial_dup
     end
 
-    export do
-      field :id
-    end
+    # export do
+    #   field :id
+    # end
   end
 
   config.label_methods << :url
@@ -200,7 +196,7 @@ RailsAdmin.config do |config|
     end
   end
 
-  config.label_methods << :display_name
+  config.label_methods << :label
   config.model 'Location' do
     list do
       field :name
@@ -209,7 +205,7 @@ RailsAdmin.config do |config|
       field :federal_state
       field :street
       field :city
-      field :display_name
+      field :label
     end
     weight(-5)
     field :organization
@@ -249,15 +245,12 @@ RailsAdmin.config do |config|
     end
     show do
       field :offers
-      field :display_name
+      field :label
     end
-    export do
-      field :id
-    end
-    clone_config do
-      custom_method :partial_dup
-    end
-    object_label_method :display_name
+    # export do
+    #   field :id
+    # end
+    object_label_method :label
   end
 
   config.model 'City' do
@@ -321,10 +314,10 @@ RailsAdmin.config do |config|
 
     show do
       field :offers
-      field :display_name
+      field :label
     end
 
-    object_label_method :display_name
+    object_label_method :label
   end
 
   config.model 'Offer' do
@@ -522,7 +515,7 @@ RailsAdmin.config do |config|
   end
 
   config.model 'ContactPerson' do
-    object_label_method :display_name
+    object_label_method :label
     list do
       field :id
       field :first_name
@@ -601,9 +594,9 @@ RailsAdmin.config do |config|
         "Single Point of Contact / Zentrale Anlaufstelle."
       end
     end
-    export do
-      field :id
-    end
+    # export do
+    #   field :id
+    # end
     clone_config do
       custom_method :partial_dup
     end
@@ -885,7 +878,7 @@ RailsAdmin.config do |config|
       end
     end
 
-    object_label_method :display_name
+    object_label_method :label
   end
 
   config.model 'LogicVersion' do

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'ffaker'
 
 FactoryGirl.define do
@@ -9,7 +10,7 @@ FactoryGirl.define do
     old_next_steps { FFaker::Lorem.paragraph(rand(1..3))[0..399] }
     encounter do
       # weighted
-      %w(personal personal personal personal hotline chat forum email online-course portal).sample
+      %w[personal personal personal personal hotline chat forum email online-course portal].sample
     end
     area { Area.first unless encounter == 'personal' }
     approved_at nil
@@ -20,8 +21,6 @@ FactoryGirl.define do
     # associations
     transient do
       website_count { rand(0..3) }
-      category_count { rand(1..3) }
-      category nil # used to get a specific category, instead of category_count
       language_count { rand(1..2) }
       audience_count 1
       opening_count { rand(1..5) }
@@ -77,17 +76,6 @@ FactoryGirl.define do
 
       # ...
       create_list :hyperlink, evaluator.website_count, linkable: offer
-      if evaluator.category
-        offer.categories << FactoryGirl.create(:category,
-                                               name: evaluator.category)
-      else
-        evaluator.category_count.times do
-          offer.categories <<
-            FactoryGirl.create(
-              :category, sections: [offer.section]
-            )
-        end
-      end
       evaluator.opening_count.times do
         offer.openings << (
           if Opening.count != 0 && rand(2).zero?

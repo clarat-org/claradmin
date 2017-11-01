@@ -1,10 +1,13 @@
 # frozen_string_literal: true
+
 require_relative '../../test_helper'
 require_relative '../../support/utils/operation_test_utils'
+require_relative '../../support/utils/contract_test_utils'
 # rubocop:disable ClassLength
 class OfferContractTest < ActiveSupport::TestCase
   # include JsonapiTestUtils
   include OperationTestUtils
+  include ContractTestUtils
   let(:offer) { Offer::Contracts::Create.new(offers(:basic)) }
 
   subject { offer }
@@ -15,6 +18,7 @@ class OfferContractTest < ActiveSupport::TestCase
       it { subject.must validate_presence_of :description }
       it { subject.must validate_presence_of :encounter }
       it { subject.must validate_presence_of :section }
+      it { must_validate_length_of :code_word, maximum: 140 }
 
       it 'should fails if personal offer has no location' do
         subject.encounter = 'personal'
@@ -59,14 +63,14 @@ class OfferContractTest < ActiveSupport::TestCase
 
       it 'should fail if locations and organizations do not match (personal)' do
         subject = Offer::Contracts::Update.new(offers(:basic))
-        location = Location.create(organization: Organization.new)
+        location = Location.new(organization: Organization.new)
         subject.location = location
         subject.wont_be :valid?
       end
 
       it 'should ensure locations and organizations match (personal)' do
         subject = Offer::Contracts::Update.new(offers(:basic))
-        subject.location = Location.create(organization: organizations(:basic))
+        subject.location = Location.new(organization: organizations(:basic))
         subject.must_be :valid?
       end
 
@@ -82,14 +86,16 @@ class OfferContractTest < ActiveSupport::TestCase
 
       it 'should fail when chosen contact people not SPoC nor belong to orga' do
         cp = FactoryGirl.create :contact_person, spoc: false,
-                                                 offers: [subject.model]
+                                                 organization_id:
+                                                 organizations(:second).id
         subject.contact_people << cp
         subject.wont_be :valid?
       end
 
       it 'should ensure chosen contact people are SPoC' do
         cp = FactoryGirl.create :contact_person, spoc: true,
-                                                 offers: [subject.model]
+                                                 organization_id:
+                                                 organizations(:second).id
         subject.contact_people << cp
         subject.must_be :valid?
       end
@@ -181,7 +187,7 @@ class OfferContractTest < ActiveSupport::TestCase
         category.sections = [sections(:refugees)]
         subject.categories = [category]
         subject.valid?.must_equal true
-        subject.errors.messages[:categories].must_be :nil?
+        subject.errors.messages[:categories].must_be :empty?
       end
 
       it 'should succeed when sections of offer and categories (2 sect.) match' do
@@ -191,28 +197,28 @@ class OfferContractTest < ActiveSupport::TestCase
         subject.categories = [category]
         category.sections = [sections(:refugees), sections(:family)]
         subject.valid?.must_equal true
-        subject.errors.messages[:categories].must_be :nil?
+        subject.errors.messages[:categories].must_be :empty?
       end
 
       it 'should fail when version < 7' do
         subject.logic_version = LogicVersion.create(name: 'chunky', version: 6)
         subject.split_base = nil
         subject.valid?
-        subject.errors.messages[:split_base].must_be :nil?
+        subject.errors.messages[:split_base].must_be :empty?
       end
 
       it 'should fail when split_base is nil with version >= 7' do
         subject.logic_version = LogicVersion.create(name: 'bacon', version: 7)
         subject.split_base = nil
         subject.valid?
-        subject.errors.messages[:split_base].wont_be :nil?
+        subject.errors.messages[:split_base].wont_be :empty?
       end
 
       it 'should validate that split_base is assigned with version >= 7' do
         subject.logic_version = LogicVersion.create(name: 'bacon', version: 7)
         subject.split_base = split_bases(:basic)
         subject.valid?
-        subject.errors.messages[:split_base].must_be :nil?
+        subject.errors.messages[:split_base].must_be :empty?
       end
 
       # it 'should ensure chosen contact people belong to a chosen orga' do

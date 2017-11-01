@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module API::V1
   module Offer
     module Representer
@@ -31,6 +32,7 @@ module API::V1
           property :completed_at
           property :completed_by
           property :comment
+          property :code_word
 
           property :section_id
           property :logic_version_id
@@ -55,6 +57,14 @@ module API::V1
             property :label, getter: ->(o) { o[:represented].identifier }
             property :name
             property :identifier
+          end
+        end
+
+        has_one :split_base do
+          type :split_bases
+
+          attributes do
+            property :label
           end
         end
 

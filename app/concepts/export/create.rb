@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Prepares a non-ActiveRecord export object.
 # Expects params like {model_fields: [:foo], users: [:name, :bar], comments: []}
 class Export::Create < Trailblazer::Operation
@@ -8,7 +9,7 @@ class Export::Create < Trailblazer::Operation
   step :set_requested_fields
 
   def instantiate_model(options, params:, **)
-    object = params[:object_name].classify.constantize
+    object = params[:object_name].underscore.classify.constantize
     options['model'] =
       Export.new(
         object,

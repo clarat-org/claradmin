@@ -1,20 +1,23 @@
 # frozen_string_literal: true
+
 # Monkeypatch clarat_base Offer
 require ClaratBase::Engine.root.join('app', 'models', 'offer')
 
-class Offer < ActiveRecord::Base
+class Offer < ApplicationRecord
   has_paper_trail
 
-  EDITABLE_IN_STATES = %w(
+  EDITABLE_IN_STATES = %w[
     initialized approved expired checkup_process approval_process edit
-  ).freeze
+  ].freeze
 
   # Modules
-  include SearchAlgolia, StateMachine
+  include StateMachine
+  include SearchAlgolia
   include ReformedValidationHack
 
   # Concerns
-  include Translations, RailsAdminParamHack
+  include RailsAdminParamHack
+  include Translations
 
   # Callbacks
   after_initialize :after_initialize
@@ -40,15 +43,15 @@ class Offer < ActiveRecord::Base
   # Search
   include PgSearch
   pg_search_scope :search_pg,
-                  against: [
-                    :id, :name, :description, :aasm_state, :encounter,
-                    :old_next_steps, :code_word
+                  against: %i[
+                    id name description aasm_state encounter
+                    old_next_steps code_word
                   ],
                   # NOTE: this does not work with our filtered search queries
                   # associated_against: {
                   #   section: :name,
                   #   organizations: :name,
-                  #   location: :display_name,
+                  #   location: :label,
                   #   categories: :name_de,
                   #   solution_category: :name,
                   #   target_audience_filters: :name,
@@ -129,6 +132,7 @@ class Offer < ActiveRecord::Base
   end
 
   def _residency_status_filters
-    target_audience_filters_offers.pluck(:residency_status).uniq.compact
+    target_audience_filters_offers
+      .order(:id).pluck(:residency_status).uniq.compact
   end
 end

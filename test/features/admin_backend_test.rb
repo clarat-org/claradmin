@@ -1,5 +1,6 @@
 # encoding: UTF-8
 # frozen_string_literal: true
+
 require_relative '../test_helper'
 include Warden::Test::Helpers
 
@@ -425,7 +426,7 @@ feature 'Admin Backend' do
     #     'Organizations muss die des angegebenen Standorts beinhalten.'
     #   )
     #
-    #   select contact_person.display_name, from: 'offer_contact_person_ids'
+    #   select contact_person.label, from: 'offer_contact_person_ids'
     #   click_button 'Speichern und bearbeiten'
     #   page.wont_have_content 'Age from darf nicht größer sein als Age to'
     #   page.must_have_content 'Contact people müssen alle zu einer der'\
@@ -667,15 +668,6 @@ feature 'Admin Backend' do
       click_button 'Speichern'
       page.wont_have_content 'Kontaktperson wurde nicht hinzugefügt'
       page.must_have_content 'Kontaktperson wurde erfolgreich hinzugefügt'
-    end
-
-    scenario 'Duplicate location' do
-      visit rails_admin_path
-      click_link 'Standorte', match: :first
-      click_link 'Duplizieren', match: :first
-      click_button 'Speichern'
-      page.wont_have_content 'Standort wurde nicht hinzugefügt'
-      page.must_have_content 'Standort wurde erfolgreich hinzugefügt'
     end
 
     scenario 'New category missing section filter' do

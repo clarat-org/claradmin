@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module API::V1
   module Division
     module Representer
@@ -7,10 +8,7 @@ module API::V1
         include API::V1::Assignable::Representer
 
         attributes do
-          property :label, getter: ->(division) do
-            division[:represented].display_name
-          end
-
+          property :label
           property :addition
           property :comment
           property :size
@@ -23,7 +21,7 @@ module API::V1
 
           # NOTE: do we need this here? or only for create/update or not at all?
           property :website_ids
-          property :presumed_category_ids
+          property :presumed_tag_ids
           property :presumed_solution_category_ids
         end
 
@@ -71,8 +69,8 @@ module API::V1
       end
 
       class Create < Index
-        has_many :presumed_categories, class: ::Category do
-          type :categories
+        has_many :presumed_tags, class: ::Tag do
+          type :tags
 
           attributes do
             property :label, getter: ->(o) { o[:represented].name_de }
