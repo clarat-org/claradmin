@@ -59,7 +59,8 @@ describe ExportsController do
         enum.next
         enum.to_a.must_equal [
           "id,name,id [Parent]\n",
-          "1,basicSolutionCategoryName, - \n"
+          "1,basicSolutionCategoryName, - \n",
+          "2,childSolutionCategoryName,1\n"
         ]
       end
     end
