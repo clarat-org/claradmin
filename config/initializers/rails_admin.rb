@@ -33,10 +33,10 @@ RailsAdmin.config do |config|
 
   config.included_models = %w(
     Organization Website Location FederalState Offer Opening
-    Category Email UpdateRequest LanguageFilter User Contact
+     Email UpdateRequest LanguageFilter User Contact
     Tag Definition Note Area SearchLocation ContactPerson
     Subscription Section NextStep SolutionCategory
-    LogicVersion SplitBase City TargetAudienceFiltersOffer
+    LogicVersion City TargetAudienceFiltersOffer
     Division
   )
 
@@ -46,7 +46,7 @@ RailsAdmin.config do |config|
     new do
       except [
         'User', 'FederalState', 'Section', 'Division', 'Organization',
-        'Opening', 'Tag', 'Definition', 'Offer', 'SplitBase', 'Location'
+        'Opening', 'Tag', 'Definition', 'Offer', 'Location'
       ]
     end
     # export
@@ -57,7 +57,7 @@ RailsAdmin.config do |config|
     edit do
       except [
         'Section', 'Division', 'Organization', 'Opening', 'Tag', 'Definition',
-        'Offer', 'SplitBase', 'Location'
+        'Offer', 'Location'
       ]
     end
     delete do
@@ -67,12 +67,12 @@ RailsAdmin.config do |config|
     clone do
       except [
         'Section', 'City', 'TargetAudienceFiltersOffer', 'Division',
-        'Organization', 'Opening', 'Tag', 'Definition', 'SplitBase', 'Offer',
+        'Organization', 'Opening', 'Tag', 'Definition', 'Offer',
         'Location'
       ]
     end
     nestable do
-      only ['Category', 'SolutionCategory']
+      only ['SolutionCategory']
     end
     change_state
 
@@ -285,39 +285,6 @@ RailsAdmin.config do |config|
       end
       field :name
     end
-  end
-
-  config.model 'SplitBase' do
-    weight(-4)
-    # field(:id) { read_only true }
-    # field :title do
-    #   help do
-    #     'Erforderlich. Anbieterwording. Direkt von der Anbieterseite kopieren.'
-    #   end
-    # end
-    # field :clarat_addition do
-    #   help { 'Optional. Auszufüllen bei überschneidenden Titeln.' }
-    # end
-    # field :divisions do
-    #   queryable true
-    #   searchable [:id, :addition]
-    # end
-    # field :solution_category do
-    #   help { 'Erforderlich ab Version 8.'}
-    # end
-    # field :comments
-    # field :code_word
-
-    list do
-      field :offers
-    end
-
-    show do
-      field :offers
-      field :label
-    end
-
-    object_label_method :label
   end
 
   config.model 'Offer' do
@@ -600,45 +567,6 @@ RailsAdmin.config do |config|
     clone_config do
       custom_method :partial_dup
     end
-  end
-
-  config.model 'Category' do
-    weight(-3)
-    field :name_de
-    field :keywords_de
-    field :explanations_de
-    field :sections
-    field :parent
-    field :sort_order
-    field :visible
-    field :name_en
-    field :keywords_en
-    field :explanations_en
-    field :name_ar
-    field :keywords_ar
-    field :explanations_ar
-    field :name_fa
-    field :keywords_fa
-    field :explanations_fa
-    field :name_tr
-    field :name_pl
-    field :name_ru
-    field :name_fr
-    field(:id) { read_only true }
-
-    object_label_method :name_with_world_suffix_and_optional_asterisk
-
-    list do
-      sort_by :name_de
-    end
-
-    show do
-      field :offers
-      field :icon
-    end
-
-    # nested_set(max_depth: 5)
-    nestable_tree(max_depth: 5)
   end
 
   config.model 'NextStep' do

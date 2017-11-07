@@ -32,13 +32,6 @@ Rails.application.routes.draw do
   #   end
   # end
 
-  resources :categories do
-    collection do
-      get :sort
-      get :mindmap
-    end
-  end
-
   # resources :offer_translations, only: [:index, :edit, :update] do
   #   collection do
   #     get 'export', controller: :pages, action: :react
@@ -93,7 +86,6 @@ Rails.application.routes.draw do
         resources name, options.merge(path: name.to_s.dasherize)
       end
       api_resources :offers
-      api_resources :split_bases
       api_resources :locations
       api_resources :organizations
       api_resources :divisions

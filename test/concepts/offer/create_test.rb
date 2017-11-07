@@ -36,7 +36,7 @@ class OfferCreateTest < ActiveSupport::TestCase
           },
           'language-filters': { data: [{ type: 'filters', id: '1' }] },
           location: { data: { type: 'locations', id: '1' } },
-          'split-base': { data: { type: 'split-bases', id: '1' } },
+          'divisions': { data: [{ type: 'divisions', id: '1' }] },
           section: { data: { type: 'sections', id: '1' } }
         }
       }
@@ -53,8 +53,8 @@ class OfferCreateTest < ActiveSupport::TestCase
     result['model'].contact_people.first.first_name.must_equal 'Edward'
     result['model'].contact_people.first.last_name.must_equal 'Thatch'
     result['model'].language_filters.length.must_equal 1
+    result['model'].divisions.length.must_equal 1
     result['model'].location.id.must_equal 1
-    result['model'].split_base.id.must_equal 1
     result['model'].section.id.must_equal 1
   end
 
@@ -65,8 +65,8 @@ class OfferCreateTest < ActiveSupport::TestCase
       encounter: 'online',
       language_filters: [LanguageFilter.first],
       section: Section.first,
-      split_base: SplitBase.first,
-      area: Area.first
+      area: Area.first,
+      divisions: [Division.first]
     }
     result = operation_must_work ::Offer::Create, params
     first_slug = result['model'].slug

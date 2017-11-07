@@ -36,8 +36,7 @@ module API::V1
 
           property :section_id
           property :logic_version_id
-          property :split_base_id
-          property :category_ids
+          property :division_ids
           property :location_id
           property :area_id
           property :contact_person_ids
@@ -60,8 +59,8 @@ module API::V1
           end
         end
 
-        has_one :split_base do
-          type :split_bases
+        has_many :divisions do
+          type :divisions
 
           attributes do
             property :label
@@ -115,15 +114,10 @@ module API::V1
                 populator: API::V1::Lib::Populators::FindOrInstantiate,
                 class: ::Area
 
-        has_one :split_base,
-                decorator: API::V1::SplitBase::Representer::Show,
-                populator: API::V1::Lib::Populators::FindOrInstantiate,
-                class: ::SplitBase
-
-        has_many :categories,
-                 decorator: API::V1::Category::Representer::Show,
-                 # populator: API::V1::Lib::Populators::FindOrInstantiate,
-                 class: ::Category
+        has_many :divisions,
+                 decorator: API::V1::Division::Representer::Show,
+                 populator: API::V1::Lib::Populators::FindOrInstantiate,
+                 class: ::Division
 
         has_many :tags,
                  decorator: API::V1::Tag::Representer::Show,

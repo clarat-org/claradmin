@@ -67,9 +67,8 @@ describe Offer do
         duplicate.location.must_equal offer.location
         # duplicate.organizations.must_equal offer.organizations
         duplicate.openings.must_equal offer.openings
-        duplicate.categories.must_equal offer.categories
         duplicate.section.must_equal offer.section
-        duplicate.split_base.must_equal offer.split_base
+        duplicate.divisions.must_equal offer.divisions
         duplicate.language_filters.must_equal offer.language_filters
         duplicate.websites.must_equal offer.websites
         duplicate.contact_people.must_equal offer.contact_people

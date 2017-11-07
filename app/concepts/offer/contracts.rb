@@ -17,10 +17,9 @@ module Offer::Contracts
     property :contact_people
     property :next_steps
     property :logic_version
-    property :split_base
+    property :divisions
     property :starts_at
     property :ends_at
-    property :categories
     property :section
     property :tags
     property :openings
@@ -51,18 +50,16 @@ module Offer::Contracts
     validate :location_and_area_fit_encounter
     validate :contact_people_are_choosable
     validate :no_more_than_10_next_steps
-    validate :split_base_if_version_greater_7
+    validate :divisions_if_version_greater_7
 
     # association getter
     def organizations
-      split_base&.organizations || []
+      divisions&.map { |d| d.organization }.flatten.uniq || []
     end
 
     private
 
-    # Uses method from CustomValidatable concern.
     def validate_associated_fields
-      # validate_associated_presence :organizations
       validate_associated_presence :language_filters
     end
 
@@ -124,9 +121,9 @@ module Offer::Contracts
       custom_error :next_steps, 'no_more_than_10_next_steps'
     end
 
-    def split_base_if_version_greater_7
-      return if !logic_version || logic_version.version < 7 || split_base
-      errors.add :split_base, I18n.t('offer.validations.is_needed')
+    def divisions_if_version_greater_7
+      return if !logic_version || logic_version.version < 7 || !divisions.empty?
+      errors.add :divisions, I18n.t('offer.validations.is_needed')
     end
 
     def personal?
@@ -144,8 +141,6 @@ module Offer::Contracts
     property :id, virtual: true
 
     # fill me!
-    validate :sections_must_match_categories_sections
-    validate :at_least_one_section_of_each_category_must_be_present
     validate :location_fits_organization
     validates :target_audience_filters_offers, presence: true
     # validate :validate_target_audience_filters_offers
@@ -162,28 +157,6 @@ module Offer::Contracts
       end
     end
 
-    # The offers sections must match the categories sections
-    def sections_must_match_categories_sections
-      if categories.any?
-        categories.each do |category|
-          next if category.reload.sections.include?(section)
-          errors.add(:categories,
-                     I18n.t('offer.validations.category_for_section_needed',
-                            world: section.name))
-        end
-      end
-    end
-
-    def at_least_one_section_of_each_category_must_be_present
-      if categories.any?
-        categories.each do |offer_category|
-          next if offer_category.reload.sections.include?(section)
-          errors.add(:categories,
-                     I18n.t('offer.validations.section_for_category_needed',
-                            category: offer_category.name))
-        end
-      end
-    end
     #
     # def validate_target_audience_filters_offers
     #   unless target_audience_filters_offers.any?

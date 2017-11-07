@@ -21,7 +21,7 @@ class AsanaCommunicatorTest < ActiveSupport::TestCase # to have fixtures
       offer = offers(:basic)
       division = FactoryGirl.create :division
       division.organization.update_columns name: 'bazfuz'
-      offer.split_base.divisions << division
+      offer.divisions << division
 
       object.create_expire_task offer
     end
@@ -49,7 +49,7 @@ class AsanaCommunicatorTest < ActiveSupport::TestCase # to have fixtures
       website.offers << offer
       division = FactoryGirl.create :division
       division.organization.update_columns name: 'bazfuz'
-      offer.split_base.divisions << division
+      offer.divisions << division
 
       object.create_website_unreachable_task_offer website, offer
     end
@@ -87,7 +87,7 @@ class AsanaCommunicatorTest < ActiveSupport::TestCase # to have fixtures
       offer.starts_at = offer.expires_at - 1.year
       division = FactoryGirl.create :division
       division.organization.update_columns name: 'bazfuz'
-      offer.split_base.divisions << division
+      offer.divisions << division
 
       object.create_seasonal_offer_ready_for_checkup_task offer
     end

@@ -48,8 +48,6 @@ export default function formObjectSelect(model, editing) {
     return DefinitionFormObject
   case 'solution-categories':
     return SolutionCategoryFormObject
-  case 'split-bases':
-    return SplitBaseFormObject
   case 'target-audience-filters-offers':
     return TargetAudienceFiltersOfferFormObject
   default:

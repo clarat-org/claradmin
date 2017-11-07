@@ -101,9 +101,8 @@ class Offer < ApplicationRecord
     self.dup.tap do |offer|
       offer.created_by = nil
       offer.location = self.location
-      offer.split_base = self.split_base
+      offer.divisions = self.divisions
       offer.openings = self.openings
-      offer.categories = self.categories
       offer.section = self.section
       offer.language_filters = self.language_filters
       offer.trait_filters = self.trait_filters

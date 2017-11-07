@@ -18,9 +18,9 @@ class OfferCreateFormObject extends GenericFormObject {
 
   static get properties() {
     return [
-      'section', 'split-base', 'name', 'code-word', 'description',
+      'section', 'divisions', 'name', 'code-word', 'description',
       'comment', 'next-steps', 'contact-people',
-      'hide-contact-people', 'encounter', 'location', 'area', 'categories',
+      'hide-contact-people', 'encounter', 'location', 'area',
       'tags', 'trait-filters', 'language-filters',
       'target-audience-filters-offers', 'openings', 'opening-specification',
       'websites', 'starts-at', 'ends-at', 'logic-version'
@@ -29,8 +29,8 @@ class OfferCreateFormObject extends GenericFormObject {
 
   static get submodels() {
     return [
-      'section', 'split-base', 'next-steps', 'contact-people', 'location',
-      'area', 'categories', 'tags', 'trait-filters',
+      'section', 'divisions', 'next-steps', 'contact-people', 'location',
+      'area', 'tags', 'trait-filters',
       'language-filters', 'target-audience-filters-offers', 'openings',
       'websites', 'logic-version'
     ]
@@ -41,8 +41,8 @@ class OfferCreateFormObject extends GenericFormObject {
       section: {
         relationship: 'oneToOne'
       },
-      'split-base': {
-        relationship: 'oneToOne',
+      'divisions': {
+        relationship: 'oneToMany',
       },
       'next-steps': {
         relationship: 'oneToMany',
@@ -57,9 +57,6 @@ class OfferCreateFormObject extends GenericFormObject {
       },
       area: {
         relationship: 'oneToOne',
-      },
-      categories: {
-        relationship: 'oneToMany',
       },
       tags: {
         relationship: 'oneToMany',
@@ -91,7 +88,7 @@ class OfferCreateFormObject extends GenericFormObject {
   static get formConfig() {
     return {
       section: { type: 'filtering-select' },
-      'split-base': { type: 'filtering-select' },
+      divisions: { type: 'filtering-multiselect' },
       name: { type: 'string', addons: ['counter'] },
       description: { type: 'textarea', addons: ['counter'] },
       comment: { type: 'textarea' },
@@ -107,7 +104,6 @@ class OfferCreateFormObject extends GenericFormObject {
       },
       location: { type: 'creating-select' },
       area: { type: 'filtering-select' },
-      categories: { type: 'filtering-multiselect' },
       tags: { type: 'filtering-multiselect' },
       'trait-filters': {
         type: 'filtering-multiselect',
@@ -136,7 +132,7 @@ class OfferCreateFormObject extends GenericFormObject {
 
   static get requiredInputs() {
     return [
-      'section', 'split-base', 'name', 'target-audience-filters-offers',
+      'section', 'divisions', 'name', 'target-audience-filters-offers',
       'language-filters', 'description'
     ]
   }
