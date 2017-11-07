@@ -114,17 +114,10 @@ module API::V1
                 populator: API::V1::Lib::Populators::FindOrInstantiate,
                 class: ::Area
 
-<<<<<<< HEAD
         has_many :divisions,
                  decorator: API::V1::Division::Representer::Show,
                  populator: API::V1::Lib::Populators::FindOrInstantiate,
                  class: ::Division
-=======
-        has_one :split_base,
-                decorator: API::V1::SplitBase::Representer::Show,
-                populator: API::V1::Lib::Populators::FindOrInstantiate,
-                class: ::SplitBase
->>>>>>> develop
 
         has_many :tags,
                  decorator: API::V1::Tag::Representer::Show,

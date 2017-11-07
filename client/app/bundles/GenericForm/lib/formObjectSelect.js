@@ -14,7 +14,6 @@ import OpeningFormObject from '../forms/OpeningFormObject'
 import DefinitionFormObject from '../forms/DefinitionFormObject'
 import TagFormObject from '../forms/TagFormObject'
 import SolutionCategoryFormObject from '../forms/SolutionCategoryFormObject'
-import SplitBaseFormObject from '../forms/SplitBaseFormObject'
 import TargetAudienceFiltersOfferFormObject
   from '../forms/TargetAudienceFiltersOfferFormObject'
 

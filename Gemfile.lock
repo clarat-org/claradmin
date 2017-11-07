@@ -8,7 +8,8 @@ GIT
 
 GIT
   remote: git://github.com/clarat-org/clarat_base.git
-  revision: 9880d3331ab46500b2deae0166c03ae1b8f08219
+  revision: 2e128bfde3d11fda4dae6963aefba1f778642546
+  branch: feature/1443_remove_split_base
   specs:
     clarat_base (0.1.4)
       aasm
