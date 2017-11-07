@@ -59,9 +59,7 @@ module Offer::Contracts
 
     private
 
-    # Uses method from CustomValidatable concern.
     def validate_associated_fields
-      # validate_associated_presence :organizations
       validate_associated_presence :language_filters
     end
 

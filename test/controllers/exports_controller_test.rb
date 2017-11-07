@@ -48,17 +48,18 @@ describe ExportsController do
       end
 
       it 'should include a dash for nil-association' do
-        # parent on categories can be nil
-        export_hash = { model_fields: %w[id name], topics: ['name'] }
+        # parent on solution_categories can be nil
+        export_hash = { model_fields: %w[id name], parent: ['id'] }
         result = Export::Create.(
-          { object_name: 'organizations', export: export_hash },
+          { object_name: 'solution_categories', export: export_hash },
           'current_user' => users(:researcher)
         )
         result.must_be :success?
         enum = @controller.send(:csv_lines, result['model'])
         enum.next
         enum.to_a.must_equal [
-          "id,name,name [Topics]\n", "1,foobar, - \n", "2,second, - \n"
+          "id,name,id [Parent]\n",
+          "1,basicSolutionCategoryName, - \n"
         ]
       end
     end

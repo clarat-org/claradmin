@@ -94,10 +94,10 @@ class Export
   def value_for associated_object, field
     if associated_object.is_a?(ActiveRecord::Relation)
       dash_or associated_object.map { |element| element[field] }.join(',')
-      # elsif associated_object.nil?
-      #   ' - '
-      # else
-      #   dash_or associated_object[field]
+    elsif associated_object.nil?
+      ' - '
+    else
+      dash_or associated_object[field]
     end
   end
 
