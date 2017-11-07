@@ -283,18 +283,6 @@ export default {
       ],
     },
 
-    categories: {
-      fields: [
-        'id', 'name-de', 'sort-order', 'visible', 'parent-id'
-      ],
-      general_actions: [
-        'index'
-      ],
-      member_actions: [
-        'show', 'delete'
-      ]
-    },
-
     websites: {
       fields: [
         'id', 'host', 'url'

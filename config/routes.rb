@@ -77,11 +77,6 @@ Rails.application.routes.draw do
   # API
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      resources :categories do
-        collection do
-          put 'sort'
-        end
-      end
       def api_resources name, options = {}
         resources name, options.merge(path: name.to_s.dasherize)
       end
