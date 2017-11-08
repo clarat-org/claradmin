@@ -115,7 +115,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
         {
           received(data) {
             console.log('received', data)
-            dispatch(changeViewing(model, id, data.views))
+            dispatch(changeViewing(data.model, data.id, data.views))
           }
         }
       ))

@@ -11,12 +11,14 @@ class ViewingChannelTest < ActionCable::Channel::TestCase
     assert_broadcasts 'viewing:offers:1', 0
     subscribe model: 'offers', id: 1, view: 'show'
     assert_broadcasts 'viewing:offers:1', 1
-    broadcasts('viewing:offers:1').last.must_equal '{"views":{"show":["1"]}}'
+    broadcasts('viewing:offers:1').last.must_equal(
+      '{"model":"offers","id":1,"views":{"show":["1"]}}'
+    )
 
     # second tab gets opened on same view
     subscribe model: 'offers', id: 1, view: 'show'
     broadcasts('viewing:offers:1').last.must_equal(
-      '{"views":{"show":["1","1"]}}'
+      '{"model":"offers","id":1,"views":{"show":["1","1"]}}'
     )
 
     # one tab changes view internally
@@ -24,7 +26,7 @@ class ViewingChannelTest < ActionCable::Channel::TestCase
             last: { 'model' => 'offers', 'id' => 1, 'view' => 'show' },
             next: { 'model' => 'offers', 'id' => 1, 'view' => 'edit' }
     broadcasts('viewing:offers:1').last.must_equal(
-      '{"views":{"edit":["1"],"show":["1"]}}'
+      '{"model":"offers","id":1,"views":{"edit":["1"],"show":["1"]}}'
     )
 
     # changes view externally (from one model instance to another)
@@ -33,19 +35,19 @@ class ViewingChannelTest < ActionCable::Channel::TestCase
             last: { 'model' => 'offers', 'id' => 1, 'view' => 'edit' },
             next: { 'model' => 'cities', 'id' => 2, 'view' => 'show' }
     broadcasts('viewing:offers:1').last.must_equal(
-      '{"views":{"edit":[],"show":["1"]}}'
+      '{"model":"offers","id":1,"views":{"edit":[],"show":["1"]}}'
     )
     broadcasts('viewing:cities:2').last.must_equal(
-      '{"views":{"edit":[],"show":["1"]}}'
+      '{"model":"cities","id":2,"views":{"edit":[],"show":["1"]}}'
     )
 
     # show tab gets closed
     subscription.unsubscribe_from_channel
     broadcasts('viewing:offers:1').last.must_equal(
-      '{"views":{"edit":[],"show":[]}}'
+      '{"model":"offers","id":1,"views":{"edit":[],"show":[]}}'
     )
     broadcasts('viewing:cities:2').last.must_equal(
-      '{"views":{"edit":[],"show":["1"]}}'
+      '{"model":"cities","id":2,"views":{"edit":[],"show":["1"]}}'
     )
   end
 end

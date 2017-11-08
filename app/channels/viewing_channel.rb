@@ -54,15 +54,14 @@ class ViewingChannel < ApplicationCable::Channel
   end
 
   def subscribed
-    channel = channel_name(params)
-    stream_from channel
-    add_view_and_broadcast(channel, params)
+    stream_from channel_name(params)
+    add_view_and_broadcast(params)
   end
 
   def unsubscribed
     stop_all_streams
     ViewingMemory.remove(channel_name(params), params['view'], user)
-    broadcast(channel_name(params))
+    broadcast(params)
   end
 
   def change_view(data)
@@ -73,22 +72,25 @@ class ViewingChannel < ApplicationCable::Channel
 
     if previous_channel != next_channel
       stream_from next_channel
-      broadcast(previous_channel)
+      broadcast(data['last'])
     end
 
-    add_view_and_broadcast(next_channel, data['next'])
+    add_view_and_broadcast(data['next'])
   end
 
   private
 
-  def add_view_and_broadcast solved_channel_channel, data
-    ViewingMemory.add(solved_channel_channel, data['view'], user)
-    broadcast(solved_channel_channel)
+  def add_view_and_broadcast hash
+    ViewingMemory.add(channel_name(hash), hash['view'], user)
+    broadcast(hash)
   end
 
-  def broadcast solved_channel_name
-    channel_hash = ViewingMemory.get_views(solved_channel_name)
-    ActionCable.server.broadcast(solved_channel_name, views: channel_hash)
+  def broadcast hash
+    channel = channel_name(hash)
+    channel_hash = ViewingMemory.get_views(channel)
+    ActionCable.server.broadcast(
+      channel, model: hash['model'], id: hash['id'], views: channel_hash
+    )
   end
 
   def channel_name hash
