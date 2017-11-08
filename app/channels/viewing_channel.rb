@@ -4,8 +4,7 @@ require 'redis-namespace'
 
 class ViewingChannel < ApplicationCable::Channel
   module ViewingMemory
-    REDIS = Redis.new
-    REDISNS = Redis::Namespace.new('ViewingChannel', redis: REDIS)
+    REDISNS = Redis::Namespace.new('ViewingChannel', redis: $redis)
 
     def self.add base_key, view, user
       REDISNS.sadd 'all_views', view

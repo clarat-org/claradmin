@@ -7,5 +7,10 @@ development:
 test:
   adapter: async
 
+staging:
+  adapter: redis
+  url: <%= Rails.application.secrets.redis_url %>
+
 production:
-  adapter: redis # TODO: provide a working adapter!
+  adapter: redis
+  url: <%= Rails.application.secrets.redis_url %>
