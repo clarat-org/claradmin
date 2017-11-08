@@ -21,7 +21,7 @@ class OfferCreateFormObject extends GenericFormObject {
       'section', 'divisions', 'name', 'code-word', 'description',
       'comment', 'next-steps', 'contact-people',
       'hide-contact-people', 'encounter', 'location', 'area',
-      'tags', 'trait-filters', 'language-filters',
+      'tags', 'solution-category', 'trait-filters', 'language-filters',
       'target-audience-filters-offers', 'openings', 'opening-specification',
       'websites', 'starts-at', 'ends-at', 'logic-version'
     ]
@@ -30,7 +30,7 @@ class OfferCreateFormObject extends GenericFormObject {
   static get submodels() {
     return [
       'section', 'divisions', 'next-steps', 'contact-people', 'location',
-      'area', 'tags', 'trait-filters',
+      'area', 'tags', 'solution-category', 'trait-filters',
       'language-filters', 'target-audience-filters-offers', 'openings',
       'websites', 'logic-version'
     ]
@@ -82,6 +82,9 @@ class OfferCreateFormObject extends GenericFormObject {
       'logic-version': {
         relationship: 'oneToOne',
       },
+      'solution-category': {
+        relationship: 'oneToOne',
+      }
     }
   }
 
@@ -127,13 +130,14 @@ class OfferCreateFormObject extends GenericFormObject {
       'ends-at': { type: 'date' },
       websites: { type: 'creating-multiselect' },
       'logic-version': { type: 'filtering-select' },
+      'solution-category': { type: 'filtering-select' },
     }
   }
 
   static get requiredInputs() {
     return [
-      'section', 'divisions', 'name', 'target-audience-filters-offers',
-      'language-filters', 'description'
+      'section', 'solution-category', 'divisions', 'name',
+      'target-audience-filters-offers', 'language-filters', 'description'
     ]
   }
 

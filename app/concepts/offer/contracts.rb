@@ -8,6 +8,7 @@ module Offer::Contracts
     property :comment
     property :encounter
     property :section
+    property :solution_category
     property :language_filters
     property :target_audience_filters_offers
     property :trait_filters
@@ -36,6 +37,7 @@ module Offer::Contracts
     validates :description, presence: true
     validates :encounter, presence: true
     validates :section, presence: true
+    validates :solution_category, presence: true
     validates :code_word, length: { maximum: 140 }
 
     # Needs to be true before approval possible. Called in custom validation.

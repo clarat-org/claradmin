@@ -36,6 +36,7 @@ module API::V1
 
           property :section_id
           property :logic_version_id
+          property :solution_category_id
           property :division_ids
           property :location_id
           property :area_id
@@ -56,6 +57,15 @@ module API::V1
             property :label, getter: ->(o) { o[:represented].identifier }
             property :name
             property :identifier
+          end
+        end
+
+        has_one :solution_category do
+          type :solution_categories
+
+          attributes do
+            property :label, getter: ->(o) { o[:represented].name }
+            property :name
           end
         end
 
@@ -126,8 +136,13 @@ module API::V1
 
         has_one :section,
                 decorator: API::V1::Section::Representer::Show,
-                populator: API::V1::Lib::Populators::FindOrInstantiate,
+                populator: API::V1::Lib::Populators::Find,
                 class: ::Section
+
+        has_one :solution_category,
+                decorator: API::V1::SolutionCategory::Representer::Show,
+                populator: API::V1::Lib::Populators::Find,
+                class: ::SolutionCategory
 
         has_many :openings,
                  decorator: API::V1::Opening::Representer::Show,

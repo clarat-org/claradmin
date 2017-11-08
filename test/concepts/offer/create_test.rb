@@ -37,7 +37,8 @@ class OfferCreateTest < ActiveSupport::TestCase
           'language-filters': { data: [{ type: 'filters', id: '1' }] },
           location: { data: { type: 'locations', id: '1' } },
           'divisions': { data: [{ type: 'divisions', id: '1' }] },
-          section: { data: { type: 'sections', id: '1' } }
+          section: { data: { type: 'sections', id: '1' } },
+          'solution-category': { data: { type: 'solution-categories', id: '1' } }
         }
       }
     }
@@ -56,6 +57,7 @@ class OfferCreateTest < ActiveSupport::TestCase
     result['model'].divisions.length.must_equal 1
     result['model'].location.id.must_equal 1
     result['model'].section.id.must_equal 1
+    result['model'].solution_category.id.must_equal 1
   end
 
   it 'must generate unique slugs' do
@@ -65,6 +67,7 @@ class OfferCreateTest < ActiveSupport::TestCase
       encounter: 'online',
       language_filters: [LanguageFilter.first],
       section: Section.first,
+      solution_category: SolutionCategory.first,
       area: Area.first,
       divisions: [Division.first]
     }

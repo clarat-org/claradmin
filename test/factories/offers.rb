@@ -13,6 +13,7 @@ FactoryGirl.define do
       %w[personal personal personal personal hotline chat forum email online-course portal].sample
     end
     area { Area.first unless encounter == 'personal' }
+    solution_category { SolutionCategory.all.sample || FactoryGirl.create(:solution_category) }
     approved_at nil
     # every offer should have a creator!
     created_by { User.all.sample.id || FactoryGirl.create(:researcher).id }
