@@ -144,81 +144,25 @@ class OfferContractTest < ActiveSupport::TestCase
       #   subject.valid?.must_equal true
       # end
 
-      it 'should fail if sections of offer and both categories dont match' do
-        subject = Offer::Contracts::Update.new(offers(:basic))
-        category = FactoryGirl.create(:category)
-        category.sections =
-          [sections(:refugees), sections(:family)]
-        subject.section = sections(:refugees)
-        category2 = FactoryGirl.create(:category)
-        category2.sections = [sections(:family)]
-        subject.categories = [category, category2]
-        subject.valid?.must_equal false
-      end
-
-      it 'should succeed if sections of offer and categories match' do
-        subject = Offer::Contracts::Update.new(offers(:basic))
-        category2 = FactoryGirl.create(:category)
-        category2.sections = [sections(:family)]
-        subject.categories << category2
-        subject.section = sections(:family)
-        subject.valid?.must_equal true
-      end
-
-      it 'should fail when sections of offer and categories dont match + errors' do
-        subject = Offer::Contracts::Update.new(offers(:basic))
-        category = FactoryGirl.create(:category)
-        category.sections = [sections(:family)]
-        subject.categories = [category]
-        subject.section = sections(:refugees)
-        subject.valid?.must_equal false
-        subject.errors.messages[:categories].must_include(
-          "benötigt mindestens eine 'Refugees' Kategorie\n"
-        )
-        subject.errors.messages[:categories].wont_include(
-          "benötigt mindestens eine 'Family' Kategorie\n"
-        )
-      end
-
-      it 'should succeed when sections of offer and categories match' do
-        subject = Offer::Contracts::Update.new(offers(:basic))
-        category = FactoryGirl.create(:category)
-        subject.section = sections(:refugees)
-        category.sections = [sections(:refugees)]
-        subject.categories = [category]
-        subject.valid?.must_equal true
-        subject.errors.messages[:categories].must_be :empty?
-      end
-
-      it 'should succeed when sections of offer and categories (2 sect.) match' do
-        subject = Offer::Contracts::Update.new(offers(:basic))
-        category = FactoryGirl.create(:category)
-        subject.section = sections(:refugees)
-        subject.categories = [category]
-        category.sections = [sections(:refugees), sections(:family)]
-        subject.valid?.must_equal true
-        subject.errors.messages[:categories].must_be :empty?
-      end
-
       it 'should fail when version < 7' do
         subject.logic_version = LogicVersion.create(name: 'chunky', version: 6)
-        subject.split_base = nil
+        subject.divisions = []
         subject.valid?
-        subject.errors.messages[:split_base].must_be :empty?
+        subject.errors.messages[:divisions].must_be :empty?
       end
 
-      it 'should fail when split_base is nil with version >= 7' do
+      it 'should fail when divisions is nil with version >= 7' do
         subject.logic_version = LogicVersion.create(name: 'bacon', version: 7)
-        subject.split_base = nil
+        subject.divisions = []
         subject.valid?
-        subject.errors.messages[:split_base].wont_be :empty?
+        subject.errors.messages[:divisions].wont_be :empty?
       end
 
-      it 'should validate that split_base is assigned with version >= 7' do
+      it 'should validate that division is assigned with version >= 7' do
         subject.logic_version = LogicVersion.create(name: 'bacon', version: 7)
-        subject.split_base = split_bases(:basic)
+        subject.divisions << divisions(:basic)
         subject.valid?
-        subject.errors.messages[:split_base].must_be :empty?
+        subject.errors.messages[:divisions].must_be :empty?
       end
 
       # it 'should ensure chosen contact people belong to a chosen orga' do

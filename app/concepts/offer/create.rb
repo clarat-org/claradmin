@@ -10,12 +10,12 @@ class Offer::Create < Trailblazer::Operation
   step Contract::Validate()
   step Wrap(::Lib::Transaction) {
     step ::Lib::Macros::Nested::Find :section, ::Section
-    step ::Lib::Macros::Nested::Find :split_base, ::SplitBase
+    step ::Lib::Macros::Nested::Find :solution_category, ::SolutionCategory
+    step ::Lib::Macros::Nested::Find :divisions, ::Division
     step ::Lib::Macros::Nested::Find :next_steps, ::NextStep
     step ::Lib::Macros::Nested::Create :contact_people, ::ContactPerson::Create
     step ::Lib::Macros::Nested::Create :location, ::Location::Create
     step ::Lib::Macros::Nested::Find :area, ::Area
-    step ::Lib::Macros::Nested::Find :categories, ::Category
     step ::Lib::Macros::Nested::Find :tags, ::Tag
     step ::Lib::Macros::Nested::Find :trait_filters, ::TraitFilter
     step ::Lib::Macros::Nested::Find :language_filters, ::LanguageFilter
