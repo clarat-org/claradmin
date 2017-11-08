@@ -1,0 +1,11 @@
+# Configuration for Rails 5+ Action Cable
+
+development:
+  adapter: redis
+  url: redis://localhost:6379
+
+test:
+  adapter: async
+
+production:
+  adapter: redis # TODO: provide a working adapter!
