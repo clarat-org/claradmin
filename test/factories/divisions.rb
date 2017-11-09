@@ -13,7 +13,8 @@ FactoryGirl.define do
     end
 
     after :build do |division, evaluator|
-      division.section = evaluator.section || Section.first || FactoryGirl.create(:section)
+      division.section =
+        evaluator.section || Section.first || FactoryGirl.create(:section)
     end
 
     after :create do |division, _evaluator|
