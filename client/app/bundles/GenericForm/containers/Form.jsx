@@ -44,6 +44,7 @@ const mapStateToProps = (state, ownProps) => {
   const buttonData = buildActionButtonData(
     state, model, editId, instance, formObjectClass, formData
   )
+  const approvable = checkIfApprovable(buttonData)
 
   // Changes in case the form updates instead of creating
   if (editId && !ownProps.forceCreate) {
@@ -62,7 +63,8 @@ const mapStateToProps = (state, ownProps) => {
     buttonData,
     afterSaveActions,
     afterSaveActiveKey,
-    editId
+    editId,
+    approvable
   }
 }
 
@@ -233,6 +235,15 @@ function textForActionName(action, model){
     return 'als unvollständig markieren'
   default:
     return action
+  }
+}
+
+function checkIfApprovable(buttonData) {
+  if(buttonData[0] && buttonData[0]["actionName"] === 'return_to_editing') {
+    return false
+  }
+  else {
+    return true
   }
 }
 

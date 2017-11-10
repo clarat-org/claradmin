@@ -19,7 +19,7 @@ export default class GenericFormForm extends React.Component {
       afterResponse, model, nestingModel, instance, loadData,
       isAssignable, buttonData, afterRequireValid, afterSaveActions,
       beforeSubmit, splitButtonMenuItemOnclick, onSubmitButtonClick,
-      afterError, formStateDidMount, editId
+      afterError, formStateDidMount, editId, approvable
     } = this.props
 
     return(
@@ -46,6 +46,7 @@ export default class GenericFormForm extends React.Component {
             formId, nestingModel, buttonData, afterSaveActions,
             splitButtonMenuItemOnclick, onSubmitButtonClick
           )}
+          {this.renderNotice(approvable)}
         </div>), isAssignable, model, instance, loadData
       )
     )
@@ -92,5 +93,15 @@ export default class GenericFormForm extends React.Component {
         ))}
       </div>
     )
+  }
+
+  renderNotice(approvable) {
+    if (approvable === false) {
+      return(
+        <div className='missing-approval'>
+          Please check and approve Orga(s)'
+        </div>
+      )
+    }
   }
 }
