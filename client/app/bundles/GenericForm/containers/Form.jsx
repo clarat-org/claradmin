@@ -241,8 +241,7 @@ function textForActionName(action, model){
 function checkIfApprovable(buttonData) {
   if(buttonData[0] && buttonData[0]["actionName"] === 'return_to_editing') {
     return false
-  }
-  else {
+  } else {
     return true
   }
 }
