@@ -99,7 +99,7 @@ export default class GenericFormForm extends React.Component {
     if (approvable === false) {
       return(
         <div className='missing-approval'>
-          Please check unapproved Orga(s)'
+          Please check unapproved Orga(s)
         </div>
       )
     }

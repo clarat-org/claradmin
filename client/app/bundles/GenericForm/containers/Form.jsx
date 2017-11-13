@@ -239,7 +239,8 @@ function textForActionName(action, model){
 }
 
 function checkIfApprovable(buttonData) {
-  if(buttonData[0] && buttonData[0]["actionName"] === 'return_to_editing') {
+  if(buttonData.length < 2 && buttonData.map(function(button) {
+    return button.actionName } ).includes('return_to_editing')) {
     return false
   } else {
     return true
