@@ -43,6 +43,10 @@ import EditTranslation from
   '../../bundles/EditTranslation/containers/EditTranslation'
 
 export default class Routes extends React.Component {
+  componentDidMount() {
+    this.props.initialSetup()
+  }
+
   render() {
     return (
       <Router history={browserHistory}>

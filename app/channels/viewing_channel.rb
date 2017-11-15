@@ -4,38 +4,51 @@ require 'redis-namespace'
 
 class ViewingChannel < ApplicationCable::Channel
   module ViewingMemory
-    REDISNS = Redis::Namespace.new('ViewingChannel', redis: $redis)
-
-    def self.add base_key, view, user
-      REDISNS.sadd 'all_views', view
-      REDISNS.rpush key(base_key, view), user
+    class NoRedisDataError < StandardError
+      def initialize(getter_name)
+        super("Tried to find #{getter_name} data in redis, but it wasn't there")
+      end
     end
 
-    def self.get_views base_key
+    # rubocop:disable Style/GlobalVars
+    # Reasoning: Redis is a singleton by design.
+    REDISNS = Redis::Namespace.new('ViewingChannel', redis: $redis)
+    # rubocop:enable Style/GlobalVars
+
+    def self.add channel, view, user, tab_id
+      REDISNS.sadd 'all_views', view
+      REDISNS.hset 'tabs_users', tab_id, user
+      REDISNS.hset 'tabs_channels', tab_id, channel
+      REDISNS.hset 'tabs_views', tab_id, view
+      REDISNS.rpush key(channel, view), tab_id
+    end
+
+    def self.get_current data_type, tab_id # get channel, user, or view
+      result = REDISNS.hget "tabs_#{data_type}s", tab_id
+      raise NoRedisDataError, data_type unless result
+      result
+    end
+
+    def self.get_views channel
       view_hash = {}
 
       for_all_views do |view|
-        view_hash[view] = REDISNS.lrange(key(base_key, view), 0, -1)
+        view_hash[view] =
+          REDISNS.lrange(key(channel, view), 0, -1).map do |tab_id|
+            get_current :user, tab_id
+          end
       end
 
       view_hash
     end
 
-    def self.remove(base_key, view, user)
-      # # if the user has no more connection, remove all remaining occurrences (0)
-      # # in case a disconection got missed
-      # if REDIS.pubsub('numsub', base_key).last.zero?
-      #   remove_all base_key, user
-      # else
-      REDISNS.lrem key(base_key, view), 1, user
-      # end
+    def self.remove(channel, tab_id)
+      view = get_current :view, tab_id
+      REDISNS.lrem key(channel, view), 1, tab_id
+      REDISNS.hdel 'tabs_users', tab_id
+      REDISNS.hdel 'tabs_channels', tab_id
+      REDISNS.hdel 'tabs_views', tab_id
     end
-
-    # def self.remove_all base_key, user
-    #   for_all_views do |view|
-    #     REDISNS.lrem key(base_key, view), 0, user
-    #   end
-    # end
 
     at_exit do # clean up in case of a server abort / restart
       REDISNS.keys.each { |key| REDISNS.del(key) }
@@ -43,8 +56,8 @@ class ViewingChannel < ApplicationCable::Channel
 
     private_class_method
 
-    def self.key(base_key, view)
-      "#{base_key}:#{view}"
+    def self.key(channel, view)
+      "#{channel}:#{view}"
     end
 
     def self.for_all_views(&block)
@@ -53,47 +66,46 @@ class ViewingChannel < ApplicationCable::Channel
   end
 
   def subscribed
-    stream_from channel_name(params)
-    add_view_and_broadcast(params)
+    channel = channel_name(params)
+    stream_from channel
+    ViewingMemory.add(channel, params['view'], user, params['sessionID'])
+    broadcast_views(channel)
   end
 
   def unsubscribed
     stop_all_streams
-    ViewingMemory.remove(channel_name(params), params['view'], user)
-    broadcast(params)
+    previous_channel = ViewingMemory.get_current(:channel, params['sessionID'])
+
+    ViewingMemory.remove(previous_channel, params['sessionID'])
+    broadcast_views(previous_channel)
   end
 
   def change_view(data)
-    previous_channel = channel_name(data['last'])
-    next_channel = channel_name(data['next'])
+    previous_channel = ViewingMemory.get_current(:channel, data['sessionID'])
+    next_channel = channel_name(data)
 
-    ViewingMemory.remove(previous_channel, data['last']['view'], user)
+    ViewingMemory.remove(previous_channel, params['sessionID'])
 
     if previous_channel != next_channel
       stream_from next_channel
-      broadcast(data['last'])
+      broadcast_views(previous_channel)
     end
 
-    add_view_and_broadcast(data['next'])
+    ViewingMemory.add(next_channel, data['view'], user, data['sessionID'])
+    broadcast_views(next_channel)
   end
 
   private
 
-  def add_view_and_broadcast hash
-    ViewingMemory.add(channel_name(hash), hash['view'], user)
-    broadcast(hash)
-  end
-
-  def broadcast hash
-    channel = channel_name(hash)
-    channel_hash = ViewingMemory.get_views(channel)
+  def broadcast_views channel
+    _, model, id = channel.split(':')
     ActionCable.server.broadcast(
-      channel, model: hash['model'], id: hash['id'], views: channel_hash
+      channel, model: model, id: id, views: ViewingMemory.get_views(channel)
     )
   end
 
   def channel_name hash
-    ['viewing', hash['model'], hash['id']].join(':')
+    ['viewing', hash['model'], hash['id'].to_s].join(':')
   end
 
   def user

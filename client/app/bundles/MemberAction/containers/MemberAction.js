@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 import uniq from 'lodash/uniq'
 import { singularize } from '../../../lib/inflection'
 import { denormalizeStateEntity } from '../../../lib/denormalizeUtils'
@@ -19,6 +20,7 @@ const mapStateToProps = (state, ownProps) => {
   let [_, model, id, view] = ownProps.location.pathname.split('/')
   view = view || 'show'
   const heading = headingFor(model, id, view)
+  const entity = state.entities[model] && state.entities[model][id] || {}
 
   const viewingUserIDs =
     state.cable.live.viewing[model] &&
@@ -40,8 +42,10 @@ const mapStateToProps = (state, ownProps) => {
     model,
     id,
     view,
+    entity,
     heading,
     viewingUsers,
+    sessionID: state.ui.sessionID,
     ChildComponent: componentForView(view)
   }
 }
@@ -49,11 +53,19 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => ({ dispatch })
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { model, id, view } = stateProps
+  const { model, id, view, sessionID } = stateProps
   const { dispatch } = dispatchProps
+
+  const redirectOnDelete = (nextModel) => () => {
+    browserHistory.replace(`/${nextModel}`)
+    dispatch(
+      addFlashMessage('failure', 'Das Objekt gibt es nicht (mehr)!')
+    )
+  }
 
   return {
     ...stateProps, ...dispatchProps, ...ownProps,
+    redirectOnDelete,
 
     loadData(nextModel = model, nextID = id, nextView = view) {
       // load data of current model_instance
@@ -63,12 +75,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
             onSuccess: () => {
               dispatch(setUiLoaded(true, 'GenericForm', nextModel, nextID)) //!
             },
-            onError: () => {
-              browserHistory.replace(`/${nextModel}`)
-              dispatch(
-                addFlashMessage('failure', 'Das Objekt gibt es nicht (mehr)!')
-              )
-            }
+            onError: redirectOnDelete(nextModel)
           }
         )
       )
@@ -109,12 +116,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     // Subscribe to information about other people who are viewing
     // and potentially modifying the currently shown object
     setupViewingSubscription() {
-      console.log('setting up', { model, id, view })
       dispatch(setupSubscription(
-        { channel: 'ViewingChannel', model, id, view },
+        { channel: 'ViewingChannel', model, id, view, sessionID },
         {
           received(data) {
-            console.log('received', data)
             dispatch(changeViewing(data.model, data.id, data.views))
           }
         }
@@ -123,16 +128,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 
     // When the user changes between views, inform other subscribers
     changeView(nextProps) {
-      console.log('changing')
       dispatch(channelPerform('ViewingChannel', 'change_view', {
-        last: { model, id, view },
-        next: { model: nextProps.model, id: nextProps.id, view: nextProps.view },
+        model: nextProps.model, id: nextProps.id, view: nextProps.view,
+        sessionID
       }))
     },
 
     // Unsubscribe when leaving the member context
     removeViewingSubscription() {
-      console.log('leaving', { model, id, view })
       dispatch(removeSubscription('ViewingChannel'))
     }
   }

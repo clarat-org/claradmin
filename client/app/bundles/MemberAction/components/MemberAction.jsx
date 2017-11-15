@@ -7,7 +7,7 @@ export default class MemberAction extends Component {
     this.props.setupViewingSubscription()
   }
 
-  componentWilUnmount() {
+  componentWillUnmount() {
     this.props.removeViewingSubscription()
   }
 
@@ -22,6 +22,9 @@ export default class MemberAction extends Component {
     } else if (nextProps.view != this.props.view) {
       this.props.changeView(nextProps)
     }
+
+    if (nextProps.entity._deleted)
+      this.props.redirectOnDelete(nextProps.model)()
   }
 
   render() {
@@ -41,9 +44,9 @@ export default class MemberAction extends Component {
     )
   }
 
-  renderViewingUser(view) {
+  renderViewingUser(view, index) {
     return(
-      <li key={view.id} title={view.title} style={{background: view.color}}>
+      <li key={index} title={view.title} style={{background: view.color}}>
         {view.shorthand}
         {this.renderOptionalTabCount(view.tabcount)}
       </li>

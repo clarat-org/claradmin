@@ -1,8 +1,8 @@
 .MemberActionsNavBar-ViewingCount,
 .MemberAction-Viewers__tabcount {
   position: absolute;
-  bottom: -8px;
-  right: -8px;
+  bottom: -0.6em;
+  right: -0.6em;
   border: 1px solid;
 }
 
@@ -37,5 +37,10 @@
     padding-left: 0.5em;
     padding-right: 0.5em;
     padding-bottom: 0.1em;
+
+    &.badge {
+      background: inherit;
+      border: none;
+    }
   }
 }
