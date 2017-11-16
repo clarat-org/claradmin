@@ -84,7 +84,7 @@ class ViewingChannel < ApplicationCable::Channel
     previous_channel = ViewingMemory.get_current(:channel, data['sessionID'])
     next_channel = channel_name(data)
 
-    ViewingMemory.remove(previous_channel, params['sessionID'])
+    ViewingMemory.remove(previous_channel, data['sessionID'])
 
     if previous_channel != next_channel
       stream_from next_channel

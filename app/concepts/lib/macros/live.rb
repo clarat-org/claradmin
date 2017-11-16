@@ -15,11 +15,11 @@ module Lib
 
       def self.SendCreation
         step = ->(_, model:, **) do
-          ActionCable.server.broadcast(
-            'changes',
-            model: model.class.table_name.dasherize,
-            action: 'addition', json: show_representer(model).to_hash
+          broadcast_to_changes_channel(
+            'addition', model, json: show_representer(model).to_hash
           )
+
+          true
         end
 
         [step, name: 'live.send_creation']
@@ -27,21 +27,26 @@ module Lib
 
       def self.SendDeletion
         step = ->(_, model:, **) do
-          ActionCable.server.broadcast(
-            'changes',
-            model: model.class.table_name.dasherize, id: model.id,
-            action: 'deletion'
-          )
+          broadcast_to_changes_channel('deletion', model, id: model.id)
+
+          true
         end
 
         [step, name: 'live.send_deletion']
       end
 
       def self.broadcast_change model, data
+        broadcast_to_changes_channel(
+          'change', model, id: model.id, changes: data
+        )
+      end
+
+      def self.broadcast_to_changes_channel action, model, options
         ActionCable.server.broadcast(
           'changes',
-          model: model.class.table_name.dasherize, id: model.id,
-          action: 'change', changes: data
+          options.merge(
+            model: model.class.table_name.dasherize, action: action
+          )
         )
       end
 
