@@ -33,7 +33,7 @@ const mapStateToProps = (state, ownProps) => {
     user.color = intToHSL(user.id)
     user.shorthand = user.name.split(' ').map(s => s[0]).join('')
     user.tabcount = viewingUserIDs.filter(e => e == user.id).length
-    user.title = `${user.name} sieht diese Seite gerade an`
+    user.title = `${user.name} hat diese Seite geöffnet`
     if (user.tabcount > 1) user.title += ` (in ${user.tabcount} Tabs)`
     return user
   })
