@@ -36,6 +36,11 @@ class Offer::Update < Trailblazer::Operation
       options['contract.default'].divisions.first.section.id
   end
 
+  def save_section_id(options)
+    options['model'].section_id =
+      options['contract.default'].divisions.first.section.id
+  end
+
   def change_state_side_effect(options, model:, params:, current_user:, **)
     commit = params['meta'] && params['meta']['commit']
     return true unless commit && triggerable_event?(model, commit)
