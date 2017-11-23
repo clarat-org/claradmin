@@ -16,7 +16,7 @@ module API::V1
             {
               name: event.name,
               possible: r[:represented].send("may_#{event.name}?") && event.name != :mark_as_done,
-              failing_guards: event.instance_variable_get(:@guards).select { |guard| !r[:represented].send(guard) }
+              failing_guards: event.instance_variable_get(:@guards).reject { |guard| r[:represented].send(guard) }
             }
           end
         elsif r[:represented].is_a?(::Division)
