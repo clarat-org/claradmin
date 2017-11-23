@@ -38,7 +38,7 @@ module Organization::StateMachine
         transitions from: :initialized, to: :completed
       end
 
-      event :start_approval_process do
+      event :start_approval_process, guards: %i[orga_valid?] do
         # TODO: reactivate guard!!!
         transitions from: :completed, to: :approval_process # , guard: :different_actor?
       end
@@ -128,6 +128,10 @@ module Organization::StateMachine
 
     def different_actor?
       Creator::Twin.new(self).different_actor?
+    end
+
+    def orga_valid?
+      self.valid?
     end
   end
 end

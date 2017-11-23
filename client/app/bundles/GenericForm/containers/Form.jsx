@@ -44,7 +44,7 @@ const mapStateToProps = (state, ownProps) => {
   const buttonData = buildActionButtonData(
     state, model, editId, instance, formObjectClass, formData
   )
-  const approvable = checkIfApprovable(buttonData)
+  const errorMessages = checkforErrors(state, model, editId)
 
   // Changes in case the form updates instead of creating
   if (editId && !ownProps.forceCreate) {
@@ -64,7 +64,7 @@ const mapStateToProps = (state, ownProps) => {
     afterSaveActions,
     afterSaveActiveKey,
     editId,
-    approvable
+    errorMessages
   }
 }
 
@@ -238,12 +238,28 @@ function textForActionName(action, model){
   }
 }
 
-function checkIfApprovable(buttonData) {
-  if(buttonData.length < 2 && buttonData.map(function(button) {
-    return button.actionName } ).includes('return_to_editing')) {
-    return false
-  } else {
-    return true
+function checkforErrors(state, model, editId) {
+  let errors = []
+  if(state.entities['possible-events']) {
+    state.entities['possible-events'][model][editId]['data'].map(function(e) {
+      if(e.failing_guards.length > 0) {
+        errors.push(textForFailingGuard(e.failing_guards[0]))
+      }
+    })
+  }
+  return errors
+}
+
+function textForFailingGuard(guard) {
+  switch(guard) {
+  case 'orga_valid?':
+    return 'Orga is not valid'
+  case 'all_organizations_visible?':
+    return 'Please check unapproved Orga(s)'
+  case 'expiration_date_in_future?':
+    return 'Offer has expired'
+  default:
+    return guard
   }
 }
 
