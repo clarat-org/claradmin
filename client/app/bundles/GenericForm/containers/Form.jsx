@@ -240,8 +240,13 @@ function textForActionName(action, model){
 
 function checkforErrors(state, model, editId) {
   let errors = []
-  if(state.entities['possible-events']) {
-    state.entities['possible-events'][model][editId]['data'].map(function(e) {
+
+  if(state.entities['possible-events'] &&
+     state.entities['possible-events'][model] &&
+     state.entities['possible-events'][model][editId] &&
+     state.entities['possible-events'][model][editId]
+     ) {
+      state.entities['possible-events'][model][editId].data.map(function(e) {
       if(e.failing_guards.length > 0) {
         errors.push(textForFailingGuard(e.failing_guards[0]))
       }
