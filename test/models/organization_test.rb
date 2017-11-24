@@ -61,6 +61,7 @@ describe Organization do
       it 'should enter approval_process when orga is valid' do
         organization.website = websites(:basic)
         organization.start_approval_process
+        organization.orga_valid?.must_equal true
         organization.must_be :approval_process?
       end
 
