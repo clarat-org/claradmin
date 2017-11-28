@@ -22,7 +22,6 @@ module API::V1
             }
           end
         elsif r[:represented].is_a?(::Division)
-          # TODO
           events =
             if r[:represented].done
               [:mark_as_not_done]
