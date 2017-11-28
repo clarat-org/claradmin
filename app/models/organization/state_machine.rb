@@ -41,7 +41,7 @@ module Organization::StateMachine
 
       event :start_approval_process, guards: %i[orga_valid?] do
         # TODO: reactivate guard!!! # , guard: :different_actor?
-        transitions from: :completed, to: :approval_process 
+        transitions from: :completed, to: :approval_process
       end
 
       # , success: :generate_translations!
