@@ -15,8 +15,10 @@ module API::V1
           events = r[:represented].aasm.events.map do |event|
             {
               name: event.name,
-              possible: r[:represented].send("may_#{event.name}?") && event.name != :mark_as_done,
-              failing_guards: event.instance_variable_get(:@guards).reject { |guard| r[:represented].send(guard) }
+              possible: r[:represented].send("may_#{event.name}?") &&
+                event.name != :mark_as_done,
+              failing_guards: event.instance_variable_get(:@guards)
+                                   .reject { |guard| r[:represented].send(guard) }
             }
           end
         elsif r[:represented].is_a?(::Division)
