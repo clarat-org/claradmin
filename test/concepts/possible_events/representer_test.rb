@@ -9,7 +9,8 @@ class API::V1::PossibleEvents::RepresenterTest < ActiveSupport::TestCase
     organization = organizations(:basic)
     organization.aasm_state = 'initialized'
     result = subject.new(organization).to_hash
-    result['data'].map { |k| k[:name] if k[:possible] }.compact.must_equal %i[complete website_under_construction]
+    result['data'].map { |k| k[:name] if k[:possible] }.compact
+                  .must_equal %i[complete website_under_construction]
   end
 
   it 'should return possible events for an approved offer' do
