@@ -1,13 +1,17 @@
 import UserTeamFormObject from '../forms/UserTeamFormObject'
-import DivisionFormObject from '../forms/DivisionFormObject'
+import { DivisionCreateFormObject, DivisionUpdateFormObject }
+  from '../forms/DivisionFormObject'
 import { OrgaCreateFormObject, OrgaUpdateFormObject }
   from '../forms/OrganizationFormObject'
 import WebsiteFormObject from '../forms/WebsiteFormObject'
 import LocationFormObject from '../forms/LocationFormObject'
 import CityFormObject from '../forms/CityFormObject'
+import LogicVersionFormObject from '../forms/LogicVersionFormObject'
+import AreaFormObject from '../forms/AreaFormObject'
 import FederalStateFormObject from '../forms/FederalStateFormObject'
 import ContactPersonFormObject from '../forms/ContactPersonFormObject'
 import EmailFormObject from '../forms/EmailFormObject'
+import NextStepFormObject from '../forms/NextStepFormObject'
 import { OfferCreateFormObject, OfferUpdateFormObject }
   from '../forms/OfferFormObject'
 import OpeningFormObject from '../forms/OpeningFormObject'
@@ -22,7 +26,7 @@ export default function formObjectSelect(model, editing) {
   case 'user-teams':
     return UserTeamFormObject
   case 'divisions':
-    return DivisionFormObject
+    return editing ? DivisionUpdateFormObject : DivisionCreateFormObject
   case 'organizations':
     return editing ? OrgaUpdateFormObject : OrgaCreateFormObject
   case 'websites':
@@ -31,12 +35,18 @@ export default function formObjectSelect(model, editing) {
     return LocationFormObject
   case 'cities':
     return CityFormObject
+  case 'logic-versions':
+      return LogicVersionFormObject
+  case 'areas':
+    return AreaFormObject
   case 'federal-states':
     return FederalStateFormObject
   case 'contact-people':
     return ContactPersonFormObject
   case 'emails':
     return EmailFormObject
+  case 'next-steps':
+    return NextStepFormObject
   case 'offers':
     return editing ? OfferUpdateFormObject : OfferCreateFormObject
   case 'openings':

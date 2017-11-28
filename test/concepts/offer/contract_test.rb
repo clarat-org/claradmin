@@ -17,7 +17,6 @@ class OfferContractTest < ActiveSupport::TestCase
       it { subject.must validate_presence_of :name }
       it { subject.must validate_presence_of :description }
       it { subject.must validate_presence_of :encounter }
-      it { subject.must validate_presence_of :section }
       it { must_validate_length_of :code_word, maximum: 140 }
 
       it 'should fails if personal offer has no location' do
@@ -163,6 +162,27 @@ class OfferContractTest < ActiveSupport::TestCase
         subject.divisions << divisions(:basic)
         subject.valid?
         subject.errors.messages[:divisions].must_be :empty?
+      end
+
+      it 'should validate that divisions have same section' do
+        section = FactoryGirl.create(:section)
+        division1 = FactoryGirl.create(:division, section: section)
+        division2 = FactoryGirl.create(:division, section: section)
+        subject.logic_version = LogicVersion.create(name: 'bacon', version: 7)
+        subject.divisions = [division2, division1]
+        subject.valid?
+        subject.errors.messages[:divisions].must_be :empty?
+      end
+
+      it 'should fail if divisions have different section' do
+        division1 = FactoryGirl.create(:division,
+                                       section: FactoryGirl.create(:section))
+        division2 = FactoryGirl.create(:division,
+                                       section: FactoryGirl.create(:section))
+        subject.logic_version = LogicVersion.create(name: 'bacon', version: 7)
+        subject.divisions << [division2, division1]
+        subject.valid?
+        subject.errors.messages[:divisions].wont_be :empty?
       end
 
       # it 'should ensure chosen contact people belong to a chosen orga' do

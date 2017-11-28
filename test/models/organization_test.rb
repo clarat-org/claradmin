@@ -99,12 +99,6 @@ describe Organization do
         organization.must_be :approved?
       end
 
-      # it 'wont approve with the same actor' do
-      #   organization.stubs(:different_actor?).returns(false)
-      #   assert_raises(AASM::InvalidTransition) { organization.start_approval_process }
-      #   organization.must_be :completed?
-      # end
-
       it 'wont complete' do
         assert_raises(AASM::InvalidTransition) { organization.complete }
         organization.must_be :approval_process?
@@ -293,7 +287,9 @@ describe Organization do
         Offer.any_instance.expects(:website_under_construction!)
              .returns(false)
 
-        assert_raise(RuntimeError) { orga.deactivate_offers_to_under_construction! }
+        assert_raise(RuntimeError) do
+          orga.deactivate_offers_to_under_construction!
+        end
       end
     end
 
