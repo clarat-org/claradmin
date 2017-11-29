@@ -17,7 +17,8 @@ class API::V1::PossibleEvents::RepresenterTest < ActiveSupport::TestCase
     result = subject.new(offers(:basic)).to_hash
     result['data'].map { |k| k[:name] if k[:possible] }.compact
                   .must_equal %i[expire deactivate_internal deactivate_external
-                                 website_under_construction start_checkup_process]
+                                 website_under_construction
+                                 start_checkup_process]
   end
 
   it 'should return failing guards for an invalid orga' do
