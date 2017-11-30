@@ -42,9 +42,9 @@ const mapStateToProps = (state, ownProps) => {
   let action = `/api/v1/${model}`
   let method = 'POST'
   const buttonData = buildActionButtonData(
-    state, model, id, instance, formObjectClass, formData
+    state, model, id, instance, formObjectClass, formData, ownProps.forceCreate
   )
-  const errorMessages = checkforErrors(state, model, editId)
+  const errorMessages = checkforErrors(state, model, id)
 
   // Changes in case the form updates instead of creating
   if (id && !ownProps.forceCreate) {
@@ -63,7 +63,6 @@ const mapStateToProps = (state, ownProps) => {
     buttonData,
     afterSaveActions,
     afterSaveActiveKey,
-    editId,
     errorMessages,
     id
   }
@@ -157,7 +156,7 @@ const errorFlashMessage =
   ' und versuche es erneut.'
 
 function buildActionButtonData(
-  state, model, id, instance, formObject, formData
+  state, model, id, instance, formObject, formData, forceCreate
 ) {
   let changes = formData && formData._changes &&
     formData._changes.length || hasAtLeastOneSubmodelForm(formData)
@@ -171,26 +170,29 @@ function buildActionButtonData(
   // iterate additional actions (e.g. state-changes) only for editing
   if (state.settings.actions[model]) {
     let textPrefix = (changes ? 'Speichern & ' : '')
-    state.settings.actions[model].forEach(action => {
-      if(state.entities['possible-events'] &&
-         state.entities['possible-events'][model] &&
-         state.entities['possible-events'][model][id] &&
-         state.entities['possible-events'][model][id].data.includes(action)
-      ){
-        buttonData.push({
-          className: model == 'divisions' ? 'warning' : 'default',
-          buttonLabel: textPrefix + textForActionName(action, model),
-          actionName: action
-        })
-      }
-    })
+
+    if(!forceCreate &&
+      state.entities['possible-events'] &&
+      state.entities['possible-events'][model] &&
+      state.entities['possible-events'][model][id] &&
+      state.entities['possible-events'][model][id]
+    ){
+      state.entities['possible-events'][model][id].data.map(function(e) {
+        if(e.possible === true) {
+          buttonData.push({
+            className: model == 'divisions' ? 'warning' : 'default',
+            buttonLabel: textPrefix + textForActionName(e.name, model),
+            actionName: e.name
+          })
+        }
+      })
+    }
   }
 
   // add special form-defined buttons
   if (formObject.additionalButtons) {
     buttonData.push(...formObject.additionalButtons(instance))
   }
-
   return buttonData
 }
 
@@ -239,15 +241,15 @@ function textForActionName(action, model){
   }
 }
 
-function checkforErrors(state, model, editId) {
+function checkforErrors(state, model, id) {
   let errors = []
 
   if(state.entities['possible-events'] &&
      state.entities['possible-events'][model] &&
-     state.entities['possible-events'][model][editId] &&
-     state.entities['possible-events'][model][editId]
+     state.entities['possible-events'][model][id] &&
+     state.entities['possible-events'][model][id]
      ) {
-      state.entities['possible-events'][model][editId].data.map(function(e) {
+    state.entities['possible-events'][model][id].data.map(function(e) {
       if(e.failing_guards.length > 0) {
         errors.push(textForFailingGuard(e.failing_guards[0]))
       }
