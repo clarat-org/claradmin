@@ -12,7 +12,7 @@ describe API::V1::DivisionsController do
     api_get_works_for :index
   end
 
-  it 'does not delete a division if there dependent offers' do
+  it 'does not delete a division if there are  dependent offers' do
     sign_in user
     delete_fails_for ::Division, 1
   end

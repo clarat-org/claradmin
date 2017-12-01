@@ -2,10 +2,8 @@
 
 require_relative '../../test_helper'
 require_relative '../../support/utils/operation_test_utils'
-# require_relative '../../support/utils/jsonapi_test_utils'
 
 class DivisionDeleteTest < ActiveSupport::TestCase
-  # include JsonapiTestUtils
   include OperationTestUtils
 
   let(:user) { users(:researcher) }
